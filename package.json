@@ -8,10 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@chameleo/auth-service": "^1.0.1",
     "@material-ui/core": "^4.11.0",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@types/axios": "^0.14.0",
     "axios": "^0.20.0",
     "next": "9.5.5",
+    "promise-polyfill": "^8.1.3",
     "react": "16.14.0",
     "react-dom": "16.14.0"
   },

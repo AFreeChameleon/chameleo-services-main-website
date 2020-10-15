@@ -1,20 +1,35 @@
-import { makeStyles } from '@material-ui/core/styles';
-import formStyles from '../styles/login/formStyles';
+import { Auth } from '../auth/auth';
+import { useState } from 'react';
+import Link from 'next/link';
 
-import {
-    TextField,
-    Button
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import formStyles from '../styles/formStyles';
+import { TextField, Button } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 function Register() {
     const classes = makeStyles(formStyles)();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
     return (
         <div className={classes.root}>
             <div className={classes.innerCard}>
                 <div className={classes.innerCardTitle}>Register Page</div>
                 <div className={classes.innerCardForm}>
+                    { error !== '' && (
+                        <Alert severity="error">
+                            {error}
+                        </Alert>
+                    ) }
                     <div className={classes.innerCardInput}>
                         <TextField
+                            value={name}
+                            onChange={(e) => {
+                                setName(e.target.value);
+                            }}
                             label="Full name"
                             type="text"
                             color="secondary"
@@ -23,6 +38,10 @@ function Register() {
                     </div>
                     <div className={classes.innerCardInput}>
                         <TextField
+                            value={email}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
                             label="Email address"
                             type="email"
                             color="secondary"
@@ -31,6 +50,10 @@ function Register() {
                     </div>
                     <div className={classes.innerCardInput}>
                         <TextField
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                            }}
                             label="Password"
                             type="password"
                             color="secondary"
@@ -39,6 +62,17 @@ function Register() {
                     </div>
                     <div className={classes.innerCardButton}>
                         <Button
+                        onClick={(e) => {
+                            Auth.register({ email, password, name })
+                            .then((data) => {
+                                console.log(data);
+                                window.location.replace('/login');
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                setError(err.error)
+                            });
+                        }}
                         variant="contained"
                         color="secondary"
                         fullWidth
@@ -46,6 +80,11 @@ function Register() {
                             Register
                         </Button>
                     </div>
+                </div>
+                <div className={classes.innerCardRedirectLinkContainer}>
+                    <Link href="/login">
+                        <a className={classes.innerCardRedirectLink}>Already have an account? Login here.</a>
+                    </Link>
                 </div>
             </div>
         </div>

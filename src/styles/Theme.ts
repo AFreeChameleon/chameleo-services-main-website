@@ -19,4 +19,6 @@ const theme = createMuiTheme({
     },
 });
 
+export const secondary = '#13AA52'
+
 export default theme;

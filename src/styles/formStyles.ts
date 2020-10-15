@@ -1,3 +1,7 @@
+import {
+    secondary
+} from './Theme';
+
 const formStyles: any = {
     root: {
         width: '100%',
@@ -7,22 +11,31 @@ const formStyles: any = {
     },
     innerCard: {
         width: '400px',
-        padding: '10px 30px'
+        padding: '0 30px 10px 30px',
     },
     innerCardTitle: {
         textAlign: 'center',
         fontSize: '30px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingBottom: '10px'
     },
     innerCardForm: {
-        width: '100%'
+        width: '100%',
+        marginTop: '20px'
     },
     innerCardInput: {
         textAlign: 'center',
-        marginTop: '20px'
+        marginTop: '10px'
     },
     innerCardButton: {
         marginTop: '30px'
+    },
+    innerCardRedirectLinkContainer: {
+        marginTop: '8px'
+    },
+    innerCardRedirectLink: {
+        fontSize: '14px',
+        color: secondary
     }
 }
 
