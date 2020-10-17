@@ -1,6 +1,4 @@
-import {
-    secondary
-} from './Theme';
+import Theme from './Theme';
 
 const formStyles: any = {
     root: {
@@ -35,7 +33,7 @@ const formStyles: any = {
     },
     innerCardRedirectLink: {
         fontSize: '14px',
-        color: secondary
+        color: Theme.palette.secondary.main
     }
 }
 
