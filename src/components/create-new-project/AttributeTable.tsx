@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { TableData, Error } from '../../types';
 
 import attributeTableStyles, { tableTheme, errorTheme } from '../../styles/create-new-project/components/attributeTableStyles';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -11,48 +12,20 @@ import {
     ControlPoint as ControlPointIcon,
     Add as AddIcon,
     Remove as RemoveIcon
-} from '@material-ui/icons'
+} from '@material-ui/icons';
 
-function AttributeTable() {
+type AttributeTableProps = {
+    table: TableData[];
+    setTable: (table: TableData[]) => void;
+    pushError: (error: string) => void;
+    removeError: (id: string) => void;
+}
+
+const AttributeTable: FunctionComponent<AttributeTableProps> = ({ table, setTable, pushError, removeError }) => {
     const classes = makeStyles(attributeTableStyles)();
-    const [table, setTable] = useState([
-        {
-            name: 'username',
-            unique: false,
-            required: true,
-            default: '',
-            type: 'String',
-            max: 250,
-            min: 3
-        },
-        {
-            name: 'email',
-            unique: true,
-            required: true,
-            default: '',
-            type: 'Email',
-            max: 250,
-            min: 3
-        },
-        {
-            name: 'name',
-            unique: false,
-            required: false,
-            default: 'John Doe',
-            type: 'String',
-            max: 250,
-            min: 3
-        },
-        {
-            name: 'password',
-            unique: false,
-            required: true,
-            default: '',
-            type: 'Password',
-            max: 250,
-            min: 3
-        }
-    ]);
+    const regex = {
+        name: /^[A-Za-z0-9_-]*$/,
+    }
     return (
         <div className={classes.root}>
             <div className={classes.title}>User Model</div>
@@ -74,8 +47,13 @@ function AttributeTable() {
                                 <input
                                     className={classes.input}
                                     type="text"
-                                    value={row.name}
-                                    onChange={(e) => {
+                                    defaultValue={row.name}
+                                    onBlur={(e) => {
+                                        if (!regex.name.test(e.target.value)) {
+                                            pushError('Special characters are not allowed in column names except _-')
+                                        } else {
+                                            removeError('Special characters are not allowed in column names except _-')
+                                        }
                                         const newTable = table;
                                         newTable[i].name = e.target.value;
                                         setTable([

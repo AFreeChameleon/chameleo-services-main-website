@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
+import { PassConfig, Error } from '../../types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import passwordConfigStyles from '../../styles/create-new-project/components/passwordConfigStyles';
@@ -8,14 +9,13 @@ import {
     FormControlLabel
 } from '@material-ui/core';
 
-function PasswordConfig() {
+type PasswordConfigProps = {
+    config: PassConfig,
+    setConfig: (config: PassConfig) => void;
+}
+
+const PasswordConfig: FunctionComponent<PasswordConfigProps> = ({ config, setConfig }) => {
     const classes = makeStyles(passwordConfigStyles)();
-    const [config, setConfig] = useState({
-        upperCase: true,
-        lowerCase: true,
-        requireNumbers: true,
-        requireSpecialChars: true,
-    })
     return (
         <div className={classes.root}>
             <div className={classes.title}>Password Configuration</div>

@@ -4,7 +4,7 @@ import navbarStyles from '../styles/dashboard/components/navbarStyles';
 function Navbar({ category, username }) {
     const classes = makeStyles(navbarStyles)();
     return (
-        <div className={classes.root}>
+        <div className={classes.root} id="top">
             <div className={classes.list}>
                 <div className={classes.listItemHeader}>
                     {category}

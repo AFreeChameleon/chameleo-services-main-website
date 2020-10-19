@@ -1,6 +1,5 @@
 const createProjectStyles: any = {
     root: {
-        maxWidth: '1000px',
         margin: '30px auto 30px auto',
     },
     title: {

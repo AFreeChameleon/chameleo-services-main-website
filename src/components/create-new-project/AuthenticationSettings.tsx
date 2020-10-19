@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
+import { AuthSettings, Error } from '../../types';
+import crypto from 'crypto';
 
 import { makeStyles } from '@material-ui/core/styles';
 import authenticationSettingStyles from '../../styles/create-new-project/components/authenticationSettingStyles';
@@ -8,21 +10,23 @@ import {
     FormControlLabel,
     TextField,
     RadioGroup,
-    Radio
+    Radio,
+    Button
 } from '@material-ui/core';
 
-function AuthenticationSettings() {
+type AuthenticationSettingsProps = {
+    settings: AuthSettings,
+    setSettings: (settings: AuthSettings) => void;
+    pushError: (error: string) => void;
+    removeError: (id: string) => void;
+}
+
+const AuthenticationSettings: FunctionComponent<AuthenticationSettingsProps> = ({ settings, setSettings, pushError, removeError }) => {
     const classes = makeStyles(authenticationSettingStyles)();
-    const [config, setConfig] = useState({
-        userSignUp: 0,
-        appID: 'lJHSFLKJDFDLFGjshfjlskdfdjfl',
-        appSecret: 'lJHSFgdfgLKJDFhgDLFGjhhshfjlsadskdfdjfl',
-        sessionExpiresIn: {
-            forever: false,
-            days: 30,
-            minutes: 0
-        }
-    })
+    const regex = {
+        secret: /^[\w]{16,}$/
+    }
+
     return (
         <div className={classes.root}>
             <div className={classes.title}>Authentication Settings</div>
@@ -30,11 +34,11 @@ function AuthenticationSettings() {
             <ul className={classes.list}>
                 <li className={classes.listItem}>
                     <RadioGroup
-                    value={config.userSignUp}
+                    value={settings.userSignUp}
                     onChange={(e) => {
                         console.log(e.target.value)
-                        setConfig({
-                            ...config,
+                        setSettings({
+                            ...settings,
                             userSignUp: parseInt(e.target.value)
                         })
                     }}>
@@ -48,46 +52,42 @@ function AuthenticationSettings() {
                             control={<Radio />}/>
                     </RadioGroup>
                 </li>
-                <li className={classes.listItemRow}>
-                    <div className={classes.listItemColumn}>
-                        App ID:
-                    </div>
-                    <div className={classes.listItemColumnRight}>
-                        {config.appID}
-                    </div>
-                </li>
                 <li className={classes.listItemRowFull}>
                     <TextField
                         className={classes.listItemColumnFull}
-                        label="App secret"
+                        label="API secret"
                         variant="outlined"
                         color="secondary"
                         fullWidth
-                        onChange={(e) => setConfig({
-                            ...config,
-                            appSecret: e.target.value
-                        })}/>
+                        defaultValue={settings.appSecret}
+                        onBlur={(e) => {
+                            if (!regex.secret.test(e.target.value)) {
+                                pushError('Secret must contain more than 16 characters.')
+                            } else {
+                                removeError('Secret must contain more than 16 characters.');
+                            }
+                            setSettings({
+                                ...settings,
+                                appSecret: e.target.value
+                            })
+                        }}/>
+                </li>
+                <li className={classes.listItemRowFull}>
+                    <Button
+                    fullWidth
+                    variant="contained"
+                    color="secondary"
+                    onClick={(e) => setSettings({
+                        ...settings,
+                        appSecret: crypto.randomBytes(16).toString('hex')
+                    })}>
+                        Reroll secret
+                    </Button>
                 </li>
                 <li className={classes.listItemRow}>
                     <div className={classes.listItemColumnFull}>
                         Session expires in:
                     </div>
-                </li>
-                <li className={classes.listItemColumn}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox checked={config.sessionExpiresIn.forever} onChange={(e) => {
-                                setConfig({
-                                    ...config,
-                                    sessionExpiresIn: {
-                                        ...config.sessionExpiresIn,
-                                        forever: e.target.checked
-                                    }
-                                })
-                            }} />
-                        }
-                        label="Forever"
-                    />
                 </li>
                 <li className={classes.listItemRow}>
                     <div className={classes.listItemColumn}>
@@ -98,12 +98,12 @@ function AuthenticationSettings() {
                             color="secondary"
                             type="number"
                             defaultValue={'30'}
-                            disabled={config.sessionExpiresIn.forever}
+                            disabled={settings.sessionExpiresIn.forever}
                             fullWidth
-                            onChange={(e) => setConfig({
-                                ...config,
+                            onChange={(e) => setSettings({
+                                ...settings,
                                 sessionExpiresIn: {
-                                    ...config.sessionExpiresIn,
+                                    ...settings.sessionExpiresIn,
                                     days: parseInt(e.target.value)
                                 }
                             })}/>
@@ -116,16 +116,32 @@ function AuthenticationSettings() {
                             color="secondary"
                             type="number"
                             defaultValue={'0'}
-                            disabled={config.sessionExpiresIn.forever}
+                            disabled={settings.sessionExpiresIn.forever}
                             fullWidth
-                            onChange={(e) => setConfig({
-                                ...config,
+                            onChange={(e) => setSettings({
+                                ...settings,
                                 sessionExpiresIn: {
-                                    ...config.sessionExpiresIn,
+                                    ...settings.sessionExpiresIn,
                                     minutes: parseInt(e.target.value)
                                 }
                             })}/>
                     </div>
+                </li>
+                <li className={classes.listItemColumn}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={settings.sessionExpiresIn.forever} onChange={(e) => {
+                                setSettings({
+                                    ...settings,
+                                    sessionExpiresIn: {
+                                        ...settings.sessionExpiresIn,
+                                        forever: e.target.checked
+                                    }
+                                })
+                            }} />
+                        }
+                        label="Never"
+                    />
                 </li>
             </ul>
         </div>

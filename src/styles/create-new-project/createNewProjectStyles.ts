@@ -1,6 +1,7 @@
 const createNewProjectStyles: any = {
-    root: {
-        
+    inner: {
+        maxWidth: '1000px',
+        margin: '0 auto'
     }
 }
 

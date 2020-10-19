@@ -36,7 +36,6 @@ export const errorTheme: ThemeType = createMuiTheme({
 
 const attributeTableStyles: any = {
     root: {
-        maxWidth: '1000px',
         margin: '30px auto 0 auto',
     },
     title: {
