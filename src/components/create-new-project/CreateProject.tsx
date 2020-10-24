@@ -16,7 +16,7 @@ const CreateProject: FunctionComponent<CreateProjectProps> = ({ state, setErrors
     const classes = makeStyles(createProjectStyles)();
     const buildProject = (e) => {
         if (state.errors.length > 0) {
-            window.location.replace('#top');
+            window.location.href = '#top';
         } else {
             console.log(state);
             axios.post('http://localhost:8080/api/build-config', state, { withCredentials: true })

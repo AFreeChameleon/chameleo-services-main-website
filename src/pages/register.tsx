@@ -9,7 +9,7 @@ import { Alert } from '@material-ui/lab';
 
 function Register() {
     const classes = makeStyles(formStyles)();
-    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -26,11 +26,11 @@ function Register() {
                     ) }
                     <div className={classes.innerCardInput}>
                         <TextField
-                            value={name}
+                            value={username}
                             onChange={(e) => {
-                                setName(e.target.value);
+                                setUsername(e.target.value);
                             }}
-                            label="Full name"
+                            label="Username"
                             type="text"
                             color="secondary"
                             fullWidth
@@ -63,10 +63,11 @@ function Register() {
                     <div className={classes.innerCardButton}>
                         <Button
                         onClick={(e) => {
-                            Auth.register({ email, password, name })
+                            console.log(username)
+                            Auth.register({ email, password, username })
                             .then((data) => {
                                 console.log(data);
-                                window.location.replace('/login');
+                                window.location.href = '/login';
                             })
                             .catch((err) => {
                                 console.log(err);

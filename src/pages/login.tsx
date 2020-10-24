@@ -53,7 +53,7 @@ function Login() {
                             Auth.login({ email, password })
                             .then((data) => {
                                 console.log(data);
-                                window.location.replace('/');
+                                window.location.href = '/';
                             })
                             .catch((err) => {
                                 console.log(err);
