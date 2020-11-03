@@ -111,6 +111,7 @@ const AttributeTable: FunctionComponent<AttributeTableProps> = ({ table, setTabl
                                 }}>
                                     <option>String</option>
                                     <option>Number</option>
+                                    <option>Username</option>
                                     <option>Email</option>
                                     <option>Password</option>
                                 </select>

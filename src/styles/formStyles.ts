@@ -34,6 +34,18 @@ const formStyles: any = {
     innerCardRedirectLink: {
         fontSize: '14px',
         color: Theme.palette.secondary.main
+    },
+    resendEmailContainer: {
+        paddingTop: '5px',
+        textAlign: 'center'
+    },
+    resendEmailTitle: {
+        fontSize: '11px',
+        color: 'rgb(0, 0, 0, 0.5)'
+    },
+    resendEmailLink: {
+        color: Theme.palette.secondary.main,
+        textDecoration: 'underline'
     }
 }
 

@@ -50,8 +50,6 @@ class CreateNewProject extends Component<any, any> {
             errors: errors
         });
 
-        console.log('re-render index')
-
         return (
             <div className={classes.root}>
                 <Navbar

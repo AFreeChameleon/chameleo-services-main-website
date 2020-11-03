@@ -7,7 +7,7 @@ export const createNewProjectStateDefaults: any = {
             unique: false,
             required: true,
             default: '',
-            type: 'String',
+            type: 'Username',
             max: 250,
             min: 3
         },
