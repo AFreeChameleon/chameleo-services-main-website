@@ -41,7 +41,12 @@ function VerifyToken({ error, message }) {
                     An error occurred while verifying your email.
                 </div>
                 <div className={classes.innerContainerButton}>
-                    <Button onClick={(e) => router.push('/register')}>
+                    <Button
+                        color="secondary"
+                        variant="contained" 
+                        fullWidth
+                        onClick={(e) => router.push('/register')}
+                    >
                         Go back to register
                     </Button>
                 </div>

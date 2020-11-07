@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import ifAuth from '../../hoc/ifAuth';
+import { Auth } from '../../auth/auth';
 import { 
     Error,
     TableData,
@@ -18,7 +20,7 @@ import PasswordConfig from '../../components/create-new-project/PasswordConfig';
 import AuthenticationSettings from '../../components/create-new-project/AuthenticationSettings';
 import CreateProject from '../../components/create-new-project/CreateProject';
 
-class CreateNewProject extends Component<any, any> {
+class CreateNewProject extends Component<any, any> { 
     constructor(props) {
         super(props);
         this.state = {
@@ -54,31 +56,37 @@ class CreateNewProject extends Component<any, any> {
             <div className={classes.root}>
                 <Navbar
                     category="Authentication"
-                    username="Benamon"/>
+                    username="Benamon"
+                />
                 <div className={classes.inner}>
                     <ErrorList
                         errors={this.state.errors}
-                        setErrors={setErrors}/>
+                        setErrors={setErrors}
+                    />
                     <AttributeTable 
                         table={this.state.attributeTable} 
                         setTable={setAttributeTable} 
                         pushError={pushError}
-                        removeError={removeError}/>
+                        removeError={removeError}
+                    />
                     <PasswordConfig 
                         config={this.state.passwordConfig} 
-                        setConfig={setPasswordConfig}/>
+                        setConfig={setPasswordConfig}
+                    />
                     <AuthenticationSettings 
                         settings={this.state.authenticationSettings} 
                         setSettings={setAuthenticationSettings}
                         pushError={pushError}
-                        removeError={removeError}/>
+                        removeError={removeError}
+                    />
                     <CreateProject 
                         state={this.state}
-                        setErrors={setErrors} />
+                        setErrors={setErrors}
+                    />
                 </div>
             </div>
         )
     }
 }
 
-export default withStyles(createNewProjectStyles)(CreateNewProject);
+export default withStyles(createNewProjectStyles)(ifAuth(CreateNewProject));

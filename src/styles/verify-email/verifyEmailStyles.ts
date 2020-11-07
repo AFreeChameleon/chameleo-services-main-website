@@ -7,9 +7,10 @@ const verifyEmailStyles: any = {
     },
     innerContainer: {
         padding: '20px 40px',
-        boxShadow: '3px 3px 6px rgb(0, 0, 0, 0.2)',
+        // boxShadow: '3px 3px 6px rgb(0, 0, 0, 0.2)',
         borderRadius: '6px',
-        textAlign: 'center'
+        textAlign: 'center',
+        maxWidth: '500px'
     },
     innerContainerImg: {
 
@@ -20,6 +21,9 @@ const verifyEmailStyles: any = {
     },
     innerContainerSubTitle: {
         fontSize: '14px'
+    },
+    innerContainerButton :{
+        paddingTop: '20px'
     }
 }
 

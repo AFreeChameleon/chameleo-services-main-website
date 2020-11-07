@@ -7,8 +7,11 @@ const formStyles: any = {
         display: 'grid',
         placeItems: 'center'
     },
+    form: {
+        paddingTop: '15px'
+    },
     innerCard: {
-        width: '400px',
+        width: '450px',
         padding: '0 30px 10px 30px',
     },
     innerCardTitle: {
@@ -17,23 +20,46 @@ const formStyles: any = {
         fontWeight: 'bold',
         paddingBottom: '10px'
     },
+    innerCardSubTitle: {
+        textAlign: 'center',
+        fontSize: '14px',
+    },
     innerCardForm: {
         width: '100%',
         marginTop: '20px'
     },
     innerCardInput: {
         textAlign: 'center',
-        marginTop: '10px'
+        marginBottom: '20px'
     },
     innerCardButton: {
-        marginTop: '30px'
+        marginTop: '20px'
     },
     innerCardRedirectLinkContainer: {
-        marginTop: '8px'
+        marginTop: '15px',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    innerCardRedirectLinkHalf: {
+        width: 'calc(50% - 20px)',
+        fontSize: '14px',
+        color: Theme.palette.secondary.main,
+        '&:first-child': {
+            textAlign: 'right',
+        },
+        '&:last-child': {
+            textAlign: 'left',
+        }
     },
     innerCardRedirectLink: {
         fontSize: '14px',
-        color: Theme.palette.secondary.main
+        color: Theme.palette.secondary.main,
+        '&:first-child': {
+            textAlign: 'right',
+        },
+        '&:last-child': {
+            textAlign: 'left',
+        }
     },
     resendEmailContainer: {
         paddingTop: '5px',
@@ -45,7 +71,8 @@ const formStyles: any = {
     },
     resendEmailLink: {
         color: Theme.palette.secondary.main,
-        textDecoration: 'underline'
+        textDecoration: 'underline',
+        cursor: 'pointer'
     }
 }
 

@@ -2,6 +2,7 @@ import { Auth } from '../auth/auth';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import ifNotAuth from '../hoc/ifNotAuth';
 
 import { makeStyles } from '@material-ui/core/styles';
 import formStyles from '../styles/formStyles';
@@ -15,28 +16,36 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const submitLogin = (e) => {
+        e.preventDefault();
+        Auth.login(email, password)
+        .then((data) => {
+            console.log(data)
+            setError('');
+            router.push('/create-new-project');
+        })
+        .catch((err) => {
+            setError(err.message);
+        });
+    }
+
     return (
         <div className={classes.root}>
             <div className={classes.innerCard}>
-                <div className={classes.innerCardTitle}>Login Page</div>
+                <div className={classes.innerCardTitle}>Login</div>
+                <div className={classes.innerCardSubTitle}>
+                    Don't have an account?&nbsp;
+                    <Link href="/register">
+                        <a className={classes.innerCardRedirectLink}>Register here.</a>
+                    </Link>
+                </div>
                 <div className={classes.innerCardForm}>
                     { error !== '' && (
                         <Alert severity="error">
                             {error}
                         </Alert>
                     ) }
-                    <form action="/login" method="POST" onSubmit={(e) => {
-                        e.preventDefault();
-                        Auth.login({ email, password })
-                        .then((data) => {
-                            console.log(data);
-                            router.push('/create-new-project');
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            setError(err.error)
-                        });
-                    }}>
+                    <form action="/login" method="POST" onSubmit={submitLogin} className={classes.form}>
                         <div className={classes.innerCardInput}>
                             <TextField
                                 value={email}
@@ -46,6 +55,7 @@ function Login() {
                                 label="Email address"
                                 type="email"
                                 color="secondary"
+                                variant="outlined"
                                 fullWidth
                             />
                         </div>
@@ -58,6 +68,7 @@ function Login() {
                                 label="Password"
                                 type="password"
                                 color="secondary"
+                                variant="outlined"
                                 fullWidth
                             />
                         </div>
@@ -72,16 +83,24 @@ function Login() {
                             </Button>
                         </div>
                     </form>
+                    <div className={classes.innerCardButton}>
+                        <Link href="http://localhost:8080/api/auth/google">
+                            <a className={classes.innerCardRedirectLinkHalf}>Login in with Google</a>
+                        </Link>
+                    </div>
                     <div className={classes.innerCardRedirectLinkContainer}>
-                        <Link href="/register">
-                            <a className={classes.innerCardRedirectLink}>Don't have an account? Register here.</a>
+                        <Link href="/forgot-password">
+                            <a className={classes.innerCardRedirectLinkHalf}>Forgot password?</a>
+                        </Link>
+                        &nbsp;·&nbsp; 
+                        <Link href="/reset-email">
+                            <a className={classes.innerCardRedirectLinkHalf}>Forgot your email?</a>
                         </Link>
                     </div>
                 </div>
             </div>
-            
         </div>
     )
 }
 
-export default Login;
+export default ifNotAuth(Login);
