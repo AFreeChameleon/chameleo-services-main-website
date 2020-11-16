@@ -7,10 +7,9 @@ import errorListStyles from '../../styles/create-new-project/components/errorLis
 
 type ErrorListProps = {
     errors: string[];
-    setErrors: (errors: string[]) => void;
 }
 
-const ErrorList: FunctionComponent<ErrorListProps> = ({ errors, setErrors }) => {
+const ErrorList: FunctionComponent<ErrorListProps> = ({ errors }) => {
     const classes = makeStyles(errorListStyles)();
     return (
         <div className={classes.root}>

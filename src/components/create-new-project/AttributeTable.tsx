@@ -17,19 +17,14 @@ import {
 type AttributeTableProps = {
     table: TableData[];
     setTable: (table: TableData[]) => void;
-    pushError: (error: string) => void;
-    removeError: (id: string) => void;
 }
 
-const AttributeTable: FunctionComponent<AttributeTableProps> = ({ table, setTable, pushError, removeError }) => {
+const AttributeTable: FunctionComponent<AttributeTableProps> = ({ table, setTable }) => {
     const classes = makeStyles(attributeTableStyles)();
-    const regex = {
-        name: /^[A-Za-z0-9_-]*$/,
-    }
     return (
         <div className={classes.root}>
             <div className={classes.title}>User Model</div>
-            <div className={classes.subTitle}>What data will be stored:</div>
+            <div className={classes.subTitle}>What data will be stored inside your table:</div>
             <ThemeProvider theme={tableTheme}>
                 <div className={classes.table}>
                     <div className={`${classes.row} ${classes.headers}`}>
@@ -49,11 +44,7 @@ const AttributeTable: FunctionComponent<AttributeTableProps> = ({ table, setTabl
                                     type="text"
                                     defaultValue={row.name}
                                     onBlur={(e) => {
-                                        if (!regex.name.test(e.target.value)) {
-                                            pushError('Special characters are not allowed in column names except _-')
-                                        } else {
-                                            removeError('Special characters are not allowed in column names except _-')
-                                        }
+
                                         const newTable = table;
                                         newTable[i].name = e.target.value;
                                         setTable([
@@ -162,31 +153,51 @@ const AttributeTable: FunctionComponent<AttributeTableProps> = ({ table, setTabl
                 </div>
                 <div className={classes.addRow}>
                     <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={(e) => {
-                        const newArray = [
-                            ...table,
-                            {
-                                name: 'Column Name',
-                                unique: false,
-                                required: false,
-                                default: 'default',
-                                type: 'String',
-                                max: 250,
-                                min: 3
-                            }
-                        ]
-                        setTable([
-                            ...newArray,
-                        ])
-                    }}>
-                        <AddIcon/>
+                        variant="outlined"
+                        color="secondary"
+                        onClick={(e) => {
+                            const newArray = [
+                                ...table,
+                                {
+                                    name: 'Column Name',
+                                    unique: false,
+                                    required: false,
+                                    default: 'default',
+                                    type: 'String',
+                                    max: 250,
+                                    min: 3
+                                }
+                            ]
+                            setTable([
+                                ...newArray,
+                            ])
+                        }}
+                        startIcon={<AddIcon/>}
+                    >
+                        Add Property
                     </Button>
                 </div>
             </ThemeProvider>
         </div>
     )
+}
+
+export const checkAttributeTable = (table: any[]) => {
+    const errors: string[] = [];
+    const regex = {
+        name: /^[A-Za-z0-9_-]*$/,
+    }
+    if (!table.find(row => row.type === 'Email')) {
+        errors.push('Model must include an Email column.');
+    }
+    if (!table.find(row => row.type === 'Password')) {
+        errors.push('Model must include an Password column.');
+    }
+    if (table.filter(row => !row.name.match(regex.name)).length > 0) {
+        errors.push('Special characters are not allowed in model names except _-')
+    }
+    const uniqueErrors: string[] = [...new Set(errors)]
+    return uniqueErrors;
 }
 
 export default AttributeTable;

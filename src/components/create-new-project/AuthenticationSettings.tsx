@@ -17,19 +17,14 @@ import {
 type AuthenticationSettingsProps = {
     settings: AuthSettings,
     setSettings: (settings: AuthSettings) => void;
-    pushError: (error: string) => void;
-    removeError: (id: string) => void;
 }
 
-const AuthenticationSettings: FunctionComponent<AuthenticationSettingsProps> = ({ settings, setSettings, pushError, removeError }) => {
+const AuthenticationSettings: FunctionComponent<AuthenticationSettingsProps> = ({ settings, setSettings, }) => {
     const classes = makeStyles(authenticationSettingStyles)();
-    const regex = {
-        secret: /^[\w]{16,}$/
-    }
 
     return (
         <div className={classes.root}>
-            <div className={classes.title}>Authentication Settings</div>
+            <div className={classes.title}>Session Settings</div>
             <div className={classes.subTitle}>Configuration for your project</div>
             <ul className={classes.list}>
                 <li className={classes.listItem}>
@@ -59,28 +54,27 @@ const AuthenticationSettings: FunctionComponent<AuthenticationSettingsProps> = (
                         variant="outlined"
                         color="secondary"
                         fullWidth
-                        defaultValue={settings.appSecret}
-                        onBlur={(e) => {
-                            if (!regex.secret.test(e.target.value)) {
-                                pushError('Secret must contain more than 16 characters.')
-                            } else {
-                                removeError('Secret must contain more than 16 characters.');
-                            }
+                        value={settings.appSecret}
+                        onChange={(e) => {
                             setSettings({
                                 ...settings,
                                 appSecret: e.target.value
                             })
-                        }}/>
+                        }}
+                    />
                 </li>
                 <li className={classes.listItemRowFull}>
                     <Button
                     fullWidth
                     variant="contained"
                     color="secondary"
-                    onClick={(e) => setSettings({
-                        ...settings,
-                        appSecret: crypto.randomBytes(16).toString('hex')
-                    })}>
+                    onClick={(e) => {
+                        const secret = crypto.randomBytes(16).toString('hex');
+                        setSettings({
+                            ...settings,
+                            appSecret: secret
+                        })
+                    }}>
                         Reroll secret
                     </Button>
                 </li>
@@ -97,7 +91,7 @@ const AuthenticationSettings: FunctionComponent<AuthenticationSettingsProps> = (
                             variant="outlined"
                             color="secondary"
                             type="number"
-                            defaultValue={'30'}
+                            value={settings.sessionExpiresIn.days}
                             disabled={settings.sessionExpiresIn.forever}
                             fullWidth
                             onChange={(e) => setSettings({
@@ -115,7 +109,7 @@ const AuthenticationSettings: FunctionComponent<AuthenticationSettingsProps> = (
                             variant="outlined"
                             color="secondary"
                             type="number"
-                            defaultValue={'0'}
+                            value={settings.sessionExpiresIn.minutes}
                             disabled={settings.sessionExpiresIn.forever}
                             fullWidth
                             onChange={(e) => setSettings({
@@ -146,6 +140,18 @@ const AuthenticationSettings: FunctionComponent<AuthenticationSettingsProps> = (
             </ul>
         </div>
     )
+}
+
+export const checkAuthenticationSettings = ({ secret }) => {
+    const regex = {
+        secret: /^[\w]{16,}$/
+    }
+    const errors = [];
+    if (!regex.secret.test(secret)) {
+        console.log(secret)
+        errors.push('Secret must contain more than 16 characters.')
+    }
+    return errors
 }
 
 export default AuthenticationSettings;

@@ -73,6 +73,20 @@ const formStyles: any = {
         color: Theme.palette.secondary.main,
         textDecoration: 'underline',
         cursor: 'pointer'
+    },
+    signInGoogleButton: {
+        width: '100%',
+        display: 'flex',
+        padding: '5px 10px',
+        boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gridColumnGap: '10px',
+        borderRadius: '4px'
+    },
+    signInGoogleText: {
+        fontSize: '0.875rem',
+        fontWeight: '600'
     }
 }
 

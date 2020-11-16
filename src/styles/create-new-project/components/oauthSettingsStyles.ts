@@ -1,7 +1,7 @@
 import Theme from '../../Theme';
 import { createMuiTheme, Theme as ThemeType } from '@material-ui/core/styles';
 
-const authenticationSettingStyles: any = {
+const oauthSettingsStyles: any = {
     root: {
         margin: '30px auto 0 auto',
     },
@@ -28,9 +28,32 @@ const authenticationSettingStyles: any = {
     listItem: {
         textDecoration: 'none',
         listStyle: 'none',
-        '& label': {
-            userSelect: 'none'
+        width: '100%',
+        gridTemplateColumns: '75% 25%',
+        justifyContent: 'center',
+        alignContent: 'center',
+        fontSize: '0.875rem',
+    },
+    listItemHeader: {
+        textDecoration: 'none',
+        listStyle: 'none',
+        color: Theme.palette.secondary.main,
+        borderBottom: `2px solid ${Theme.palette.secondary.main}`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '0 15px',
+        alignContent: 'center',
+        height: '40px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        '&:hover': {
+            background: 'rgb(0, 0, 0, 0.02)'
         }
+    },
+    listItemHeaderText: {
+        textAlign: 'center',
+        alignSelf: 'center',
+        userSelect: 'none'
     },
     listItemRow: {
         textDecoration: 'none',
@@ -42,7 +65,6 @@ const authenticationSettingStyles: any = {
         gridColumnGap: '30px',
         gridTemplateColumns: 'auto auto',
         fontSize: '16px',
-        width: '350px'
     },
     listItemRowFull: {
         textDecoration: 'none',
@@ -62,7 +84,13 @@ const authenticationSettingStyles: any = {
     },
     listItemColumnRight: {
         textAlign: 'right'
+    },
+    listItemCollapse: {
+        padding: '10px 5px 0px 5px'
+    },
+    listItemCollapseTextField: {
+        marginBottom: '8px'
     }
 }
 
-export default authenticationSettingStyles;
+export default oauthSettingsStyles;

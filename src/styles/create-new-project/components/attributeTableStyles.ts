@@ -39,17 +39,20 @@ const attributeTableStyles: any = {
         margin: '30px auto 0 auto',
     },
     title: {
-        fontSize: '24px',
+        fontSize: '36px',
         fontWeight: '600',
         color: '#000000',
+        textAlign: 'center',
     },
     subTitle: {
-        marginBottom: '20px'
+        marginBottom: '20px',
+        textAlign: 'center',
+        color: 'rgb(0, 0, 0, 0.6)',
     },
     table: {
         display: 'grid',
         gridTemplateRows: 'auto',
-        padding: '0 20px'
+        // padding: '0 20px'
     },
     row: {
         display: 'grid',
@@ -91,7 +94,7 @@ const attributeTableStyles: any = {
     },
     addRow: {
         marginTop: '20px',
-        marginLeft: '20px'
+        textAlign: 'center'
     },
 }
 

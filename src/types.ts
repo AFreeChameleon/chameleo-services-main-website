@@ -29,3 +29,11 @@ export type PassConfig = {
     requireNumbers: boolean,
     requireSpecialChars: boolean,
 }
+
+export type OAuth = {
+    google: {
+        clientID: string,
+        clientKey: string,
+        redirectURI: string
+    }
+}

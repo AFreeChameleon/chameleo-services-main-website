@@ -54,5 +54,12 @@ export const createNewProjectStateDefaults: any = {
         requireNumbers: true,
         requireSpecialChars: true,
     },
-    errors: []
+    errors: [],
+    OAuth: {
+        google: {
+            clientID: '',
+            clientKey: '',
+            redirectURI: ''
+        }
+    }
 }

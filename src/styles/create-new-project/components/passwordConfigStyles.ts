@@ -6,16 +6,25 @@ const passwordConfigStyles: any = {
         margin: '30px auto 0 auto',
     },
     title: {
-        fontSize: '24px',
+        fontSize: '36px',
         fontWeight: '600',
         color: '#000000',
+        textAlign: 'center',
     },
     subTitle: {
-        marginBottom: '15px'
+        marginBottom: '15px',
+        textAlign: 'center',
+        color: 'rgb(0, 0, 0, 0.6)',
+    },
+    alignCenter: {
+        textAlign: 'center'
     },
     list: {
         listStyle: 'none',
-        paddingLeft: '20px'
+        paddingLeft: '20px',
+        width: 'fit-content',
+        textAlign: 'left',
+        margin: '0 auto'
     },
     listItem: {
         textDecoration: 'none',
@@ -24,6 +33,7 @@ const passwordConfigStyles: any = {
             userSelect: 'none'
         }
     },
+
 }
 
 export default passwordConfigStyles;

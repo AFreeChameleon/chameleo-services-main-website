@@ -18,62 +18,64 @@ const PasswordConfig: FunctionComponent<PasswordConfigProps> = ({ config, setCon
     const classes = makeStyles(passwordConfigStyles)();
     return (
         <div className={classes.root}>
-            <div className={classes.title}>Password Configuration</div>
+            <div className={classes.title}>Password Requirements</div>
             <div className={classes.subTitle}>Passwords must contain:</div>
-            <ul className={classes.list}>
-                <li className={classes.listItem}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox checked={config.upperCase} onChange={(e) => {
-                                setConfig({
-                                    ...config,
-                                    upperCase: e.target.checked
-                                })
-                            }} />
-                        }
-                        label="Uppercase letters"
-                    />
-                </li>
-                <li className={classes.listItem}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox checked={config.lowerCase} onChange={(e) => {
-                                setConfig({
-                                    ...config,
-                                    lowerCase: e.target.checked
-                                })
-                            }} />
-                        }
-                        label="Lowercase letters"
-                    />
-                </li>
-                <li className={classes.listItem}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox checked={config.requireNumbers} onChange={(e) => {
-                                setConfig({
-                                    ...config,
-                                    requireNumbers: e.target.checked
-                                })
-                            }} />
-                        }
-                        label="Require numbers"
-                    />
-                </li>
-                <li className={classes.listItem}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox checked={config.requireSpecialChars} onChange={(e) => {
-                                setConfig({
-                                    ...config,
-                                    requireSpecialChars: e.target.checked
-                                })
-                            }} />
-                        }
-                        label="Require special characters"
-                    />
-                </li>
-            </ul>
+            <div className={classes.alignCenter}>
+                <ul className={classes.list}>
+                    <li className={classes.listItem}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox checked={config.upperCase} onChange={(e) => {
+                                    setConfig({
+                                        ...config,
+                                        upperCase: e.target.checked
+                                    })
+                                }} />
+                            }
+                            label="Uppercase letters"
+                        />
+                    </li>
+                    <li className={classes.listItem}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox checked={config.lowerCase} onChange={(e) => {
+                                    setConfig({
+                                        ...config,
+                                        lowerCase: e.target.checked
+                                    })
+                                }} />
+                            }
+                            label="Lowercase letters"
+                        />
+                    </li>
+                    <li className={classes.listItem}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox checked={config.requireNumbers} onChange={(e) => {
+                                    setConfig({
+                                        ...config,
+                                        requireNumbers: e.target.checked
+                                    })
+                                }} />
+                            }
+                            label="Require numbers"
+                        />
+                    </li>
+                    <li className={classes.listItem}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox checked={config.requireSpecialChars} onChange={(e) => {
+                                    setConfig({
+                                        ...config,
+                                        requireSpecialChars: e.target.checked
+                                    })
+                                }} />
+                            }
+                            label="Require special characters"
+                        />
+                    </li>
+                </ul>
+            </div>
         </div>
     )
 }
