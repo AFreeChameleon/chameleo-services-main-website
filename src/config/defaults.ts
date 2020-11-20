@@ -58,7 +58,7 @@ export const createNewProjectStateDefaults: any = {
     OAuth: {
         google: {
             clientID: '',
-            clientKey: '',
+            clientSecret: '',
             redirectURI: ''
         }
     }

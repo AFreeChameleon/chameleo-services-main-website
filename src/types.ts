@@ -33,7 +33,7 @@ export type PassConfig = {
 export type OAuth = {
     google: {
         clientID: string,
-        clientKey: string,
+        clientSecret: string,
         redirectURI: string
     }
 }

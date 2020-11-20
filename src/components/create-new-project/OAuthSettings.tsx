@@ -71,14 +71,14 @@ const OAuthSettings: FunctionComponent<OAuthSettingsProps> = ({ oauth, setOAuth 
                             <TextField
                                 variant="outlined"
                                 color="secondary"
-                                label="Client Key"
+                                label="Client Secret"
                                 className={classes.listItemCollapseTextField}
-                                value={oauth.google.clientKey}
+                                value={oauth.google.clientSecret}
                                 onChange={(e) => {
                                     setOAuth({
                                         google: {
                                             ...oauth.google,
-                                            clientKey: e.target.value
+                                            clientSecret: e.target.value
                                         }
                                     })
                                 }}

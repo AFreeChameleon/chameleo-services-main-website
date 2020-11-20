@@ -220,7 +220,7 @@ const CreateProject: FunctionComponent<CreateProjectProps> = ({ state, setErrors
                                 <strong>Client ID: </strong>{oauth.google.clientID ? oauth.google.clientID : 'Missing'}
                             </li>
                             <li className={classes.listRow}>
-                                <strong>Client Key: </strong>{oauth.google.clientKey ? oauth.google.clientKey : 'Missing'}
+                                <strong>Client Secret: </strong>{oauth.google.clientSecret ? oauth.google.clientSecret : 'Missing'}
                             </li>
                             <li className={classes.listRow}>
                                 <strong>Redirect URI: </strong>{oauth.google.redirectURI ? oauth.google.redirectURI : 'Missing'}
