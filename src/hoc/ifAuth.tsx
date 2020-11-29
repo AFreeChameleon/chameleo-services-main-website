@@ -38,7 +38,7 @@ const ifAuth = <T extends object>(C: React.ComponentType<T>) => {
         render() {
             return <C {...this.props} />;
         }
-    }    
+    }
 }
 
 export default ifAuth;

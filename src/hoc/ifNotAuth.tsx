@@ -12,7 +12,7 @@ const ifNotAuth = <T extends object>(C: React.ComponentType<T>) => {
                     });
                     console.log(loggedIn)
                     if (loggedIn) {
-                        redirect(ctx, "/create-new-project");
+                        redirect(ctx, "/projects");
                     }
                     return {
                         loggedIn: loggedIn,
@@ -21,7 +21,7 @@ const ifNotAuth = <T extends object>(C: React.ComponentType<T>) => {
                     const loggedIn = await Auth.verifyUser();
                     console.log(loggedIn)
                     if (loggedIn) {
-                        redirect(ctx, "/create-new-project");
+                        redirect(ctx, "/projects");
                     }
                     return {
                         loggedIn: loggedIn,

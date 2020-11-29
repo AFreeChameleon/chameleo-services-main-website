@@ -54,6 +54,19 @@ export const createNewProjectStateDefaults: any = {
         requireNumbers: true,
         requireSpecialChars: true,
     },
+    mail: {
+        enabled: true,
+        fromAddress: '',
+        verificationType: 'link',
+
+        verifyContentType: 'text',
+        verifySubject: 'Verify your email!',
+        verifyContent: 'Verify your email by clicking this link: {__verify__}',
+
+        resetContentType: 'text',
+        resetSubject: 'Your password has been reset!',
+        resetContent: 'Your password has been reset to: {__temporary password__}'
+    },
     errors: [],
     OAuth: {
         google: {

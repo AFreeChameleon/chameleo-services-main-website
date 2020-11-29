@@ -22,7 +22,7 @@ function Login() {
         .then((data) => {
             console.log(data)
             setError('');
-            router.push('/create-new-project');
+            router.push('/projects/auth/new');
         })
         .catch((err) => {
             setError(err.message);
@@ -45,7 +45,7 @@ function Login() {
                             {error}
                         </Alert>
                     ) }
-                    <form action="/login" method="POST" onSubmit={submitLogin} className={classes.form}>
+                    <form onSubmit={submitLogin} className={classes.form}>
                         <div className={classes.innerCardInput}>
                             <TextField
                                 value={email}
@@ -83,7 +83,7 @@ function Login() {
                             </Button>
                         </div>
                         <div className={classes.innerCardButton}>
-                            <Link href="http://localhost:8080/api/auth/google">
+                            <Link href={`${process.env.MAIN_URL}/api/auth/google`}>
                                 <Button
                                     variant="outlined"
                                     fullWidth
