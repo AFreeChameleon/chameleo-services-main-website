@@ -1,11 +1,13 @@
 import { FunctionComponent, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import ifAuth from '../../hoc/ifAuth';
 
 import { makeStyles } from '@material-ui/core/styles';
 import styles from '../../styles/projects/index';
 
 import Navbar from '../../components/Navbar';
+import ProjectList from '../../components/projects/index/ProjectList'
 import {
     Add as AddIcon,
     List as ListIcon,
@@ -39,32 +41,7 @@ const Projects: FunctionComponent = () => {
                         }}
                     />
                 </div>
-                <div className={listView === 'apps' ? classes.appList : classes.rowList}>
-                    <div className={listView === 'apps' ? classes.appItem : classes.rowItem}>
-                        <div className={listView === 'apps' ? classes.appItemTitle : classes.rowItemTitle}>Mum's App</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>App ID: {'APPID'}</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Containers</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Status: {'APPID'}</div>
-                    </div>
-                    <div className={listView === 'apps' ? classes.appItem : classes.rowItem}>
-                        <div className={listView === 'apps' ? classes.appItemTitle : classes.rowItemTitle}>Mum's App</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>App ID: {'APPID'}</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Containers</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Status: {'APPID'}</div>
-                    </div>
-                    <div className={listView === 'apps' ? classes.appItem : classes.rowItem}>
-                        <div className={listView === 'apps' ? classes.appItemTitle : classes.rowItemTitle}>Mum's App</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>App ID: {'APPID'}</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Containers</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Status: {'APPID'}</div>
-                    </div>
-                    <div className={listView === 'apps' ? classes.appItem : classes.rowItem}>
-                        <div className={listView === 'apps' ? classes.appItemTitle : classes.rowItemTitle}>Mum's App</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>App ID: {'APPID'}</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Containers</div>
-                        <div className={listView === 'apps' ? classes.appItemSubTitle : classes.rowItemSubTitle}>Status: {'APPID'}</div>
-                    </div>
-                </div>
+                <ProjectList listView={listView} />
                 <div className={classes.title}>
                     Or...
                 </div>
@@ -85,4 +62,5 @@ const Projects: FunctionComponent = () => {
     )
 }
 
-export default Projects;
+const AuthenticatedProjects = ifAuth(Projects);
+export default AuthenticatedProjects;
