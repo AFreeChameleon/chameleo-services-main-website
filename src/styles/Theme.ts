@@ -1,24 +1,34 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 
-// Create a theme instance.
-const theme: Theme = createMuiTheme({
+const chameleoGreen = '#13AA52';
+const darkGreen = '#0e803d';
+const themeObj = {
     palette: {
         primary: {
             main: '#ffffff',
             contrastText: '#000000'
         },
         secondary: {
-            main: '#13AA52',
+            main: chameleoGreen,
         },
         error: {
             main: red.A400,
         },
         background: {
+            light: chameleoGreen,
             default: '#ffffff',
+            dark: darkGreen,
+            contrastText: '#ffffff',
         },
+        text: {
+            primary: '#000000'
+        }
     },
-});
+}
+
+// Create a theme instance.
+const theme: any = createMuiTheme(themeObj);
 
 export const secondary = '#13AA52';
 

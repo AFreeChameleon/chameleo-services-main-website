@@ -1,31 +1,34 @@
 import { FunctionComponent } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Link from 'next/link';
 
 import { makeStyles } from '@material-ui/core/styles';
 import styles from '../../../styles/projects/index/components/ProjectList';
 
 type ProjectItemProps = {
-    listView: string;
     title: string;
-    appid: string;
+    project_id: string;
 }
 
-const ProjectItem: FunctionComponent<ProjectItemProps> = ({ listView, title, appid }) => {
+const ProjectItem: FunctionComponent<ProjectItemProps> = ({ title, project_id }) => {
     const classes = makeStyles(styles)();
+    const project = useSelector(state => state.project);
+    const dispatch = useDispatch();
 
-    return listView === 'apps' ? (
-        <div className={classes.appItem}>
-            <div className={classes.appItemTitle}>{status}</div>
-            <div className={classes.appItemSubTitle}>App ID: {appid}</div>
-            <div className={classes.appItemSubTitle}>Containers</div>
-            {/* <div className={classes.appItemSubTitle}>Status: {status}</div> */}
-        </div>
-    ) : (
-        <div className={classes.rowItem}>
-            <div className={classes.rowItemTitle}>{title}</div>
-            <div className={classes.rowItemSubTitle}>App ID: {appid}</div>
-            <div className={classes.rowItemSubTitle}>Containers</div>
-            {/* <div className={classes.rowItemSubTitle}>Status: {status}</div> */}
-        </div>
+    return (
+        <Link href={`/projects/${project_id}`}>
+            {project.listView === 'apps' ? (
+                <div className={classes.appItem}>
+                    <div className={classes.appItemTitle}>{title}</div>
+                    <div className={classes.appItemSubTitle}>Project ID: {project_id}</div>
+                </div>
+            ) : (
+                <div className={classes.rowItem}>
+                    <div className={classes.rowItemTitle}>{title}</div>
+                    <div className={classes.rowItemSubTitle}>Project ID: {project_id}</div>
+                </div>
+            )}
+        </Link>
     )
 }
 

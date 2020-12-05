@@ -11,7 +11,7 @@ const styles: any = {
     },
     appItem: {
         borderRadius: '4px',
-        padding: '18px 20px 20px 20px',
+        padding: '18px 10px 20px 15px',
         cursor: 'pointer',
         boxShadow: '0px 1px 6px rgb(0, 0, 0, 0.5)',
         transition: 'background 0.2s',
