@@ -4,11 +4,12 @@ import { setSelectedTab } from '../../../../redux/projects/auth/new/tabs/actions
 import { setErrors } from '../../../../redux/projects/auth/new/errors/actions';
 
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { MAIN_URL } from '../../../../globals';
 import { makeStyles } from '@material-ui/core/styles';
 import createProjectStyles from '../../../../styles/projects/auth/new/components/createProjectStyles';
 
 import { checkUserModel } from './UserModel';
-import { checkAppSettings } from './AppSettings';
 import { checkMailConfiguration } from './MailConfig';
 
 import {
@@ -17,32 +18,31 @@ import {
     FormControlLabel,
     TextField
 } from '@material-ui/core';
+import { Router } from '@material-ui/icons';
 
 const CreateProject: FunctionComponent = () => {
     const classes = makeStyles(createProjectStyles)();
+    const router = useRouter();
     const table = useSelector(state => state.model.table);
     const config = useSelector(state => state.password);
     const settings = useSelector(state => state.settings);
     const mail = useSelector(state => state.mail);
     const oauth = useSelector(state => state.oauth);
+    const project = useSelector(state => state.project);
     const dispatch = useDispatch();
 
     const buildProject = (e) => {
         const errors = {
             model: checkUserModel(table),
-            appSettings: checkAppSettings({
-                secret: settings.appSecret
-            }),
             mail: checkMailConfiguration(mail)
         }
         if (errors.model.length > 0) {
             dispatch(setErrors(errors.model));
-        } else if (errors.appSettings.length > 0) {
-            dispatch(setErrors(errors.appSettings));
         } else if (errors.mail.length > 0) {
             dispatch(setErrors(errors.mail));
         } else {
-            axios.post(`${process.env.MAIN_URL}/api/build-config`, {
+            console.log(`${MAIN_URL}/api/${project.project_id}/auth/new`)
+            axios.post(`${MAIN_URL}/api/projects/${project.project_id}/containers/auth/new`, {
                 model: table,
                 appSettings: settings,
                 password: config,
@@ -52,6 +52,7 @@ const CreateProject: FunctionComponent = () => {
             .then((res) => {
                 console.log(res.data);
                 dispatch(setErrors([]));
+                router.push(`/projects/${project.project_id}`)
             })
             .catch((err) => {
                 window.location.href = '#top';
@@ -200,13 +201,10 @@ const CreateProject: FunctionComponent = () => {
                 <li className={classes.listTextRow}>
                     <strong>
                         { settings.userSignUp === 0 ? 
-                            "Allow user sign-ups" : 
+                            "Allow users to register" : 
                             "Only allow administrators to make an account"
                         }
                     </strong>
-                </li>
-                <li className={classes.listTextRow}>
-                    <strong>Secret:</strong> {settings.appSecret}
                 </li>
                 <li className={classes.listTextRow}>
                     <strong>Session expires in:</strong>&nbsp;
@@ -229,7 +227,7 @@ const CreateProject: FunctionComponent = () => {
                 <ul className={classes.listMail}>
                     <li className={classes.listMailRow}>
                         <strong>FROM email address:&nbsp;</strong> 
-                            {mail.fromAddress ? mail.fromAddress : 'Missing'}
+                            {mail.fromAddress ? mail.fromAddress : <span style={{color: 'red'}}>Missing</span>}
                     </li>
                     <li className={classes.listMailRow}>
                         <strong>Verification type:&nbsp;</strong> 

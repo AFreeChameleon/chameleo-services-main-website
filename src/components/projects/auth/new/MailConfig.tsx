@@ -61,6 +61,7 @@ const MailConfig: FunctionComponent = () => {
                         label="FROM email address"
                         fullWidth
                         value={mail.fromAddress}
+                        disabled={!mail.enabled}
                         onChange={(e) => {
                             dispatch(mailSetValue('fromAddress', e.target.value));
                         }}
@@ -75,13 +76,17 @@ const MailConfig: FunctionComponent = () => {
                         }}
                     >
                         <FormControlLabel
+                            disabled={!mail.enabled}
                             label="Link"
                             value="link"
-                            control={<Radio />}/>
+                            control={<Radio />}
+                        />
                         <FormControlLabel
+                            disabled={!mail.enabled}
                             label="Code"
                             value="code"
-                            control={<Radio />}/>
+                            control={<Radio />}
+                        />
                     </RadioGroup>
                 </li>
                 <div className={classes.listItemHeader}>Account verification</div>
@@ -92,6 +97,7 @@ const MailConfig: FunctionComponent = () => {
                         label="Email subject"
                         fullWidth
                         value={mail.verifySubject}
+                        disabled={!mail.enabled}
                         onChange={(e) => {
                             dispatch(mailSetValue('verifySubject', e.target.value));
                         }}
@@ -105,7 +111,9 @@ const MailConfig: FunctionComponent = () => {
                         helperText="{__verify__} will be replaced with the link or code depending on which you choose."
                         fullWidth
                         multiline
+                        rowsMax={50}
                         value={mail.verifyContent}
+                        disabled={!mail.enabled}
                         onChange={(e) => {
                             dispatch(mailSetValue('verifyContent', e.target.value));
                         }}
@@ -119,6 +127,7 @@ const MailConfig: FunctionComponent = () => {
                         label="Email subject"
                         fullWidth
                         value={mail.resetSubject}
+                        disabled={!mail.enabled}
                         onChange={(e) => {
                             dispatch(mailSetValue('resetSubject', e.target.value));
                         }}
@@ -132,7 +141,9 @@ const MailConfig: FunctionComponent = () => {
                         helperText="{__temporary password__} will be replaced with the temporary password."
                         fullWidth
                         multiline
+                        rowsMax={50}
                         value={mail.resetContent}
+                        disabled={!mail.enabled}
                         onChange={(e) => {
                             dispatch(mailSetValue('resetContent', e.target.value));
                         }}
@@ -145,14 +156,16 @@ const MailConfig: FunctionComponent = () => {
 
 export const checkMailConfiguration = (mail: MailSettingsProps) => {
     const errors: string[] = [];
-    if (mail.fromAddress === '') {
-        errors.push('From address required.');
-    }
-    if (!mail.verifyContent.includes('{__verify__}')) {
-        errors.push('Verify email content requires {__verify__}');
-    }
-    if (!mail.resetContent.includes('{__temporary password__}')) {
-        errors.push('Reset email content requires {__temporary password__}')
+    if (mail.enabled) {
+        if (mail.fromAddress === '') {
+            errors.push('From address required.');
+        }
+        if (!mail.verifyContent.includes('{__verify__}')) {
+            errors.push('Verify email content requires {__verify__}');
+        }
+        if (!mail.resetContent.includes('{__temporary password__}')) {
+            errors.push('Reset email content requires {__temporary password__}')
+        }
     }
     const uniqueErrors: string[] = [...new Set(errors)]
     return uniqueErrors;

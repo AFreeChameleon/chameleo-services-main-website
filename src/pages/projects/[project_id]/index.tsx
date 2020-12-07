@@ -1,5 +1,9 @@
 import { Component } from 'react';
 import store from '../../../redux/projects/overview/store';
+import {
+    setProjectId,
+    fetchAuthProjectDetails
+} from '../../../redux/projects/overview/project/actions';
 import { Provider } from 'react-redux';
 
 import styles from '../../../styles/projects/overview/index';
@@ -10,12 +14,19 @@ import Navbar from '../../../components/Navbar';
 import ProjectOverviewBody from '../../../components/projects/overview/ProjectOverviewBody';
 
 class ProjectOverview extends Component {
+    static async getInitialProps(ctx) {
+        return { project_id: ctx.query.project_id }
+    }
+
     constructor(props) {
         super(props);
+        const { project_id }: any = this.props;
+        store.dispatch(setProjectId(project_id!));
     }
     
     render() {
         const { classes }: any = this.props;
+        
         return (
             <Provider store={store}>
                 <div className={classes.root}>

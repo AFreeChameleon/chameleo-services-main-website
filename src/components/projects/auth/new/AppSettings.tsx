@@ -42,19 +42,22 @@ const AppSettings: FunctionComponent = () => {
                     <RadioGroup
                     value={settings.userSignUp}
                     onChange={(e) => {
-                        dispatch(settingsSetValue('userSignUp', e.target.valueAsNumber))
+                        console.log(e.target.value)
+                        dispatch(settingsSetValue('userSignUp', parseInt(e.target.value)))
                     }}>
                         <FormControlLabel
-                            label="Allow user sign-ups"
+                            label="Allow users to register"
                             value={0}
-                            control={<Radio />}/>
+                            control={<Radio />}
+                        />
                         <FormControlLabel
                             label="Only allow administrators to make an account"
                             value={1}
-                            control={<Radio />}/>
+                            control={<Radio />}
+                        />
                     </RadioGroup>
                 </li>
-                <li className={classes.listItemRowFull}>
+                {/* <li className={classes.listItemRowFull}>
                     <TextField
                         className={classes.listItemColumnFull}
                         label="API secret"
@@ -79,7 +82,7 @@ const AppSettings: FunctionComponent = () => {
                     >
                         Reroll secret
                     </Button>
-                </li>
+                </li> */}
                 <li className={classes.listItemRow}>
                     <div className={classes.listItemColumnFull}>
                         Session expires in:
@@ -131,7 +134,7 @@ const AppSettings: FunctionComponent = () => {
                                 onChange={(e) => {
                                     dispatch(settingsSetValue('sessionExpiresIn', {
                                         ...settings.sessionExpiresIn,
-                                        days: e.target.checked
+                                        forever: e.target.checked
                                     }));
                                 }}
                             />
@@ -144,16 +147,5 @@ const AppSettings: FunctionComponent = () => {
     )
 }
 
-export const checkAppSettings = ({ secret }) => {
-    const regex = {
-        secret: /^[\w]{16,}$/
-    }
-    const errors = [];
-    if (!regex.secret.test(secret)) {
-        console.log(secret)
-        errors.push('Secret must contain more than 16 characters.')
-    }
-    return errors
-}
 
 export default AppSettings;

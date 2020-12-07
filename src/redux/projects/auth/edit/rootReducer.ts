@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import tabReducer from './tabs/reducer';
 import projectReducer from './project/reducer';
+import configReducer from './config/reducer';
 
 const rootReducer = combineReducers({
-    tabs: tabReducer,
-    project: projectReducer
+    project: projectReducer,
+    config: configReducer
 });
 
 export default rootReducer;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { setSelectedTab } from '../../../redux/projects/overview/tabs/actions'
+import { setSelectedTab } from '../../../redux/projects/overview/tabs/actions';
+import { fetchAuthProjectDetails } from '../../../redux/projects/overview/project/actions';
 
 import styles from '../../../styles/projects/overview/components/projectOverviewBody';
 import { withStyles } from '@material-ui/core/styles';
@@ -13,14 +14,17 @@ import {
 import TabPanel from '../../TabPanel';
 
 import Overview from './tabs/Overview';
+import Authentication from './tabs/Authentication';
 
 class ProjectOverviewBody extends React.Component {
     constructor(props) {
         super(props);
+        const { project, dispatchFetchAuthProjectDetails }: any = this.props;
+        dispatchFetchAuthProjectDetails(project.project_id);
     }
 
     render() {
-        const { classes, tabs, dispatchSetSelectedTab }: any = this.props;
+        const { classes, tabs, project, dispatchSetSelectedTab }: any = this.props;
         const selectedTab = tabs.selectedTab;
 
         return (
@@ -45,6 +49,9 @@ class ProjectOverviewBody extends React.Component {
                         <TabPanel value={selectedTab} index={0}>
                             <Overview/>
                         </TabPanel>
+                        <TabPanel value={selectedTab} index={1}>
+                            <Authentication/>
+                        </TabPanel>
                     </div>
                 </div>
             </div>
@@ -54,13 +61,15 @@ class ProjectOverviewBody extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        tabs: state.tabs
+        tabs: state.tabs,
+        project: state.project
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        dispatchSetSelectedTab: (tab: number) => dispatch(setSelectedTab(tab))
+        dispatchSetSelectedTab: (tab: number) => dispatch(setSelectedTab(tab)),
+        dispatchFetchAuthProjectDetails: (project_id: string) => dispatch(fetchAuthProjectDetails(project_id))
     }
 }
 

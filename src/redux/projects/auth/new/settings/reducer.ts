@@ -1,11 +1,9 @@
-import crypto from 'crypto';
 import {
     SETTINGS_SET_VALUE,
 } from './types';
 
 const settingsState = {
     userSignUp: 0,
-    appSecret: crypto.randomBytes(16).toString('hex'),
     sessionExpiresIn: {
         forever: false,
         days: 30,

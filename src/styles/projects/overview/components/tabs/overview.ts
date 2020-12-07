@@ -13,7 +13,7 @@ const styles: any = theme => ({
         marginTop: '20px'
     },
     dropdownContainer: {
-        width: '800px'
+        width: '800px',
     },
     dropdownTitle: {
         textDecoration: 'none',
@@ -68,6 +68,18 @@ const styles: any = theme => ({
         color: theme.palette.secondary.main,
         textDecoration: 'underline',
         cursor: 'pointer'
+    },
+    missingAuthBox: {
+        textAlign: 'center',
+        height: '25vh',
+        display: 'grid',
+        placeItems: 'center',
+    },
+    missingAuthTitle: {
+        color: 'rgb(0, 0, 0, 0.6)'
+    },
+    missingAuthButton: {
+        marginTop: '20px'
     }
 });
 

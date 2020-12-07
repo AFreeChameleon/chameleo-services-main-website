@@ -2,13 +2,15 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { setSelectedTab } from '../../../../redux/projects/overview/tabs/actions'
+import { withRouter } from 'next/router';
 
 import styles from '../../../../styles/projects/overview/components/tabs/overview';
 import { withStyles } from '@material-ui/core/styles';
 
 import {
     Typography,
-    Collapse
+    Collapse,
+    Button
 } from '@material-ui/core';
 import AuthenticationDoughnutChart from './AuthenticationDoughnutChart';
 
@@ -20,7 +22,7 @@ class Overview extends React.Component {
     }
 
     render() {
-        const { classes, dispatchSetSelectedTab }: any = this.props;
+        const { classes, router, project, dispatchSetSelectedTab }: any = this.props;
 
         return (
             <div className={classes.body}>
@@ -42,54 +44,72 @@ class Overview extends React.Component {
                             >
                                 Authentication
                             </Typography>
-                            <AddIcon/>
                         </div>
                         <Collapse
                             in={true}
                         >
-                            <div className={classes.analyticsGrid}>
-                                <div className={classes.doughnutChartContainer}>
-                                    <AuthenticationDoughnutChart/>
-                                </div>
-                                <div className={classes.activeUsersContainer}>
-                                    <Typography
-                                        variant="h3"
-                                        component="h3"
-                                    >
-                                        0
-                                    </Typography>
-                                    <Typography
-                                    
-                                    >
-                                        monthly active users
-                                    </Typography>
-                                </div>
-                                <div className={classes.avgTimeLoggedInContainer}>
-                                    <Typography
-                                        variant="h3"
-                                        component="h3"
-                                    >
-                                        0
-                                    </Typography>
-                                    <Typography variant="h4">s</Typography>
-                                    <Typography
-                                        variant="body1"
-                                        style={{paddingLeft: '10px'}}
-                                    >
-                                        average time logged in
-                                    </Typography>
-                                </div>
-                                <div className={classes.footerContainer}>
-                                    <div
-                                        className={classes.footerText}
-                                        onClick={(e) => {
-                                            dispatchSetSelectedTab(1)
-                                        }}
-                                    >
-                                        Go To Tab
+                            { project.auth.containers.length > 0 ? (
+                                <div className={classes.analyticsGrid}>
+                                    <div className={classes.doughnutChartContainer}>
+                                        <AuthenticationDoughnutChart/>
+                                    </div>
+                                    <div className={classes.activeUsersContainer}>
+                                        <Typography
+                                            variant="h3"
+                                            component="h3"
+                                        >
+                                            0
+                                        </Typography>
+                                        <Typography
+                                        
+                                        >
+                                            monthly active users
+                                        </Typography>
+                                    </div>
+                                    <div className={classes.avgTimeLoggedInContainer}>
+                                        <Typography
+                                            variant="h3"
+                                            component="h3"
+                                        >
+                                            0
+                                        </Typography>
+                                        <Typography variant="h4">s</Typography>
+                                        <Typography
+                                            variant="body1"
+                                            style={{paddingLeft: '10px'}}
+                                        >
+                                            average time logged in
+                                        </Typography>
+                                    </div>
+                                    <div className={classes.footerContainer}>
+                                        <div
+                                            className={classes.footerText}
+                                            onClick={(e) => {
+                                                dispatchSetSelectedTab(1)
+                                            }}
+                                        >
+                                            Go To Tab
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className={classes.missingAuthBox}>
+                                    <div>
+                                        <div className={classes.missingAuthTitle}>Authentication has not been set up yet!</div>
+                                        <div className={classes.missingAuthButton}>
+                                            <Button
+                                                color="secondary"
+                                                variant="contained"
+                                                onClick={(e) => {
+                                                    router.push(`/projects/${project.project_id}/auth/new`);
+                                                }}
+                                            >
+                                                Set up Authentication
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) }
                         </Collapse>
                     </div>
                 </div>
@@ -100,7 +120,8 @@ class Overview extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        tabs: state.tabs
+        tabs: state.tabs,
+        project: state.project,
     }
 }
 
@@ -113,4 +134,4 @@ const mapDispatchToProps = (dispatch) => {
 export default compose<any>(
     withStyles(styles),
     connect(mapStateToProps, mapDispatchToProps)
-)(Overview);
+)(withRouter(Overview));

@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 
 import { checkUserModel } from './UserModel';
-import { checkAppSettings } from './AppSettings';
 import { checkMailConfiguration } from './MailConfig';
 
 const styles = makeStyles({
@@ -30,9 +29,6 @@ const TabButtons: FunctionComponent = () => {
     const nextTab = (e) => {
         const errors = {
             model: checkUserModel(table),
-            appSettings: checkAppSettings({
-                secret: appSettings.appSecret
-            }),
             mail: checkMailConfiguration(mail)
         }
         if (
@@ -40,11 +36,6 @@ const TabButtons: FunctionComponent = () => {
             errors.model.length > 0
         ) {
             dispatch(setErrors(errors.model));
-        } else if (
-            selectedTab === 2 && 
-            errors.appSettings.length > 0
-        ) {
-            dispatch(setErrors(errors.appSettings));
         } else if (
             selectedTab == 3 &&
             errors.mail.length > 0
