@@ -10,7 +10,9 @@ import {
     changeConfigAuth,
     changeConfigDB,
     changeConfigPass,
-    changeConfigModelLength
+    changeConfigModelLength,
+    removeConfigModelRow,
+    changeConfigModelTitle
 } from '../../../../redux/projects/auth/edit/config/actions';
 
 import {
@@ -54,10 +56,9 @@ const RedButton = withStyles({
     }
 })(Button);
 
-const ErrorButton = () => (
+const ErrorButton = ({ onClick }) => (
     <RedButton
-        onClick={(e) => {
-        }}
+        onClick={onClick}
     >
         <RemoveIcon/>
     </RedButton>
@@ -76,10 +77,9 @@ class EditAuthContainerBody extends React.Component {
             configObj, 
             project,
             dispatchChangeConfigModel,
-            dispatchChangeConfigAuth,
-            dispatchChangeConfigPass,
-            dispatchChangeConfigDB,
-            dispatchChangeConfigModelLength
+            dispatchChangeConfigModelLength,
+            dispatchRemoveConfigModelRow,
+            dispatchChangeConfigModelTitle
         }: any = this.props;
         const { config } = configObj;
         console.log(this.props);
@@ -143,7 +143,7 @@ class EditAuthContainerBody extends React.Component {
                                     Type
                                 </Typography>
                             </div>
-                            <div className={classes.modelHeader}>
+                            <div className={`${classes.modelHeader} ${classes.center}`}>
                                 <Typography
                                     variant="subtitle2"
                                     component="p"
@@ -152,7 +152,7 @@ class EditAuthContainerBody extends React.Component {
                                     Max. Length
                                 </Typography>
                             </div>
-                            <div className={classes.modelHeader}>
+                            <div className={`${classes.modelHeader} ${classes.center}`}>
                                 <Typography
                                     variant="subtitle2"
                                     component="p"
@@ -172,20 +172,21 @@ class EditAuthContainerBody extends React.Component {
                             </div>
                         </div>
                         { config.model && Object.keys(config.model).map((rowName, i) => (
-                            <div className={classes.modelRow}>
-                                <div className={classes.modelColumn}>
-                                    <Typography
-                                        variant="subtitle2"
-                                        component="p"
-                                    >
-                                        { rowName }
-                                    </Typography>
+                            <div className={classes.modelRow} key={i}>
+                                <div className={classes.modelInputColumn}>
+                                    <input
+                                        value={rowName}
+                                        className={classes.input}
+                                        onChange={(e) => {
+                                            dispatchChangeConfigModelTitle(rowName, e.target.value)
+                                        }}
+                                    />
                                 </div>
                                 <div className={`${classes.modelColumn} ${classes.center}`}>
                                     <StyledCheckbox
                                         checked={config.model[rowName].unique}
                                         onChange={(e) => {
-                                            dispatchChangeConfigModel('unique', e.target.checked)
+                                            dispatchChangeConfigModel(rowName, 'unique', e.target.checked)
                                         }}
                                     />
                                 </div>
@@ -193,17 +194,17 @@ class EditAuthContainerBody extends React.Component {
                                     <StyledCheckbox
                                         checked={!config.model[rowName].allowNull}
                                         onChange={(e) => {
-                                            dispatchChangeConfigModel('allowNull', e.target.checked)
+                                            dispatchChangeConfigModel(rowName, 'allowNull', e.target.checked)
                                         }}
                                     />
                                 </div>
                                 <div className={classes.modelInputColumn}>
                                     <input
                                         value={config.model[rowName].defaultValue ? config.model[rowName].defaultValue : ''}
-                                        disabled={config.model[rowName].defaultValue === undefined}
+                                        disabled={!config.model[rowName].allowNull}
                                         className={classes.input}
                                         onChange={(e) => {
-                                            dispatchChangeConfigModel('defaultValue', e.target.value)
+                                            dispatchChangeConfigModel(rowName, 'defaultValue', e.target.value)
                                         }}
                                     />
                                 </div>
@@ -214,7 +215,7 @@ class EditAuthContainerBody extends React.Component {
                                         fullWidth
                                         input={<StyledSelect/>}
                                         onChange={(e) => {
-                                            dispatchChangeConfigModel('type', e.target.value)
+                                            dispatchChangeConfigModel(rowName, 'type', e.target.value)
                                         }}
                                     >
                                         <MenuItem value="String">String</MenuItem>
@@ -226,8 +227,8 @@ class EditAuthContainerBody extends React.Component {
                                 </div>
                                 <div className={classes.modelInputColumn}>
                                     <input
-                                        value={config.model[rowName].validate.len.args[0][0]}
-                                        className={classes.input}
+                                        value={config.model[rowName].validate && config.model[rowName].validate.len.args[0][0]}
+                                        className={`${classes.input} ${classes.center}`}
                                         onChange={(e) => {
                                             dispatchChangeConfigModelLength(rowName, 'min', parseInt(e.target.value))
                                         }}
@@ -235,15 +236,19 @@ class EditAuthContainerBody extends React.Component {
                                 </div>
                                 <div className={classes.modelInputColumn}>
                                     <input
-                                        value={config.model[rowName].validate.len.args[0][1]}
-                                        className={classes.input}
+                                        value={config.model[rowName].validate && config.model[rowName].validate.len.args[0][1]}
+                                        className={`${classes.input} ${classes.center}`}
                                         onChange={(e) => {
                                             dispatchChangeConfigModelLength(rowName, 'max', parseInt(e.target.value))
                                         }}
                                     />
                                 </div>
                                 <div className={`${classes.modelColumn} ${classes.center}`}>
-                                    <ErrorButton/>
+                                    <ErrorButton
+                                        onClick={(e) => {
+                                            dispatchRemoveConfigModelRow(rowName);
+                                        }}
+                                    />
                                 </div>
                             </div>
                         )) }
@@ -265,11 +270,13 @@ const mapDispatchToProps = (dispatch) => {
     return {
         dispatchFetchConfig: (project_id: string) => dispatch(fetchConfig(project_id)),
         dispatchSetProjectValue: (key: string, value) => dispatch(setProjectValue(key, value)),
-        dispatchChangeConfigModel: (key: string, value) => dispatch(changeConfigModel(key, value)),
+        dispatchChangeConfigModel: (rowName: string, key: string, value) => dispatch(changeConfigModel(rowName, key, value)),
         dispatchChangeConfigAuth: (key: string, value) => dispatch(changeConfigAuth(key, value)),
         dispatchChangeConfigDB: (key: string, value) => dispatch(changeConfigDB(key, value)),
         dispatchChangeConfigPass: (key: string, value) => dispatch(changeConfigPass(key, value)),
-        dispatchChangeConfigModelLength: (modelKey: string, key: string, value) => dispatch(changeConfigModelLength(modelKey, key, value))
+        dispatchChangeConfigModelLength: (modelKey: string, key: string, value) => dispatch(changeConfigModelLength(modelKey, key, value)),
+        dispatchRemoveConfigModelRow: (rowName: string) => dispatch(removeConfigModelRow(rowName)),
+        dispatchChangeConfigModelTitle: (oldName: string, newName: string) => dispatch(changeConfigModelTitle(oldName, newName))
     }
 }
 

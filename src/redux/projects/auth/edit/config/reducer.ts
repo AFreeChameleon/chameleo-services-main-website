@@ -7,7 +7,9 @@ import {
     CHANGE_CONFIG_AUTH,
     CHANGE_CONFIG_DB,
     CHANGE_CONFIG_PASS,
-    CHANGE_CONFIG_MODEL_LENGTH
+    CHANGE_CONFIG_MODEL_LENGTH,
+    REMOVE_CONFIG_MODEL_ROW,
+    CHANGE_CONFIG_MODEL_TITLE
 } from './types';
 
 const configState: any = {
@@ -22,6 +24,8 @@ const configState: any = {
 }
 
 const configReducer = (state = configState, action) => {
+    // Just for copying the state obj rather than editing it directly
+    let newModel = {};
     switch (action.type) {
         case FETCH_CONFIG_REQUEST:
             return {
@@ -47,23 +51,14 @@ const configReducer = (state = configState, action) => {
                     ...state.config,
                     model: {
                         ...state.config.model,
-                        [action.key]: action.value
+                        [action.rowName]: {
+                            ...state.config.model[action.rowName],
+                            [action.key]: action.value
+                        }
                     }
                 }
             }
         case CHANGE_CONFIG_MODEL_LENGTH:
-            // console.log({
-            //     ...state,
-            //     config: {
-            //         ...state.config,
-            //         model: {
-            //             ...state.config.model,
-            //             validate: {
-            //                 ...state.config.model.validate,
-            //             }
-            //         }
-            //     }
-            // })
             const len = action.key === 'min' ? 
                 [ action.value, state.config.model[action.modelKey].validate.len.args[0][1] ] :
                 [ state.config.model[action.modelKey].validate.len.args[0][0], action.value ]
@@ -117,6 +112,37 @@ const configReducer = (state = configState, action) => {
                     db: {
                         ...state.config.db,
                         [action.key]: action.value
+                    }
+                }
+            }
+        case REMOVE_CONFIG_MODEL_ROW:
+            newModel = {};
+            for (const key of Object.keys(state.config.model)) {
+                if (key !== action.rowName) {
+                    newModel[key] = state.config.model[key];
+                }
+            }
+            return {
+                ...state,
+                config: {
+                    ...state.config,
+                    model: { 
+                        ...newModel
+                    }
+                }
+            }
+        case CHANGE_CONFIG_MODEL_TITLE:
+            newModel = { ...state.config.model };
+            if (!newModel[action.newName]) {
+                newModel[action.newName] = newModel[action.oldName];
+                delete newModel[action.oldName];
+            }
+            return {
+                ...state,
+                config: {
+                    ...state.config,
+                    model: { 
+                        ...newModel
                     }
                 }
             }

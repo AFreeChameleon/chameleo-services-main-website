@@ -9,7 +9,9 @@ import {
     CHANGE_CONFIG_MODEL_LENGTH,
     CHANGE_CONFIG_AUTH,
     CHANGE_CONFIG_DB,
-    CHANGE_CONFIG_PASS
+    CHANGE_CONFIG_PASS,
+    REMOVE_CONFIG_MODEL_ROW,
+    CHANGE_CONFIG_MODEL_TITLE
 } from './types';
 
 export const fetchConfig = (project_id: string) => {
@@ -40,9 +42,10 @@ export const fetchConfig = (project_id: string) => {
     }
 }
 
-export const changeConfigModel = (key: string, value) => {
+export const changeConfigModel = (rowName: string, key: string, value) => {
     return {
         type: CHANGE_CONFIG_MODEL,
+        rowName: rowName,
         key: key,
         value: value
     }
@@ -78,5 +81,20 @@ export const changeConfigDB = (key: string, value) => {
         type: CHANGE_CONFIG_DB,
         key: key,
         value: value
+    }
+}
+
+export const removeConfigModelRow = (rowName: string) => {
+    return {
+        type: REMOVE_CONFIG_MODEL_ROW,
+        rowName: rowName
+    }
+}
+
+export const changeConfigModelTitle = (oldName: string, newName: string) => {
+    return {
+        type: CHANGE_CONFIG_MODEL_TITLE,
+        oldName: oldName,
+        newName: newName
     }
 }
