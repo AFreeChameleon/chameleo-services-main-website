@@ -8,10 +8,13 @@ import {
     CHANGE_CONFIG_MODEL,
     CHANGE_CONFIG_MODEL_LENGTH,
     CHANGE_CONFIG_AUTH,
+    CHANGE_CONFIG_AUTH_OAUTH,
     CHANGE_CONFIG_DB,
     CHANGE_CONFIG_PASS,
+    CHANGE_CONFIG_MAIL,
     REMOVE_CONFIG_MODEL_ROW,
-    CHANGE_CONFIG_MODEL_TITLE
+    ADD_CONFIG_MODEL_ROW,
+    CHANGE_CONFIG_MODEL_TITLE,
 } from './types';
 
 export const fetchConfig = (project_id: string) => {
@@ -51,10 +54,10 @@ export const changeConfigModel = (rowName: string, key: string, value) => {
     }
 }
 
-export const changeConfigModelLength = (modelKey: string, key: string, value) => {
+export const changeConfigModelLength = (rowName: string, key: string, value) => {
     return {
         type: CHANGE_CONFIG_MODEL_LENGTH,
-        modelKey: modelKey,
+        rowName: rowName,
         key: key,
         value: value
     }
@@ -63,6 +66,15 @@ export const changeConfigModelLength = (modelKey: string, key: string, value) =>
 export const changeConfigAuth = (key: string, value) => {
     return {
         type: CHANGE_CONFIG_AUTH,
+        key: key,
+        value: value
+    }
+}
+
+export const changeConfigAuthOAuth = (company: string, key: string, value) => {
+    return {
+        type: CHANGE_CONFIG_AUTH_OAUTH,
+        company: company,
         key: key,
         value: value
     }
@@ -84,10 +96,24 @@ export const changeConfigDB = (key: string, value) => {
     }
 }
 
+export const changeConfigMail = (key: string, value) => {
+    return {
+        type: CHANGE_CONFIG_MAIL,
+        key: key,
+        value: value
+    }
+}
+
 export const removeConfigModelRow = (rowName: string) => {
     return {
         type: REMOVE_CONFIG_MODEL_ROW,
         rowName: rowName
+    }
+}
+
+export const addConfigModelRow = () => {
+    return {
+        type: ADD_CONFIG_MODEL_ROW
     }
 }
 

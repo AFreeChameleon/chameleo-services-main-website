@@ -24,7 +24,7 @@ type AppSettingsProps = {
     sessionExpiresIn: {
         forever: boolean,
         days: number,
-        minutes: number
+        hours: number
     }
 }
 
@@ -110,17 +110,17 @@ const AppSettings: FunctionComponent = () => {
                     <div className={classes.listItemColumn}>
                         <TextField
                             className={classes.listItemColumnFull}
-                            label="Minutes"
+                            label="Hours"
                             variant="outlined"
                             color="secondary"
                             type="number"
-                            value={settings.sessionExpiresIn.minutes}
+                            value={settings.sessionExpiresIn.hours}
                             disabled={settings.sessionExpiresIn.forever}
                             fullWidth
                             onChange={(e) => {
                                 dispatch(settingsSetValue('sessionExpiresIn', {
                                     ...settings.sessionExpiresIn,
-                                    minutes: parseInt(e.target.value)
+                                    hours: parseInt(e.target.value)
                                 }));
                             }}
                         />

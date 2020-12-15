@@ -5,19 +5,23 @@ import {
 
     CHANGE_CONFIG_MODEL,
     CHANGE_CONFIG_AUTH,
+    CHANGE_CONFIG_AUTH_OAUTH,
     CHANGE_CONFIG_DB,
     CHANGE_CONFIG_PASS,
+    CHANGE_CONFIG_MAIL,
+
     CHANGE_CONFIG_MODEL_LENGTH,
     REMOVE_CONFIG_MODEL_ROW,
+    ADD_CONFIG_MODEL_ROW,
     CHANGE_CONFIG_MODEL_TITLE
 } from './types';
 
 const configState: any = {
     loading: false,
-    config: {
+    data: {
         auth: {},
         db: {},
-        model: {},
+        model: [],
         pass: {}
     },
     error: ''
@@ -25,7 +29,7 @@ const configState: any = {
 
 const configReducer = (state = configState, action) => {
     // Just for copying the state obj rather than editing it directly
-    let newModel = {};
+    let newModel;
     switch (action.type) {
         case FETCH_CONFIG_REQUEST:
             return {
@@ -36,7 +40,7 @@ const configReducer = (state = configState, action) => {
             return {
                 ...state,
                 loading: false,
-                config: action.config,
+                data: action.config,
                 error: ''
             }
         case FETCH_CONFIG_FAILURE:
@@ -45,61 +49,66 @@ const configReducer = (state = configState, action) => {
                 error: action.error
             }
         case CHANGE_CONFIG_MODEL:
+            newModel = [ ...state.data.model ];
+            console.log(newModel[newModel.findIndex(row => row.name === action.rowName)])
+            newModel[newModel.findIndex(row => row.name === action.rowName)][action.key] = action.value
             return {
                 ...state,
-                config: {
-                    ...state.config,
-                    model: {
-                        ...state.config.model,
-                        [action.rowName]: {
-                            ...state.config.model[action.rowName],
-                            [action.key]: action.value
-                        }
-                    }
+                data: {
+                    ...state.data,
+                    model: [
+                        ...newModel
+                    ]
                 }
             }
         case CHANGE_CONFIG_MODEL_LENGTH:
-            const len = action.key === 'min' ? 
-                [ action.value, state.config.model[action.modelKey].validate.len.args[0][1] ] :
-                [ state.config.model[action.modelKey].validate.len.args[0][0], action.value ]
-
+            newModel = [ ...state.data.model ];
+            console.log(action.rowName)
+            newModel[newModel.findIndex(row => row.name === action.rowName)].length[action.key] = action.value
             return {
                 ...state,
-                config: {
-                    ...state.config,
-                    model: {
-                        ...state.config.model,
-                        [action.modelKey]: {
-                            ...state.config.model[action.modelKey],
-                            validate: {
-                                ...state.config.model[action.modelKey].validate,
-                                len: {
-                                    ...state.config.model[action.modelKey].validate.len,
-                                    args: [ len ]
-                                }
-                            }
-                        }
-                    }
+                data: {
+                    ...state.data,
+                    model: [
+                        ...newModel
+                    ]
                 }
             }
         case CHANGE_CONFIG_AUTH:
             return {
                 ...state,
-                config: {
-                    ...state.config,
+                data: {
+                    ...state.data,
                     auth: {
-                        ...state.config.auth,
+                        ...state.data.auth,
                         [action.key]: action.value
+                    }
+                }
+            }
+        case CHANGE_CONFIG_AUTH_OAUTH:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    auth: {
+                        ...state.data.auth,
+                        oauth: {
+                            ...state.data.auth.oauth,
+                            [action.company]: {
+                                ...state.data.auth.oauth[action.company],
+                                [action.key]: action.value
+                            }
+                        }
                     }
                 }
             }
         case CHANGE_CONFIG_PASS:
             return {
                 ...state,
-                config: {
-                    ...state.config,
+                data: {
+                    ...state.data,
                     pass: {
-                        ...state.config.pass,
+                        ...state.data.pass,
                         [action.key]: action.value
                     }
                 }
@@ -107,40 +116,62 @@ const configReducer = (state = configState, action) => {
         case CHANGE_CONFIG_DB:
             return {
                 ...state,
-                config: {
-                    ...state.config,
+                data: {
+                    ...state.data,
                     db: {
-                        ...state.config.db,
+                        ...state.data.db,
+                        [action.key]: action.value
+                    }
+                }
+            }
+        case CHANGE_CONFIG_MAIL:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    mail: {
+                        ...state.data.mail,
                         [action.key]: action.value
                     }
                 }
             }
         case REMOVE_CONFIG_MODEL_ROW:
-            newModel = {};
-            for (const key of Object.keys(state.config.model)) {
-                if (key !== action.rowName) {
-                    newModel[key] = state.config.model[key];
-                }
-            }
+            newModel = [ ...state.data.model ];
+            console.log(newModel.filter(row => row.name !== action.rowName), action.rowName)
             return {
                 ...state,
-                config: {
-                    ...state.config,
-                    model: { 
-                        ...newModel
-                    }
+                data: {
+                    ...state.data,
+                    model: newModel.filter(row => row.name !== action.rowName)
+                }
+            }
+        case ADD_CONFIG_MODEL_ROW:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    model: [
+                        ...state.data.model,
+                        {
+                            name: 'columnName',
+                            allowNull: true,
+                            length: {min: 3, max: 250},
+                            type: 'String',
+                            unique: false
+                        }
+                    ]
                 }
             }
         case CHANGE_CONFIG_MODEL_TITLE:
-            newModel = { ...state.config.model };
+            newModel = { ...state.data.model };
             if (!newModel[action.newName]) {
                 newModel[action.newName] = newModel[action.oldName];
                 delete newModel[action.oldName];
             }
             return {
                 ...state,
-                config: {
-                    ...state.config,
+                data: {
+                    ...state.data,
                     model: { 
                         ...newModel
                     }

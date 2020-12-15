@@ -12,7 +12,8 @@ import {
     changeConfigPass,
     changeConfigModelLength,
     removeConfigModelRow,
-    changeConfigModelTitle
+    changeConfigModelTitle,
+    addConfigModelRow
 } from '../../../../redux/projects/auth/edit/config/actions';
 
 import {
@@ -21,48 +22,21 @@ import {
     Select,
     MenuItem,
     InputBase,
-    Button
+    Button,
+    IconButton,
+    FormControlLabel
 } from '@material-ui/core';
+import UserModelTable from './components/UserModelTable';
+import PasswordRequirements from './components/PasswordRequirements';
+import SessionSettings from './components/SessionSettings';
+import MailConfiguration from './components/MailConfiguration';
+import OAuthSetup from './components/OAuthSetup';
+import EditButton from './components/EditButton';
 
 import styles from '../../../../styles/projects/auth/edit/components/body';
 import { withStyles } from '@material-ui/core/styles';
 import RemoveIcon from '@material-ui/icons/Remove';
-
-const StyledCheckbox = withStyles({
-    root: {
-        padding: '5px'
-    }
-})(Checkbox);
-
-const StyledSelect = withStyles({
-    root: {
-        '& fieldset': {
-            border: 'none'
-        },
-        '& .MuiSelect-select:focus': {
-            backgroundColor: '#ffffff'
-        }
-    },
-})(InputBase);
-
-const RedButton = withStyles({
-    root: {
-        '&:hover': {
-            backgroundColor: 'rgb(255, 0, 0, 0.05)'
-        },
-        '& .MuiButton-label': {
-            color: 'red'
-        }
-    }
-})(Button);
-
-const ErrorButton = ({ onClick }) => (
-    <RedButton
-        onClick={onClick}
-    >
-        <RemoveIcon/>
-    </RedButton>
-)
+import AddIcon from '@material-ui/icons/Add';
 
 class EditAuthContainerBody extends React.Component {
     constructor(props) {
@@ -79,11 +53,13 @@ class EditAuthContainerBody extends React.Component {
             dispatchChangeConfigModel,
             dispatchChangeConfigModelLength,
             dispatchRemoveConfigModelRow,
-            dispatchChangeConfigModelTitle
+            dispatchChangeConfigModelTitle,
+            dispatchAddConfigModelRow
         }: any = this.props;
-        const { config } = configObj;
+        const config = configObj.data;
         console.log(this.props);
-        return (
+
+        return !configObj.loading && configObj.data !== {} &&(
             <div className={classes.root}>
                 <div className={classes.container}>
                     <div className={classes.titleContainer}>
@@ -96,163 +72,62 @@ class EditAuthContainerBody extends React.Component {
                         </Typography>
                         <hr/>
                     </div>
-                    <div className={classes.modelTable}>
-                        <div className={classes.modelHeaders}>
-                            <div className={classes.modelHeader}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Name
-                                </Typography>
-                            </div>
-                            <div className={`${classes.modelHeader} ${classes.center}`}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Unique
-                                </Typography>
-                            </div>
-                            <div className={`${classes.modelHeader} ${classes.center}`}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Required
-                                </Typography>
-                            </div>
-                            <div className={classes.modelHeader}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Default
-                                </Typography>
-                            </div>
-                            <div className={classes.modelHeader}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Type
-                                </Typography>
-                            </div>
-                            <div className={`${classes.modelHeader} ${classes.center}`}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Max. Length
-                                </Typography>
-                            </div>
-                            <div className={`${classes.modelHeader} ${classes.center}`}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Min. Length
-                                </Typography>
-                            </div>
-                            <div className={`${classes.modelHeader} ${classes.center}`}>
-                                <Typography
-                                    variant="subtitle2"
-                                    component="p"
-                                    color="primary"
-                                >
-                                    Remove
-                                </Typography>
-                            </div>
-                        </div>
-                        { config.model && Object.keys(config.model).map((rowName, i) => (
-                            <div className={classes.modelRow} key={i}>
-                                <div className={classes.modelInputColumn}>
-                                    <input
-                                        value={rowName}
-                                        className={classes.input}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigModelTitle(rowName, e.target.value)
-                                        }}
-                                    />
-                                </div>
-                                <div className={`${classes.modelColumn} ${classes.center}`}>
-                                    <StyledCheckbox
-                                        checked={config.model[rowName].unique}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigModel(rowName, 'unique', e.target.checked)
-                                        }}
-                                    />
-                                </div>
-                                <div className={`${classes.modelColumn} ${classes.center}`}>
-                                    <StyledCheckbox
-                                        checked={!config.model[rowName].allowNull}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigModel(rowName, 'allowNull', e.target.checked)
-                                        }}
-                                    />
-                                </div>
-                                <div className={classes.modelInputColumn}>
-                                    <input
-                                        value={config.model[rowName].defaultValue ? config.model[rowName].defaultValue : ''}
-                                        disabled={!config.model[rowName].allowNull}
-                                        className={classes.input}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigModel(rowName, 'defaultValue', e.target.value)
-                                        }}
-                                    />
-                                </div>
-                                <div className={classes.modelInputColumn}>
-                                    <Select
-                                        variant="outlined"
-                                        value={config.model[rowName].type}
-                                        fullWidth
-                                        input={<StyledSelect/>}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigModel(rowName, 'type', e.target.value)
-                                        }}
-                                    >
-                                        <MenuItem value="String">String</MenuItem>
-                                        <MenuItem value="Number">Number</MenuItem>
-                                        <MenuItem value="Username">Username</MenuItem>
-                                        <MenuItem value="Email">Email</MenuItem>
-                                        <MenuItem value="Password">Password</MenuItem>
-                                    </Select>
-                                </div>
-                                <div className={classes.modelInputColumn}>
-                                    <input
-                                        value={config.model[rowName].validate && config.model[rowName].validate.len.args[0][0]}
-                                        className={`${classes.input} ${classes.center}`}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigModelLength(rowName, 'min', parseInt(e.target.value))
-                                        }}
-                                    />
-                                </div>
-                                <div className={classes.modelInputColumn}>
-                                    <input
-                                        value={config.model[rowName].validate && config.model[rowName].validate.len.args[0][1]}
-                                        className={`${classes.input} ${classes.center}`}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigModelLength(rowName, 'max', parseInt(e.target.value))
-                                        }}
-                                    />
-                                </div>
-                                <div className={`${classes.modelColumn} ${classes.center}`}>
-                                    <ErrorButton
-                                        onClick={(e) => {
-                                            dispatchRemoveConfigModelRow(rowName);
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        )) }
+                    <UserModelTable/>
+                </div>
+                <div className={classes.container}>
+                    <div className={classes.titleContainer}>
+                        <Typography
+                            variant="h4"
+                            component="h4"
+                            className={classes.title}
+                        >
+                            Password
+                        </Typography>
+                        <hr/>
                     </div>
+                    <PasswordRequirements/>
+                </div>
+                <div className={classes.container}>
+                    <div className={classes.titleContainer}>
+                        <Typography
+                            variant="h4"
+                            component="h4"
+                            className={classes.title}
+                        >
+                            Session
+                        </Typography>
+                        <hr/>
+                    </div>
+                    <SessionSettings/>
+                </div>
+                <div className={classes.container}>
+                    <div className={classes.titleContainer}>
+                        <Typography
+                            variant="h4"
+                            component="h4"
+                            className={classes.title}
+                        >
+                            Mail Configuration
+                        </Typography>
+                        <hr/>
+                    </div>
+                    <MailConfiguration/>
+                </div>
+                <div className={classes.container}>
+                    <div className={classes.titleContainer}>
+                        <Typography
+                            variant="h4"
+                            component="h4"
+                            className={classes.title}
+                        >
+                            OAuth Setup
+                        </Typography>
+                        <hr/>
+                    </div>
+                    <OAuthSetup/>
+                </div>
+                <div className={classes.container}>
+                    <EditButton/>
                 </div>
             </div>
         )
@@ -276,7 +151,8 @@ const mapDispatchToProps = (dispatch) => {
         dispatchChangeConfigPass: (key: string, value) => dispatch(changeConfigPass(key, value)),
         dispatchChangeConfigModelLength: (modelKey: string, key: string, value) => dispatch(changeConfigModelLength(modelKey, key, value)),
         dispatchRemoveConfigModelRow: (rowName: string) => dispatch(removeConfigModelRow(rowName)),
-        dispatchChangeConfigModelTitle: (oldName: string, newName: string) => dispatch(changeConfigModelTitle(oldName, newName))
+        dispatchChangeConfigModelTitle: (oldName: string, newName: string) => dispatch(changeConfigModelTitle(oldName, newName)),
+        dispatchAddConfigModelRow: () => dispatch(addConfigModelRow())
     }
 }
 

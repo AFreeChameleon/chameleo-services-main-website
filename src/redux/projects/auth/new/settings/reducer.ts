@@ -7,7 +7,7 @@ const settingsState = {
     sessionExpiresIn: {
         forever: false,
         days: 30,
-        minutes: 0
+        hours: 0
     }
 }
 
