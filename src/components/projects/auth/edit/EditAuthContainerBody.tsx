@@ -26,6 +26,7 @@ import {
     IconButton,
     FormControlLabel
 } from '@material-ui/core';
+import ErrorList from './components/ErrorList';
 import UserModelTable from './components/UserModelTable';
 import PasswordRequirements from './components/PasswordRequirements';
 import SessionSettings from './components/SessionSettings';
@@ -48,19 +49,12 @@ class EditAuthContainerBody extends React.Component {
     render() {
         const { 
             classes, 
-            configObj, 
-            project,
-            dispatchChangeConfigModel,
-            dispatchChangeConfigModelLength,
-            dispatchRemoveConfigModelRow,
-            dispatchChangeConfigModelTitle,
-            dispatchAddConfigModelRow
+            config,
         }: any = this.props;
-        const config = configObj.data;
-        console.log(this.props);
 
-        return !configObj.loading && configObj.data !== {} &&(
-            <div className={classes.root}>
+        return !config.loading && config.data !== {} &&(
+            <div className={classes.root} id="top">
+                <ErrorList/>
                 <div className={classes.container}>
                     <div className={classes.titleContainer}>
                         <Typography
@@ -137,22 +131,13 @@ class EditAuthContainerBody extends React.Component {
 const mapStateToProps = (state) => {
     return {
         project: state.project,
-        configObj: state.config
+        config: state.config
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         dispatchFetchConfig: (project_id: string) => dispatch(fetchConfig(project_id)),
-        dispatchSetProjectValue: (key: string, value) => dispatch(setProjectValue(key, value)),
-        dispatchChangeConfigModel: (rowName: string, key: string, value) => dispatch(changeConfigModel(rowName, key, value)),
-        dispatchChangeConfigAuth: (key: string, value) => dispatch(changeConfigAuth(key, value)),
-        dispatchChangeConfigDB: (key: string, value) => dispatch(changeConfigDB(key, value)),
-        dispatchChangeConfigPass: (key: string, value) => dispatch(changeConfigPass(key, value)),
-        dispatchChangeConfigModelLength: (modelKey: string, key: string, value) => dispatch(changeConfigModelLength(modelKey, key, value)),
-        dispatchRemoveConfigModelRow: (rowName: string) => dispatch(removeConfigModelRow(rowName)),
-        dispatchChangeConfigModelTitle: (oldName: string, newName: string) => dispatch(changeConfigModelTitle(oldName, newName)),
-        dispatchAddConfigModelRow: () => dispatch(addConfigModelRow())
     }
 }
 

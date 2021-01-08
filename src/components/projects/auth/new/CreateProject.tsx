@@ -41,7 +41,6 @@ const CreateProject: FunctionComponent = () => {
         } else if (errors.mail.length > 0) {
             dispatch(setErrors(errors.mail));
         } else {
-            console.log(`${MAIN_URL}/api/${project.project_id}/auth/new`)
             axios.post(`${MAIN_URL}/api/projects/${project.project_id}/containers/auth/new`, {
                 model: table,
                 appSettings: settings,

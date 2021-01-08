@@ -4,7 +4,8 @@ const styles: any = theme => ({
     },
     body: {
         display: 'flex',
-        height: '100%'
+        height: '100%',
+        width: '100%',
     },
     sidebarContainer: {
         width: '200px',
@@ -13,7 +14,8 @@ const styles: any = theme => ({
         background: theme.palette.background.dark
     },
     bodyContent: {
-        width: '100%'
+        width: '1100px',
+        margin: '0 auto'
     }
 })
 

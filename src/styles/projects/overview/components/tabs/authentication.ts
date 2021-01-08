@@ -8,11 +8,6 @@ const styles: any = theme => ({
     titleDivider: {
         borderTop: `1px solid ${theme.palette.grey[500]}`
     },
-    content: {
-        marginLeft: '30px',
-        marginTop: '20px',
-        width: '1000px'
-    },
     analyticsGrid: {
         display: 'grid',
         gridTemplateAreas: `
@@ -42,36 +37,78 @@ const styles: any = theme => ({
         marginTop: '30px'
     },
     userContainer: {
-        marginTop: '30px'
+        marginTop: '10px'
     },
     subTitle: {
-        textAlign: 'center',
+        // textAlign: 'center',
     },
     userTable: {
         width: '100%',
         marginTop: '20px'
     },
     userTableHeaderRow: {
-        borderBottom: '1px solid #9e9e9e',
-    },
-    userTableHeaderRowInner: {
+        background: theme.palette.secondary.main,
+        borderRadius: '4px',
+        boxShadow: 'rgba(0, 0, 0, 0.3) 0px 1px 6px 0px',
+        height: '50px',
+        padding: '10px 10px',
         display: 'grid',
         gridTemplateColumns: '10% 40% 25% 25%',
-        padding: '10px'
+        alignItems: 'center'
     },
     userTableHeader: {
         fontWeight: '600',
+        color: theme.palette.secondary.contrastText
     },
     userTableRow: {
         borderBottom: '1px solid #9e9e9e',
-    },
-    userTableRowInner: {
         display: 'grid',
         gridTemplateColumns: '10% 40% 25% 25%',
-        padding: '10px'
+        padding: '10px',
+        height: '50px',
+        alignItems: 'center'
+    },
+    userTableRowInner: {
+
     },
     userTableColumn: {
-    }
+    },
+    statusContainer: {
+        display: 'flex',
+        alignContent: 'center',
+        gridColumnGap: '20px',
+        paddingLeft: '10px'
+    },
+    statusText: {
+        alignSelf: 'center',
+        fontWeight: '600'
+    },
+    statusStopped: {
+        color: 'red'
+    },
+    statusStarted: {
+        color: theme.palette.secondary.main
+    },
+    statusIconButton: {
+        // border: `1px solid ${theme.palette.secondary.main}`
+    },
+    statusIconStopButton: {
+        border: '1px solid red'
+    },
+    modal: {
+        display: 'flex',
+        placeItems: 'center'
+    },
+    modalBody: {
+        width: '400px',
+        backgroundColor: '#ffffff',
+        margin: '0 auto',
+        outline: 'none',
+        padding: '10px 20px 15px 20px'
+    },
+    modalTitle: {
+        // fontWeight: 600
+    },
 });
 
 export default styles;

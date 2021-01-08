@@ -7,7 +7,8 @@ import styles from '../../../styles/projects/index/index';
 import ProjectList from './ProjectList';
 import NewProjectModal from './NewProjectModal';
 import {
-    Button
+    Button,
+    Typography
 } from '@material-ui/core';
 
 import {
@@ -27,36 +28,16 @@ const ProjectsBody: FunctionComponent = () => {
 
     return (
         <div className={classes.body}>
-            <div className={classes.title}>Projects</div>
-            <div className={classes.changeListView}>
-                <AppsIcon 
-                    className={project.listView === 'apps' ? classes.changeListItemSelected : classes.changeListItem}
-                    onClick={(e) => {
-                        dispatch(projectSetValue('listView', 'apps'));
-                    }}
-                />
-                <FormatListBulletedIcon 
-                    className={project.listView === 'list' ? classes.changeListItemSelected : classes.changeListItem}
-                    onClick={(e) => {
-                        dispatch(projectSetValue('listView', 'list'));
-                    }}
-                />
+            <div>
+                <Typography
+                    variant="h4"
+                    component="h4"
+                >
+                    Projects
+                </Typography>
+                <hr/>
             </div>
             <ProjectList />
-            <div className={classes.title}>
-                Or...
-            </div>
-            <div className={classes.createNewProject}>
-                <Button 
-                    onClick={(e) => dispatch(projectSetValue('newProjectModalOpen', true))}
-                    startIcon={<AddIcon/>}
-                    variant="contained"
-                    color="secondary"
-                    size="large"
-                >
-                    Create New Project
-                </Button>
-            </div>
             <NewProjectModal/>
         </div>
     )

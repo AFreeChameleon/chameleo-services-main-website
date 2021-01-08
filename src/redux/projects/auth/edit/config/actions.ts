@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { MAIN_URL } from '../../../../../globals';
 import {
+    SET_CONFIG_ERRORS,
     FETCH_CONFIG_REQUEST,
     FETCH_CONFIG_SUCCESS,
     FETCH_CONFIG_FAILURE,
@@ -12,6 +13,7 @@ import {
     CHANGE_CONFIG_DB,
     CHANGE_CONFIG_PASS,
     CHANGE_CONFIG_MAIL,
+
     REMOVE_CONFIG_MODEL_ROW,
     ADD_CONFIG_MODEL_ROW,
     CHANGE_CONFIG_MODEL_TITLE,
@@ -42,6 +44,13 @@ export const fetchConfig = (project_id: string) => {
                     error: err.response ? err.response.data.message : err.message
                 });
             })
+    }
+}
+
+export const setConfigErrors = (errors: string[]) => {
+    return {
+        type: SET_CONFIG_ERRORS,
+        errors: errors
     }
 }
 

@@ -4,10 +4,11 @@ const styles: any = {
     appList: {
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 25%)',
-        gridColumnGap: '10px'
+        gridColumnGap: '10px',
+        marginTop: '15px'
     },
     rowList: {
-        boxShadow: '0px 1px 6px rgb(0, 0, 0, 0.5)',
+        // boxShadow: '0px 1px 6px rgb(0, 0, 0, 0.5)',
     },
     appItem: {
         borderRadius: '4px',
@@ -28,14 +29,18 @@ const styles: any = {
         transition: 'background 0.2s',
         width: '100%',
         display: 'grid',
-        gridTemplateColumns: '60% auto auto auto',
+        gridTemplateColumns: '60% 40%',
+        borderBottom: '1px solid #888888',
         alignContent: 'center',
         '&:hover': {
-            background: Theme.palette.secondary.main,
+            background: 'rgb(0, 0, 0, 0.05)',
         },
         '&:hover div': {
-            color: '#ffffff !important',
+            // color: '#ffffff !important',
         },
+    },
+    rowListButton: {
+        marginTop: '10px'
     },
     appItemTitle: {
         fontSize: '18px',

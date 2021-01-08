@@ -1,4 +1,5 @@
 import {
+    SET_CONFIG_ERRORS,
     FETCH_CONFIG_REQUEST,
     FETCH_CONFIG_SUCCESS,
     FETCH_CONFIG_FAILURE,
@@ -24,7 +25,7 @@ const configState: any = {
         model: [],
         pass: {}
     },
-    error: ''
+    errors: []
 }
 
 const configReducer = (state = configState, action) => {
@@ -41,12 +42,18 @@ const configReducer = (state = configState, action) => {
                 ...state,
                 loading: false,
                 data: action.config,
-                error: ''
+                errors: []
             }
         case FETCH_CONFIG_FAILURE:
             return {
+                ...state,
                 loading: false,
-                error: action.error
+                errors: [action.error]
+            }
+        case SET_CONFIG_ERRORS:
+            return {
+                ...state,
+                errors: [ ...action.errors ]
             }
         case CHANGE_CONFIG_MODEL:
             newModel = [ ...state.data.model ];

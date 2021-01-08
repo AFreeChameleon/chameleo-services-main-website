@@ -5,20 +5,20 @@ const index: any = {
 
     },
     body: {
-        maxWidth: '1000px',
-        margin: '20px auto 0 auto'
+        maxWidth: '1100px',
+        margin: '30px auto 0 auto'
     },
     title: {
         fontSize: '36px',
         fontWeight: '600',
         color: '#000000',
-        textAlign: 'center',
         margin: '20px 0'
     },
     changeListView: {
         display: 'flex',
-        gridColumnGap: '5px',
+        gridColumnGap: '10px',
         marginBottom: '10px',
+        marginTop: '20px'
     },
     changeListItem: {
         cursor: 'pointer',

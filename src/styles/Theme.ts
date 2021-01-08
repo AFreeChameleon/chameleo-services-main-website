@@ -11,6 +11,7 @@ const themeObj = {
         },
         secondary: {
             main: chameleoGreen,
+            contrastText: '#ffffff'
         },
         error: {
             main: red.A400,

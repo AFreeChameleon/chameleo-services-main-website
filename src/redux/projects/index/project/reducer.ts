@@ -13,7 +13,6 @@ const projectState = {
     },
     newProjectName: '',
     newProjectModalOpen: false,
-    listView: 'apps'
 }
 
 const projectReducer = (state = projectState, action) => {

@@ -1,7 +1,13 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-
+import {
+    setConfigErrors
+} from '../../../../../redux/projects/auth/edit/config/actions';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import {
+    MAIN_URL
+} from '../../../../../globals';
 import {
     Button
 } from '@material-ui/core';
@@ -14,19 +20,29 @@ class EditButton extends React.Component {
 
     checkErrorsExist(config: any) {
         const { model, mail } = config;
+        console.log(model, mail)
         const errors = [];
-        const modelEmailRow = model.find((row) => row.type === 'Email');
-        const modelPasswordRow = model.find((row) => row.type === 'Password');
-        if (!modelEmailRow)
+        const modelEmailRows = model.filter((row) => row.type === 'Email');
+        const modelPasswordRows = model.filter((row) => row.type === 'Password');
+        console.log(modelEmailRows, modelPasswordRows)
+        if (modelEmailRows.length === 0) {
             errors.push('Model: missing row with type: Email.');
-        if (!modelEmailRow.unique === true)
-            errors.push('Model: Email row needs to be unique.');
-        if (!modelEmailRow.required)
-            errors.push('Model: Email row needs to be required.');
-        if (!modelPasswordRow)
+        } else {
+            if (modelEmailRows.length > 1)
+                errors.push('Model: Only one row can have the Email type.');
+            if (!modelEmailRows[0].unique === true)
+                errors.push('Model: Email row needs to be unique.');
+            if (modelEmailRows[0].allowNull)
+                errors.push('Model: Email row needs to be required.');
+        }
+        if (modelPasswordRows.length === 0) {
             errors.push('Model: missing row with type: Password.');
-        if (!modelPasswordRow.required)
-            errors.push('Password row needs to be required.');
+        } else {
+            if (modelPasswordRows.length > 1)
+                errors.push('Model: Only one row can have the Password type.');
+            if (modelPasswordRows[0].allowNull)
+                errors.push('Model: Password row needs to be required.');
+        }
         if (mail.enabled) {
             if (mail.fromAddress)
                 errors.push('Mail: From address missing.');
@@ -39,7 +55,7 @@ class EditButton extends React.Component {
     }
 
     render() {
-        const { classes, config }: any = this.props;
+        const { classes, config, project, dispatchSetConfigErrors }: any = this.props;
         return (
             <div className={classes.root}>
                 <Button
@@ -49,9 +65,21 @@ class EditButton extends React.Component {
                     onClick={(e) => {
                         const errors = this.checkErrorsExist(config);
                         if (errors.length > 0) {
-
+                            dispatchSetConfigErrors(errors);
+                            document.getElementById('top').scrollIntoView({ behavior: 'smooth' })
                         } else {
                             // Do stuff
+                            console.log('No errors')
+                            axios.patch(`${MAIN_URL}/api/projects/${project.project_id}/containers/auth/edit`, {
+                                config: config
+                            }, { withCredentials: true })
+                            .then((res: AxiosResponse) => {
+                                dispatchSetConfigErrors([]);
+                                console.log(res.data.message)
+                            })
+                            .catch((err: AxiosError) => {
+                                dispatchSetConfigErrors([err.response.data.message]);
+                            })
                         }
                     }}
                 >
@@ -85,6 +113,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        dispatchSetConfigErrors: (errors: string[]) => dispatch(setConfigErrors(errors))
     }
 }
 

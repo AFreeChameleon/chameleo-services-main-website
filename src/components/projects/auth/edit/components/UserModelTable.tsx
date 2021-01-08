@@ -285,8 +285,7 @@ const styles: any = (theme) => ({
     },
     addModelRowButton: {
         paddingTop: '10px',
-        textAlign: 'right',
-        paddingRight: '10px'
+        paddingLeft: '10px'
     }
 })
 
