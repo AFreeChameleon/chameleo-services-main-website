@@ -109,6 +109,13 @@ const styles: any = theme => ({
     modalTitle: {
         // fontWeight: 600
     },
+    authMissingContainer: {
+        paddingTop: '10px'
+    },
+    authMissingTitle: {
+        color: theme.palette.grey['600'],
+        paddingBottom: '10px'
+    }
 });
 
 export default styles;

@@ -1,7 +1,7 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 
-const chameleoGreen = '#13AA52';
+const chameleoGreen = '#51C85D';
 const darkGreen = '#0e803d';
 const themeObj = {
     palette: {
@@ -23,7 +23,7 @@ const themeObj = {
             contrastText: '#ffffff',
         },
         text: {
-            primary: '#000000'
+            primary: '#000000',
         }
     },
 }

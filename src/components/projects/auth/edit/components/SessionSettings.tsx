@@ -46,6 +46,7 @@ class SessionSettings extends React.Component {
 
     render() {
         const { classes, config, dispatchChangeConfigAuth }: any = this.props;
+        console.log(config)
         return (
             <div className={classes.root}>
                 <div className={classes.row}>

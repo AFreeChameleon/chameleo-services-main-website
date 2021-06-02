@@ -7,6 +7,7 @@ import oauthReducer from './oauth/reducer';
 import errorReducer from './errors/reducer';
 import tabsReducer from './tabs/reducer';
 import projectReducer from './project/reducer';
+import configReducer from './config/reducer';
 
 const rootReducer = combineReducers({
     mail: mailReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     oauth: oauthReducer,
     errors: errorReducer,
     tabs: tabsReducer,
-    project: projectReducer
+    project: projectReducer,
+    config: configReducer
 });
 
 export default rootReducer;

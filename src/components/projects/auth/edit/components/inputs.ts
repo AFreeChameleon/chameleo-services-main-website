@@ -45,23 +45,35 @@ export const StyledSelect = withStyles({
 export const RedButton = withStyles({
     root: {
         '&:hover': {
-            backgroundColor: 'rgb(255, 0, 0, 0.05)'
+            backgroundColor: 'rgb(255, 0, 0, 0.05)',
+            border: '1px solid red'
         },
         '& .MuiButton-label': {
             color: 'red'
+        }
+    },
+    disabled: {
+        '& .MuiButton-label': {
+            color: 'rgba(0, 0, 0, 0.26)'
         }
     }
 })(Button);
 
 export const GreenButton = withStyles({
     root: {
-        border: '1px solid #13AA52',
         '&:hover': {
+            border: '1px solid #13AA52',
             backgroundColor: 'rgb(0, 255, 0, 0.05)'
         },
         '& .MuiButton-label': {
             color: '#13AA52'
         }
+    },
+    disabled: {
+        '& .MuiButton-label': {
+            color: 'rgba(0, 0, 0, 0.26)'
+        },
+        border: 'rgba(0, 0, 0, 0.12)'
     }
 })(Button);
 

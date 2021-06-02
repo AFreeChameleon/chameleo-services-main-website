@@ -2,29 +2,11 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
-    setProjectValue
-} from '../../../../redux/projects/auth/edit/project/actions';
-import {
     fetchConfig,
-    changeConfigModel,
-    changeConfigAuth,
-    changeConfigDB,
-    changeConfigPass,
-    changeConfigModelLength,
-    removeConfigModelRow,
-    changeConfigModelTitle,
-    addConfigModelRow
 } from '../../../../redux/projects/auth/edit/config/actions';
 
 import {
     Typography,
-    Checkbox,
-    Select,
-    MenuItem,
-    InputBase,
-    Button,
-    IconButton,
-    FormControlLabel
 } from '@material-ui/core';
 import ErrorList from './components/ErrorList';
 import UserModelTable from './components/UserModelTable';
@@ -36,8 +18,6 @@ import EditButton from './components/EditButton';
 
 import styles from '../../../../styles/projects/auth/edit/components/body';
 import { withStyles } from '@material-ui/core/styles';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
 
 class EditAuthContainerBody extends React.Component {
     constructor(props) {
@@ -144,4 +124,4 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles)
-)(EditAuthContainerBody);
+)(EditAuthContainerBody) as React.ComponentType;

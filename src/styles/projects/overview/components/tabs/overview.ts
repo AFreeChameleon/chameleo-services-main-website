@@ -4,7 +4,8 @@ const styles: any = theme => ({
         height: '100%',
         padding: '20px 30px 0 30px'
     },
-    title: {},
+    title: {
+    },
     titleDivider: {
         borderTop: `1px solid ${theme.palette.grey[500]}`
     },
@@ -80,7 +81,7 @@ const styles: any = theme => ({
     },
     missingAuthButton: {
         marginTop: '20px'
-    }
+    },
 });
 
 export default styles;

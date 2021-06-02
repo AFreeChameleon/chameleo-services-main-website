@@ -14,7 +14,7 @@ const ifNotAuth = <T extends object>(C: NextPage<T>) => {
                     });
                     console.log(loggedIn)
                     if (loggedIn) {
-                        redirect(ctx, "/projects");
+                        redirect(ctx, "/dashboard");
                     }
                     return {
                         loggedIn: loggedIn,
@@ -24,7 +24,7 @@ const ifNotAuth = <T extends object>(C: NextPage<T>) => {
                     const loggedIn = await Auth.verifyUser();
                     console.log(loggedIn)
                     if (loggedIn) {
-                        redirect(ctx, "/projects");
+                        redirect(ctx, "/dashboard");
                     }
                     return {
                         loggedIn: loggedIn,

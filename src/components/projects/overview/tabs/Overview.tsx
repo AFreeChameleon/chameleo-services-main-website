@@ -1,7 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { setSelectedTab } from '../../../../redux/projects/overview/tabs/actions'
+import { setSelectedTab } from '../../../../redux/projects/overview/tabs/actions';
+import { fetchProjectDetails } from '../../../../redux/projects/overview/project/actions';
 import { withRouter } from 'next/router';
 
 import styles from '../../../../styles/projects/overview/components/tabs/overview';
@@ -12,7 +13,7 @@ import {
     Collapse,
     Button
 } from '@material-ui/core';
-import AuthenticationDoughnutChart from './AuthenticationDoughnutChart';
+import AuthenticationDoughnutChart from './authentication/AuthenticationDoughnutChart';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -23,20 +24,25 @@ class Overview extends React.Component {
 
     render() {
         const { classes, router, project, dispatchSetSelectedTab }: any = this.props;
-
         return (
             <div className={classes.body}>
                 <div className={classes.title}>
                     <Typography
-                        variant="h3"
-                        component="h3"
+                        variant="h4"
+                        component="h4"
                     >
                         Overview
                     </Typography>
-                    <hr className={classes.titleDivider}/>
                 </div>
+                <hr className={classes.titleDivider}/>
+                <Typography
+                    variant="subtitle2"
+                    gutterBottom
+                >
+                    Project secret: {project.project_secret}
+                </Typography>
                 <div className={classes.content}>
-                    <div className={classes.dropdownContainer}>
+                    {/* <div className={classes.dropdownContainer}>
                         <div className={classes.dropdownTitle}>
                             <Typography
                                 variant="body1"
@@ -111,7 +117,7 @@ class Overview extends React.Component {
                                 </div>
                             ) }
                         </Collapse>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         )
@@ -127,7 +133,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        dispatchSetSelectedTab: (tab: number) => dispatch(setSelectedTab(tab))
+        dispatchSetSelectedTab: (tab: number) => dispatch(setSelectedTab(tab)),
+        dispatchFetchProjectDetails: (project_id: string) => dispatch(fetchProjectDetails(project_id))
     }
 }
 

@@ -2,7 +2,6 @@ import { Component } from 'react';
 import store from '../../../redux/projects/overview/store';
 import {
     setProjectId,
-    fetchAuthProjectDetails
 } from '../../../redux/projects/overview/project/actions';
 import { Provider } from 'react-redux';
 

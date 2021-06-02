@@ -226,6 +226,8 @@ class UserModelTable extends React.Component {
                 </div>
                 <div className={classes.addModelRowButton}>
                     <GreenButton
+                        color="secondary"
+                        variant="outlined"
                         onClick={(e) => {
                             dispatchAddConfigModelRow();
                         }}

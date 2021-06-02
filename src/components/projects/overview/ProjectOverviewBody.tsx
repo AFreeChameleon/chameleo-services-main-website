@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { setSelectedTab } from '../../../redux/projects/overview/tabs/actions';
-import { fetchAuthProjectDetails } from '../../../redux/projects/overview/project/actions';
+import { fetchProjectDetails } from '../../../redux/projects/overview/project/actions';
 
 import styles from '../../../styles/projects/overview/components/projectOverviewBody';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,13 +14,13 @@ import {
 import TabPanel from '../../TabPanel';
 
 import Overview from './tabs/Overview';
-import Authentication from './tabs/Authentication';
+import Authentication from './tabs/authentication/Authentication';
 
 class ProjectOverviewBody extends React.Component {
     constructor(props) {
         super(props);
-        const { project, dispatchFetchAuthProjectDetails }: any = this.props;
-        dispatchFetchAuthProjectDetails(project.project_id);
+        const { project, dispatchFetchProjectDetails }: any = this.props;
+        dispatchFetchProjectDetails(project.project_id);
     }
 
     render() {
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         dispatchSetSelectedTab: (tab: number) => dispatch(setSelectedTab(tab)),
-        dispatchFetchAuthProjectDetails: (project_id: string) => dispatch(fetchAuthProjectDetails(project_id))
+        dispatchFetchProjectDetails: (project_id: string) => dispatch(fetchProjectDetails(project_id))
     }
 }
 

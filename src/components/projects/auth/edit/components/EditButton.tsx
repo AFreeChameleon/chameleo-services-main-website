@@ -44,7 +44,7 @@ class EditButton extends React.Component {
                 errors.push('Model: Password row needs to be required.');
         }
         if (mail.enabled) {
-            if (mail.fromAddress)
+            if (!mail.fromAddress)
                 errors.push('Mail: From address missing.');
             if (!mail.verifyContent.includes('{__verify__}'))
                 errors.push('Mail: {__verify__} is missing in email content');

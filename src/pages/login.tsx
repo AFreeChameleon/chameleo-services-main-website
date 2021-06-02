@@ -22,7 +22,7 @@ function Login() {
         .then((data) => {
             console.log(data)
             setError('');
-            router.push('/projects/auth/new');
+            router.push('/dashboard');
         })
         .catch((err) => {
             setError(err.message);
