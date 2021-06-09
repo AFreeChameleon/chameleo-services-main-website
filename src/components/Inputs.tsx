@@ -6,7 +6,9 @@ import {
     MenuItem,
     InputBase,
     Button,
-    TextField
+    TextField,
+    FormControlLabel,
+    Radio
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -14,6 +16,18 @@ import AddIcon from '@material-ui/icons/Add';
 
 export const NumberInputNoTicks = withStyles({
     root: {
+        '& > label': {
+            color: '#6F6F76',
+        },
+        '& > div > input': {
+            color: '#ffffff'
+        },
+        '& > div > input:disabled': {
+            color: '#6F6F76'
+        },
+        '& > div::before': {
+            borderColor: '#51C85D !important'
+        },
         '& .MuiInputBase-root .MuiInputBase-input::-webkit-outer-spin-button': {
             WebkitAppearance: 'none',
             margin: 0
@@ -21,6 +35,32 @@ export const NumberInputNoTicks = withStyles({
         '& .MuiInputBase-root .MuiInputBase-input::-webkit-inner-spin-button': {
             WebkitAppearance: 'none',
             margin: 0
+        },
+    }
+})(TextField);
+
+export const StyledTextField = withStyles({
+    root: {
+        '& > label': {
+            color: '#6F6F76',
+        },
+        '& > div > input': {
+            color: '#ffffff'
+        },
+        '& > div > input:disabled': {
+            color: '#6F6F76'
+        },
+        '& > div > textarea': {
+            color: '#ffffff'
+        },
+        '& > div > textarea:disabled': {
+            color: '#6F6F76'
+        },
+        '& > div::before': {
+            borderColor: '#51C85D !important'
+        },
+        '& > p': {
+            color: '#6F6F76'
         }
     }
 })(TextField);
@@ -30,11 +70,20 @@ export const StyledCheckbox = withStyles({
         padding: '5px',
         '& > span > svg > path': {
             fill: '#ffffff'
+        },
+        '&.Mui-disabled > span > svg > path': {
+            fill: '#6F6F76 !important'
         }
     },
     checked: {
         '& > span > svg > path': {
             fill: '#51C85D'
+        }
+    },
+    disabled: {
+        backgroundColor: 'red',
+        '&': {
+            
         }
     }
 })(Checkbox);
@@ -55,6 +104,21 @@ export const StyledSelect = withStyles({
         }
     }
 })(InputBase);
+
+export const StyledRadio = withStyles({
+    root: {
+        padding: '5px',
+        '& > span > div > svg > path': {
+            fill: '#ffffff'
+        },
+
+    },
+    checked: {
+        '& > span > div > svg > path': {
+            fill: '#51C85D'
+        }
+    },
+})(Radio);
 
 export const RedButton = withStyles({
     root: {
@@ -89,6 +153,16 @@ export const GreenButton = withStyles({
         border: 'rgba(0, 0, 0, 0.12)'
     }
 })(Button);
+
+export const StyledFormControlLabel = withStyles({
+    root: {
+        color: '#ffffff',
+        '& > .MuiFormControlLabel-label': {
+            fontFamily: "'Acrom', 'sans-serif'",
+            fontSize: '14px',
+        }
+    }
+})(FormControlLabel);
 
 // export const ErrorButton = ({ onClick }) => (
 //     <RedButton onClick={onClick}>
