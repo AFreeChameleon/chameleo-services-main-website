@@ -8,11 +8,26 @@ import {
     Button,
     TextField,
     FormControlLabel,
-    Radio
+    Radio,
+    Menu,
+    ListItemIcon
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
+
+export const StyledListItemIcon = withStyles({
+    root: {
+        minWidth: '30px'
+    }
+})(ListItemIcon)
+
+export const StyledMenu = withStyles({
+    paper: {
+        backgroundColor: '#212121',
+        color: '#ffffff'
+    }
+})(Menu);
 
 export const NumberInputNoTicks = withStyles({
     root: {

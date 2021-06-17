@@ -171,7 +171,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                     <NextLink href="/dashboard/auth">
                         <div className={classes.breadcrumb}>Auth</div>
                     </NextLink>
-                    <div className={classes.breadcrumbMain}>New Container</div>
+                    <div className={classes.breadcrumbMain}>Edit Container</div>
                 </Breadcrumbs>
                 <div className={classes.container}>
                     <div className={classes.title}>Container Details</div>

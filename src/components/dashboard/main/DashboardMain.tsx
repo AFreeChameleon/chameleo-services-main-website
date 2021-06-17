@@ -1,5 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext'; 
+import { Breadcrumbs } from '@material-ui/core';
 import Flags from 'country-flag-icons/react/3x2';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon } from '../../Icons';
 
@@ -12,7 +14,10 @@ class DashboardMain extends React.Component {
         const { classes }: any = this.props;
         return (
             <div className={classes.root}>
-                <div className={classes.notificationContainer}>
+                <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
+                    <div className={classes.breadcrumbMain}>Dashboard</div>
+                </Breadcrumbs>
+                <div className={classes.notificationContainer}> 
                     <div className={classes.notificationHeader}>
                         Notifications
                     </div>
@@ -123,13 +128,25 @@ const styles: any = () => ({
         backgroundColor: '#212121',
         padding: '15px',
         color: '#ffffff',
-        overflowY: 'auto'
+        overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+            width: '8px',
+            padding: '5px'
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#6F6F76',
+            borderRadius: '5px'
+        }
+    },
+    breadcrumbMain: {
+        color: '#ffffff',
     },
     notificationContainer: {
         width: '100%',
         backgroundColor: '#2C2C2C',
         borderRadius: '10px',
-        padding: '10px'
+        padding: '10px',
+        marginTop: '10px'
     },
     notificationHeader: {
         color: '#ffffff',
@@ -172,7 +189,7 @@ const styles: any = () => ({
         color: '#F9A825'
     },
     urgent: {
-        color: '#C85151'
+        color: '#ff1744'
     },
     dismiss: {
         color: '#6F6F76',

@@ -152,7 +152,7 @@ const styles: any = () => ({
         fontSize: '12px'
     },
     stopped: {
-        color: '#C85151'
+        color: '#ff1744'
     },
     containerItemID: {
         cursor: 'pointer',

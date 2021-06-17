@@ -14,10 +14,11 @@ export const fetchContainers = () => {
         return fetch(`${MAIN_URL}/api/containers`, { credentials: 'include' })
             .then((raw) => raw.json())
             .then((res) => {
-                if (res.data.containers) {
+                console.log(res)
+                if (res.containers && res.containers.length) {
                     dispatch({
                         type: FETCH_CONTAINERS_SUCCESS,
-                        containers: res.data.containers
+                        containers: res.containers
                     });
                 } else {
                     dispatch({

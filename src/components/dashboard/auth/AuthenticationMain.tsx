@@ -1,31 +1,102 @@
 import React from 'react';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { fetchContainers } from '../../../redux/container/actions';
 import { withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import PlayIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
 import AddIcon from '@material-ui/icons/Add';
+import LabelIcon from '@material-ui/icons/Label';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon, SettingsIcon } from '../../Icons';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, Breadcrumbs, Menu, MenuItem, Typography, ListItemIcon } from '@material-ui/core';
+import RenameContainerModal from './modals/RenameContainer';
+import DeleteContainerModal from './modals/DeleteContainer';
+import {
+    StyledMenu,
+    StyledListItemIcon
+} from '../../Inputs';
 
 type AuthenticationMainPropTypes = {
     classes: any;
     containers: any[];
+    dispatchFetchContainers: () => null;
 }
 
-class AuthenticationMain extends React.Component<AuthenticationMainPropTypes> {
+type AuthenticationMainStateTypes = {
+    settingsAnchorEl: any;
+    selectedContainer: any;
+    renameModalOpen: boolean;
+    deleteModalOpen: boolean;
+}
+
+class AuthenticationMain extends React.Component<AuthenticationMainPropTypes, AuthenticationMainStateTypes> {
     constructor(props) {
         super(props);
+
+        this.state = {
+            settingsAnchorEl: null,
+            selectedContainer: null,
+            renameModalOpen: false,
+            deleteModalOpen: false
+        }
+
+        this.handleSettingsMenuOpen = this.handleSettingsMenuOpen.bind(this);
+        this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
+        this.handleRenameModalClose = this.handleRenameModalClose.bind(this);
+        this.handleDeleteModalClose = this.handleDeleteModalClose.bind(this);
+    }
+
+    componentDidMount() {
+        const { dispatchFetchContainers } = this.props;
+        dispatchFetchContainers();
+    }
+
+    handleSettingsMenuOpen(e) {
+        this.setState({ settingsAnchorEl: e.currentTarget });
+    }
+
+    handleSettingsMenuClose(newState?: { [key: string]: any }) {
+        this.setState({ settingsAnchorEl: null, ...newState });
+    }
+
+    handleRenameModalClose(e) {
+        this.setState({ renameModalOpen: false });
+    }
+
+    handleDeleteModalClose(e) {
+        this.setState({ deleteModalOpen: false });
     }
 
     render() {
-        const { classes, containers } = this.props;
+        const { classes, containers, dispatchFetchContainers } = this.props;
+        const { settingsAnchorEl, renameModalOpen, deleteModalOpen, selectedContainer } = this.state;
         console.log(containers);
         
         return (
             <div className={classes.root}>
+                <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
+                    <NextLink href="/dashboard">
+                        <div className={classes.breadcrumb}>Dashboard</div>
+                    </NextLink>
+                    <div className={classes.breadcrumbMain}>Auth</div>
+                </Breadcrumbs>
+                { renameModalOpen && <RenameContainerModal 
+                    open={renameModalOpen} 
+                    onClose={this.handleRenameModalClose}
+                    container={selectedContainer}
+                    fetchContainers={dispatchFetchContainers}
+                /> }
+                { deleteModalOpen && <DeleteContainerModal 
+                    open={deleteModalOpen} 
+                    onClose={this.handleDeleteModalClose}
+                    container={selectedContainer}
+                    fetchContainers={dispatchFetchContainers}
+                /> }
                 <div className={classes.timespanContainer}>
                     <div className={classes.timespan}>
                         <CalendarIcon className={classes.calendarIcon}/>
@@ -59,14 +130,71 @@ class AuthenticationMain extends React.Component<AuthenticationMainPropTypes> {
                 <div className={classes.containersContainer}>
                     <div className={classes.title}>Containers</div>
                     <div className={classes.containerList}>
-                        {containers.length > 0 ? containers.map((container) => (
-                            <div className={classes.containerItem}>
+                        { containers.map((container, i) => (
+                            <div className={classes.containerItem} key={i}>
                                 <div className={classes.containerItemHeader}>
                                     <div className={classes.containerItemID}>
                                         {container.name}
                                     </div>
                                     <div className={classes.miniIcon}>
-                                        <SettingsIcon/>
+                                        <SettingsIcon onClick={this.handleSettingsMenuOpen}/>
+                                        <StyledMenu 
+                                            anchorEl={settingsAnchorEl}
+                                            open={Boolean(settingsAnchorEl)}
+                                            onClose={(e) => this.handleSettingsMenuClose()}
+                                        >
+                                            <MenuItem 
+                                                onClick={(e) => this.handleSettingsMenuClose()}
+                                            >
+                                                <StyledListItemIcon>
+                                                    <EditIcon fontSize="small" htmlColor="#6F6F76" />
+                                                </StyledListItemIcon>
+                                                <Typography
+                                                >
+                                                    Edit
+                                                </Typography>
+                                            </MenuItem>
+                                            <MenuItem 
+                                                onClick={(e) => this.handleSettingsMenuClose({ 
+                                                    renameModalOpen: true, 
+                                                    selectedContainer: container 
+                                                })}
+                                            >
+                                                <StyledListItemIcon>
+                                                    <LabelIcon fontSize="small" htmlColor="#6F6F76" />
+                                                </StyledListItemIcon>
+                                                <Typography
+                                                >
+                                                    Rename
+                                                </Typography>
+                                            </MenuItem>
+                                            <MenuItem 
+                                                onClick={(e) => this.handleSettingsMenuClose()}
+                                            >
+                                                <StyledListItemIcon>
+                                                    <FileCopyIcon fontSize="small" htmlColor="#6F6F76" />
+                                                </StyledListItemIcon>
+                                                <Typography
+                                                >
+                                                    Duplicate
+                                                </Typography>
+                                            </MenuItem>
+                                            <MenuItem 
+                                                onClick={(e) => this.handleSettingsMenuClose({ 
+                                                    deleteModalOpen: true, 
+                                                    selectedContainer: container 
+                                                })}
+                                            >
+                                                <StyledListItemIcon>
+                                                    <DeleteForeverIcon fontSize="small" htmlColor="#ff1744" />
+                                                </StyledListItemIcon>
+                                                <Typography
+                                                    style={{color: '#ff1744'}}
+                                                >
+                                                    Delete
+                                                </Typography>
+                                            </MenuItem>
+                                        </StyledMenu>
                                     </div>
                                 </div>
                                 <div className={classes.containerItemStatus}>
@@ -96,18 +224,18 @@ class AuthenticationMain extends React.Component<AuthenticationMainPropTypes> {
                                     </div>
                                 }
                             </div>
-                        )) : (
-                            <Link href="/dashboard/auth/new">
-                                <div className={classes.makeNewContainerButton}>
-                                    <div className={classes.makeNewContainerButtonTitle}>
-                                        NEW CONTAINER
-                                    </div>
-                                    <div className={classes.makeNewContainerButtonIcon}>
-                                        <AddIcon fontSize="large" />
-                                    </div>
+                        ))}
+                        <NextLink href="/dashboard/auth/new">
+                            <div className={classes.makeNewContainerButton}>
+                                <div className={classes.makeNewContainerButtonTitle}>
+                                    NEW CONTAINER
                                 </div>
-                            </Link>
-                        )}
+                                <div className={classes.makeNewContainerButtonIcon}>
+                                    <AddIcon fontSize="large" />
+                                </div>
+                            </div>
+                        </NextLink>
+                        
                     </div>
                 </div>
                 <div className={classes.usersTableContainer}>
@@ -143,7 +271,25 @@ const styles: () => any = () => ({
         backgroundColor: '#212121',
         padding: '15px',
         color: '#ffffff',
-        overflowY: 'auto'
+        overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+            width: '8px',
+            marginRight: '5px'
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#6F6F76',
+            borderRadius: '5px'
+        }
+    },
+    breadcrumb: {
+        color: '#6F6F76',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline'
+        }
+    },
+    breadcrumbMain: {
+        color: '#ffffff',
     },
     flexGrow: {
         flexGrow: 1
@@ -151,7 +297,8 @@ const styles: () => any = () => ({
     timespanContainer: {
         width: '100%',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: '10px'
     },
     timespan: {
         border: '1px solid #51C85D',
@@ -258,7 +405,9 @@ const styles: () => any = () => ({
     containerList: {
         padding: '5px 10px',
         color: '#ffffff',
-        marginTop: '10px'
+        marginTop: '10px',
+        display: 'flex',
+        columnGap: '10px'
     },
     containerItem: {
         borderRadius: '10px',
@@ -291,7 +440,7 @@ const styles: () => any = () => ({
         paddingBottom: '15px'
     },
     stopped: {
-        color: '#C85151'
+        color: '#ff1744'
     },
     running: {
         color: '#51C85D'
@@ -312,18 +461,27 @@ const styles: () => any = () => ({
         columnGap: '5px',
         height: '30px',
         cursor: 'pointer',
+        transition: '0.1s',
+        '&:hover': {
+            backgroundColor: '#6F6F7622'
+        }
     },
     containerItemStartButton: {
         marginTop: '10px',
         display: 'flex',
-        backgroundColor: '#51C85D',
-        border: '1px solid #51C85D',
+        backgroundColor: '#51C85D88',
+        border: '1px solid #51C85D88',
         borderRadius: '10px',
         alignItems: 'center',
         justifyContent: 'center',
         columnGap: '5px',
         height: '30px',
-        cursor: 'pointer' 
+        cursor: 'pointer',
+        transition: '0.1s',
+        '&:hover': {
+            backgroundColor: '#51C85D',
+            border: '1px solid #51C85D',
+        }
     },
     containerItemStopButton: {
         marginTop: '10px',
@@ -372,7 +530,13 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatchFetchContainers: () => dispatch(fetchContainers())
+    }
+}
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles)
 )(AuthenticationMain) as React.ComponentType;

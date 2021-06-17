@@ -1,6 +1,8 @@
 function Index() {
     return (
-        <h1>Index page</h1>
+        <div>
+            <h1>Index page</h1>
+        </div>
     )
 }
 
