@@ -1,8 +1,10 @@
 import React from 'react';
 import NextLink from 'next/link';
+import { withRouter, NextRouter } from 'next/router';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { fetchContainers } from '../../../redux/container/actions';
+import { setContainer } from '../../../redux/container/auth/edit/actions';
 import { withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import PlayIcon from '@material-ui/icons/PlayArrow';
@@ -24,7 +26,9 @@ import {
 type AuthenticationMainPropTypes = {
     classes: any;
     containers: any[];
+    router: NextRouter;
     dispatchFetchContainers: () => null;
+    dispatchSetContainer: (container: any) => null;
 }
 
 type AuthenticationMainStateTypes = {
@@ -70,6 +74,16 @@ class AuthenticationMain extends React.Component<AuthenticationMainPropTypes, Au
 
     handleDeleteModalClose(e) {
         this.setState({ deleteModalOpen: false });
+    }
+
+    handleEditContainer(container: any) {
+        const { router, dispatchSetContainer } = this.props;
+        dispatchSetContainer({
+            name: container.name,
+            tier: container.tier,
+            config: container.config
+        });
+        router.push('/dashboard/auth/edit');
     }
 
     render() {
@@ -144,7 +158,7 @@ class AuthenticationMain extends React.Component<AuthenticationMainPropTypes, Au
                                             onClose={(e) => this.handleSettingsMenuClose()}
                                         >
                                             <MenuItem 
-                                                onClick={(e) => this.handleSettingsMenuClose()}
+                                                onClick={(e) => this.handleEditContainer(container)}
                                             >
                                                 <StyledListItemIcon>
                                                     <EditIcon fontSize="small" htmlColor="#6F6F76" />
@@ -353,7 +367,7 @@ const styles: () => any = () => ({
     },
     title: {
         fontSize: '16px',
-        fontWeight: 500,
+        fontWeight: 600,
         paddingLeft: '10px'
     },
     activeUsersContainer: {
@@ -385,7 +399,7 @@ const styles: () => any = () => ({
     },
     usersTableHeader: {
         flexGrow: 1,
-        fontWeight: 500
+        fontWeight: 600
     },
     usersTableRow: {
         borderBottom: '1px solid #6F6F76',
@@ -420,7 +434,7 @@ const styles: () => any = () => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        fontWeight: 500
+        fontWeight: 600
     },
     miniIcon: {
         display: 'grid',
@@ -446,6 +460,7 @@ const styles: () => any = () => ({
         color: '#51C85D'
     },
     containerItemID: {
+        fontSize: '16px',
         cursor: 'pointer',
         userSelect: 'none',
         '&:hover': {
@@ -514,7 +529,7 @@ const styles: () => any = () => ({
     makeNewContainerButtonTitle: {
         fontSize: '16px',
         textAlign: 'center',
-        fontWeight: 500
+        fontWeight: 600
     },
     makeNewContainerButtonIcon: {
         width: '100%',
@@ -532,11 +547,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        dispatchFetchContainers: () => dispatch(fetchContainers())
+        dispatchFetchContainers: () => dispatch(fetchContainers()),
+        dispatchSetContainer: (container: any) => dispatch(setContainer(container))
     }
 }
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles)
-)(AuthenticationMain) as React.ComponentType;
+)(withRouter(AuthenticationMain)) as React.ComponentType;

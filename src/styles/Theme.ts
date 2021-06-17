@@ -26,6 +26,14 @@ const themeObj = {
             primary: '#000000',
         }
     },
+    typography: {
+        fontFamily: '"Nunito", "Roboto"',
+        fontWeightMedium: 600,
+        fontWeightBold: 700,
+        button: {
+            fontWeight: 600
+        }
+    }
 }
 
 // Create a theme instance.

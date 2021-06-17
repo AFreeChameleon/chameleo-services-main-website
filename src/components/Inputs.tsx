@@ -105,7 +105,6 @@ export const StyledCheckbox = withStyles({
 
 export const StyledSelect = withStyles({
     root: {
-        fontFamily: "'Acrom', 'sans-serif'",
         fontSize: '14px',
         color: '#ffffff',
         '& fieldset': {
@@ -173,7 +172,6 @@ export const StyledFormControlLabel = withStyles({
     root: {
         color: '#ffffff',
         '& > .MuiFormControlLabel-label': {
-            fontFamily: "'Acrom', 'sans-serif'",
             fontSize: '14px',
         }
     }

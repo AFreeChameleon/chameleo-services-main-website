@@ -172,7 +172,6 @@ const styles: any = () => ({
     },
     select: {
         color: '#ffffff',
-        fontFamily: "'Acrom'",
         fontSize: '14px',
         marginTop: '10px',
         '&::before': {

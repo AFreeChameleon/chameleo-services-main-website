@@ -17,6 +17,10 @@ import {
     setConfigOAuthEnabled,
     setConfigErrors
 } from '../../../redux/container/auth/config/actions';
+import {
+    setContainerName,
+    setContainerConfigModel
+} from '../../../redux/container/auth/edit/actions';
 import { 
     Breadcrumbs, 
     Select, 
@@ -45,9 +49,10 @@ import theme from '../../../styles/Theme';
 
 type NewAuthContainerBodyProps = {
     classes?: any;
-    config: { [key: string]: any };
-    config_errors: string[];
+    container: { [key: string]: any };
+    container_errors: string[];
     router: NextRouter;
+    dispatchSetContainerName: (value: string) => null;
     dispatchChangeConfigModel: (rowName: string, key: string, value: any) => null;
     dispatchChangeConfigModelLength: (rowName: string, key: string, value: any) => null;
     dispatchRemoveConfigModelRow: (rowName: string) => null;
@@ -75,6 +80,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         this.submitCreateContainer = this.submitCreateContainer.bind(this);
     }
 
+    // ! CHANGE
     checkErrorsExist(config: any) {
         const { model, mail } = config;
         const errors = [];
@@ -109,8 +115,10 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         return errors;
     }
 
+
+    // ! CHANGE
     submitCreateContainer(e) {
-        const { config, router, dispatchSetConfigErrors } = this.props;
+        const { container, router, dispatchSetConfigErrors } = this.props;
         const { containerName } = this.state;
         const errors = this.checkErrorsExist(config);
         console.log(`${MAIN_URL}/api/containers/auth/new`)
@@ -120,7 +128,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         } else {
             // Do stuff
             console.log('No errors', config);
-            axios.post(`${MAIN_URL}/api/containers/auth/new`, {
+            axios.post(`${MAIN_URL}/api/containers/auth/edit`, {
                 config: config,
                 name: containerName
             }, { withCredentials: true })
@@ -135,11 +143,13 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         }
     }
 
+    // ! CHANGE
     render() {
         const { 
             classes, 
-            config, 
-            config_errors,
+            container, 
+            container_errors,
+            dispatchSetContainerName,
             dispatchChangeConfigModel, 
             dispatchChangeConfigModelLength, 
             dispatchRemoveConfigModelRow, 
@@ -151,13 +161,13 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
             dispatchSetConfigOAuthEnabled
         } = this.props;
         const { selectedOAuthCompany, containerName } = this.state;
-        console.log(config, config_errors)
+        console.log(container, container_errors)
 
         return (
             <div className={classes.root}>
-                <Snackbar open={config_errors.length > 0} autoHideDuration={6000}>
+                <Snackbar open={container_errors.length > 0} autoHideDuration={6000}>
                     <div>
-                        { config_errors.map((error, i) => (
+                        { container_errors.map((error, i) => (
                             <Alert variant="filled" severity="error" className={classes.errorAlert} key={i}>
                                 {error}
                             </Alert> 
@@ -181,9 +191,9 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             label="Container Name"
                             placeholder="Container Name"
                             color="secondary"
-                            value={containerName}
+                            value={container.name}
                             onChange={(e) => {
-                                this.setState({ containerName: e.target.value });
+                                dispatchSetContainerName(e.target.value);
                             }}
                         />
                     </div>
@@ -218,14 +228,14 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             </div>
                         </div>
                         <div className={classes.tableBody}>
-                            { config.model.map((row, i) => (
+                            { container.config.model.map((row, i) => (
                                 <div className={classes.tableRow} key={i}>
                                     <div className={classes.tableColumn}>
                                         <input
                                             className={classes.invisibleInput}
                                             value={row.name}
                                             onChange={(e) => 
-                                                dispatchChangeConfigModel(row.name, 'name', e.target.value)
+                                                dispatchSetContainerConfigModel(row.name, 'name', e.target.value)
                                             }
                                         />
                                     </div>
@@ -333,7 +343,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             <StyledFormControlLabel
                                 control={
                                     <StyledCheckbox 
-                                        checked={config.pass.uppercase} 
+                                        checked={container.config.pass.uppercase} 
                                         onChange={(e) => {
                                             dispatchChangeConfigPass('uppercase', e.target.checked);
                                         }} 
@@ -346,7 +356,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             <StyledFormControlLabel
                                 control={
                                     <StyledCheckbox 
-                                        checked={config.pass.lowercase} 
+                                        checked={container.config.pass.lowercase} 
                                         onChange={(e) => {
                                             dispatchChangeConfigPass('lowercase', e.target.checked);
                                         }} 
@@ -359,7 +369,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             <StyledFormControlLabel
                                 control={
                                     <StyledCheckbox 
-                                        checked={config.pass.requireNumbers} 
+                                        checked={container.config.pass.requireNumbers} 
                                         onChange={(e) => {
                                             dispatchChangeConfigPass('requireNumbers', e.target.checked);
                                         }} 
@@ -372,7 +382,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             <StyledFormControlLabel
                                 control={
                                     <StyledCheckbox 
-                                        checked={config.pass.requireSpecialChars} 
+                                        checked={container.config.pass.requireSpecialChars} 
                                         onChange={(e) => {
                                             dispatchChangeConfigPass('requireSpecialChars', e.target.checked);
                                         }} 
@@ -387,7 +397,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                     <div className={classes.title}>Session Settings</div>
                     <RadioGroup
                         className={classes.sessionRadioButtons}
-                        value={config.auth.userSignUp}
+                        value={container.config.auth.userSignUp}
                         onChange={(e) => {
                             dispatchChangeConfigAuth('userSignUp', (e.target.value === 'true'))
                         }}
@@ -412,10 +422,10 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 label="Never"
                                 className={classes.passwordCheckbox}
                                 control={<StyledCheckbox
-                                    checked={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.forever}
+                                    checked={container.config.auth.sessionExpiresIn && container.config.auth.sessionExpiresIn.forever}
                                     onChange={(e) => {
                                         dispatchChangeConfigAuth('sessionExpiresIn', {
-                                            ...config.auth.sessionExpiresIn,
+                                            ...container.config.auth.sessionExpiresIn,
                                             forever: e.target.checked
                                         });
                                     }}
@@ -429,12 +439,12 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     label="Days"
                                     color="secondary"
                                     type="number"
-                                    value={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.days}
-                                    disabled={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.forever}
+                                    value={container.config.auth.sessionExpiresIn && container.config.auth.sessionExpiresIn.days}
+                                    disabled={container.config.auth.sessionExpiresIn && container.config.auth.sessionExpiresIn.forever}
                                     fullWidth
                                     onChange={(e) => {
                                         dispatchChangeConfigAuth('sessionExpiresIn', {
-                                            ...config.auth.sessionExpiresIn,
+                                            ...container.config.auth.sessionExpiresIn,
                                             days: parseInt(e.target.value)
                                         });
                                     }}
@@ -446,12 +456,12 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     label="Hours"
                                     color="secondary"
                                     type="number"
-                                    value={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.hours}
-                                    disabled={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.forever}
+                                    value={container.config.auth.sessionExpiresIn && container.config.auth.sessionExpiresIn.hours}
+                                    disabled={container.config.auth.sessionExpiresIn && container.config.auth.sessionExpiresIn.forever}
                                     fullWidth
                                     onChange={(e) => {
                                         dispatchChangeConfigAuth('sessionExpiresIn', {
-                                            ...config.auth.sessionExpiresIn,
+                                            ...container.config.auth.sessionExpiresIn,
                                             hours: parseInt(e.target.value)
                                         });
                                     }}
@@ -467,7 +477,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             className={classes.passwordCheckbox}
                             control={
                                 <StyledCheckbox 
-                                    checked={!config.mail.enabled} 
+                                    checked={!container.config.mail.enabled} 
                                     onChange={(e) => {
                                         dispatchChangeConfigMail('enabled', !e.target.checked);
                                     }} 
@@ -477,7 +487,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                         />
                     </div>
                     <Collapse
-                        in={config.mail.enabled}
+                        in={container.config.mail.enabled}
                     >
                         <div className={classes.fromAddress}>
                             <StyledTextField
@@ -485,8 +495,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 label="From address"
                                 placeholder="e.g john.doe@company.co"
                                 color="secondary"
-                                disabled={!config.mail.enabled}
-                                value={config.mail.fromAddress}
+                                disabled={!container.config.mail.enabled}
+                                value={container.config.mail.fromAddress}
                                 onChange={(e) => {
                                     dispatchChangeConfigMail('fromAddress', e.target.value);
                                 }}
@@ -497,20 +507,20 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                         </div>
                         <RadioGroup
                             className={classes.verificationRadioButtons}
-                            value={config.mail.verificationType}
+                            value={container.config.mail.verificationType}
                             onChange={(e) => {
                                 dispatchChangeConfigMail('verificationType', e.target.value);
                             }}
                         >
                             <StyledFormControlLabel
-                                disabled={!config.mail.enabled}
+                                disabled={!container.config.mail.enabled}
                                 value="link"
                                 label="Link"
                                 control={<StyledRadio color="secondary"/>}
                                 className={classes.passwordCheckbox}
                             />
                             <StyledFormControlLabel
-                                disabled={!config.mail.enabled}
+                                disabled={!container.config.mail.enabled}
                                 value="code"
                                 label="Code"
                                 control={<StyledRadio color="secondary"/>}
@@ -526,8 +536,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 label="Email subject"
                                 placeholder="Verify your account!"
                                 color="secondary"
-                                disabled={!config.mail.enabled}
-                                value={config.mail.verifySubject}
+                                disabled={!container.config.mail.enabled}
+                                value={container.config.mail.verifySubject}
                                 onChange={(e) => {
                                     dispatchChangeConfigMail('verifySubject', e.target.value);
                                 }}
@@ -540,8 +550,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 rowsMax={4}
                                 label="Email HTML"
                                 color="secondary"
-                                disabled={!config.mail.enabled}
-                                value={config.mail.verifyContent}
+                                disabled={!container.config.mail.enabled}
+                                value={container.config.mail.verifyContent}
                                 onChange={(e) => {
                                     dispatchChangeConfigMail('verifyContent', e.target.value);
                                 }}
@@ -557,8 +567,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 label="Email subject"
                                 placeholder="Reset your password!"
                                 color="secondary"
-                                disabled={!config.mail.enabled}
-                                value={config.mail.resetSubject}
+                                disabled={!container.config.mail.enabled}
+                                value={container.config.mail.resetSubject}
                                 onChange={(e) => {
                                     dispatchChangeConfigMail('resetSubject', e.target.value);
                                 }}
@@ -571,8 +581,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 rowsMax={4}
                                 label="Email HTML"
                                 color="secondary"
-                                disabled={!config.mail.enabled}
-                                value={config.mail.resetContent}
+                                disabled={!container.config.mail.enabled}
+                                value={container.config.mail.resetContent}
                                 onChange={(e) => {
                                     dispatchChangeConfigMail('resetContent', e.target.value);
                                 }}
@@ -588,7 +598,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             className={classes.passwordCheckbox}
                             control={
                                 <StyledCheckbox 
-                                    checked={!config.auth.oauth.enabled} 
+                                    checked={!container.config.auth.oauth.enabled} 
                                     onChange={(e) => {
                                         dispatchSetConfigOAuthEnabled(!e.target.checked);
                                     }} 
@@ -597,7 +607,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             label="Disable oauth."
                         />
                     </div>
-                    <Collapse in={config.auth.oauth.enabled}>
+                    <Collapse in={container.config.auth.oauth.enabled}>
                         <div className={classes.oauthGrid}>
                             <div className={classes.oauthList}>
                                 <div className={`${classes.oauthItem} ${selectedOAuthCompany === 'Google' && classes.oauthItemSelected}`}>
@@ -611,7 +621,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         fullWidth
                                         label="Client ID"
                                         color="secondary"
-                                        value={config.auth.oauth.google.clientID}
+                                        value={container.config.auth.oauth.google.clientID}
                                         onChange={(e) => {
                                             dispatchChangeConfigAuthOAuth('google', 'clientID', e.target.value);
                                         }}
@@ -622,7 +632,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         fullWidth
                                         label="Client Secret"
                                         color="secondary"
-                                        value={config.auth.oauth.google.clientSecret}
+                                        value={container.config.auth.oauth.google.clientSecret}
                                         onChange={(e) => {
                                             dispatchChangeConfigAuthOAuth('google', 'clientSecret', e.target.value);
                                         }}
@@ -633,7 +643,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         fullWidth
                                         label="Redirect URI"
                                         color="secondary"
-                                        value={config.auth.oauth.google.redirectURI}
+                                        value={container.config.auth.oauth.google.redirectURI}
                                         onChange={(e) => {
                                             dispatchChangeConfigAuthOAuth('google', 'redirectURI', e.target.value);
                                         }}
@@ -856,11 +866,12 @@ const styles = (): any => ({
 });
 
 const mapStateToProps = (state) => ({
-    config: state.container.auth.config.data,
-    config_errors: state.container.auth.config.errors
+    container: state.container.auth.edit,
+    container_errors: state.container.auth.edit.errors
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    dispatchSetContainerName: (value: string) => dispatch(setContainerName(value)),
     dispatchChangeConfigModel: (rowName: string, key: string, value: any) => dispatch(changeConfigModel(rowName, key, value)),
     dispatchChangeConfigModelLength: (rowName: string, key: string, value: any) => dispatch(changeConfigModelLength(rowName, key, value)),
     dispatchRemoveConfigModelRow: (rowName: string) => dispatch(removeConfigModelRow(rowName)),
