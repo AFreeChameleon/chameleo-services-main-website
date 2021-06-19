@@ -12,7 +12,6 @@ import {
     changeConfigPass,
     changeConfigModelLength,
     removeConfigModelRow,
-    changeConfigModelTitle,
     addConfigModelRow
 } from '../../../../../redux/projects/auth/edit/config/actions';
 
@@ -47,7 +46,6 @@ class UserModelTable extends React.Component {
             dispatchChangeConfigModel,
             dispatchChangeConfigModelLength,
             dispatchRemoveConfigModelRow,
-            dispatchChangeConfigModelTitle,
             dispatchAddConfigModelRow
         }: any = this.props;
         const config = configObj.data;
@@ -303,7 +301,6 @@ const mapDispatchToProps = (dispatch) => {
         dispatchChangeConfigModel: (rowName: string, key: string, value) => dispatch(changeConfigModel(rowName, key, value)),
         dispatchChangeConfigModelLength: (modelKey: string, key: string, value) => dispatch(changeConfigModelLength(modelKey, key, value)),
         dispatchRemoveConfigModelRow: (rowName: string) => dispatch(removeConfigModelRow(rowName)),
-        dispatchChangeConfigModelTitle: (oldName: string, newName: string) => dispatch(changeConfigModelTitle(oldName, newName)),
         dispatchAddConfigModelRow: () => dispatch(addConfigModelRow())
     }
 }

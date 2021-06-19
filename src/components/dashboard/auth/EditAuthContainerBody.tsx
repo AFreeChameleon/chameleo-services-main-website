@@ -19,7 +19,8 @@ import {
 } from '../../../redux/container/auth/config/actions';
 import {
     setContainerName,
-    setContainerConfigModel
+    setContainerConfigModel,
+    setContainerConfigModelLength
 } from '../../../redux/container/auth/edit/actions';
 import { 
     Breadcrumbs, 
@@ -53,6 +54,8 @@ type NewAuthContainerBodyProps = {
     container_errors: string[];
     router: NextRouter;
     dispatchSetContainerName: (value: string) => null;
+    dispatchSetContainerConfigModel: (rowNam: string, key: string, value: any) => null;
+    dispatchSetContainerConfigModelLength: (rowName: string, key: string, value: any) => null;
     dispatchChangeConfigModel: (rowName: string, key: string, value: any) => null;
     dispatchChangeConfigModelLength: (rowName: string, key: string, value: any) => null;
     dispatchRemoveConfigModelRow: (rowName: string) => null;
@@ -150,8 +153,9 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
             container, 
             container_errors,
             dispatchSetContainerName,
-            dispatchChangeConfigModel, 
-            dispatchChangeConfigModelLength, 
+            dispatchSetContainerConfigModel,
+            dispatchSetContainerConfigModelLength,
+            
             dispatchRemoveConfigModelRow, 
             dispatchAddConfigModelRow,
             dispatchChangeConfigPass,
@@ -243,7 +247,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <StyledCheckbox
                                             checked={row.unique}
                                             onChange={(e) => {
-                                                dispatchChangeConfigModel(row.name, 'unique', e.target.checked)
+                                                dispatchSetContainerConfigModel(row.name, 'unique', e.target.checked)
                                             }}
                                         />
                                     </div>
@@ -251,7 +255,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <StyledCheckbox
                                             checked={!row.allowNull}
                                             onChange={(e) => {
-                                                dispatchChangeConfigModel(row.name, 'allowNull', !e.target.checked)
+                                                dispatchSetContainerConfigModel(row.name, 'allowNull', !e.target.checked)
                                             }}
                                         />
                                     </div>
@@ -261,7 +265,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             disabled={!row.allowNull}
                                             className={classes.invisibleInput}
                                             onChange={(e) => {
-                                                dispatchChangeConfigModel(row.name, 'defaultValue', e.target.value)
+                                                dispatchSetContainerConfigModel(row.name, 'defaultValue', e.target.value)
                                             }}
                                         />
                                     </div>
@@ -272,7 +276,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             fullWidth
                                             input={<StyledSelect/>}
                                             onChange={(e) => {
-                                                dispatchChangeConfigModel(row.name, 'type', e.target.value)
+                                                dispatchSetContainerConfigModel(row.name, 'type', e.target.value)
                                             }}
                                         >
                                             <MenuItem value="String" className={classes.menuItem}>String</MenuItem>
@@ -292,7 +296,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             )}
                                             className={`${classes.invisibleInput} ${classes.center}`}
                                             onChange={(e) => {
-                                                dispatchChangeConfigModelLength(row.name, 'min', parseInt(e.target.value))
+                                                dispatchSetContainerConfigModelLength(row.name, 'min', parseInt(e.target.value))
                                             }}
                                         />
                                     </div>
@@ -306,7 +310,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             )}
                                             className={`${classes.invisibleInput} ${classes.center}`}
                                             onChange={(e) => {
-                                                dispatchChangeConfigModelLength(row.name, 'max', parseInt(e.target.value))
+                                                dispatchSetContainerConfigModelLength(row.name, 'max', parseInt(e.target.value))
                                             }}
                                         />
                                     </div>
@@ -872,6 +876,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     dispatchSetContainerName: (value: string) => dispatch(setContainerName(value)),
+    dispatchSetContainerConfigModel: (rowName: string, key: string, value: any) => dispatch(setContainerConfigModel(rowName, key, value)),
+    dispatchSetContainerConfigModelLength: (rowName: string, key: string, value: any) => dispatch(setContainerConfigModelLength(rowName, key, value)),
     dispatchChangeConfigModel: (rowName: string, key: string, value: any) => dispatch(changeConfigModel(rowName, key, value)),
     dispatchChangeConfigModelLength: (rowName: string, key: string, value: any) => dispatch(changeConfigModelLength(rowName, key, value)),
     dispatchRemoveConfigModelRow: (rowName: string) => dispatch(removeConfigModelRow(rowName)),
