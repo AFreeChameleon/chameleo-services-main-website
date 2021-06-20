@@ -9,9 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import formStyles from '../styles/formStyles';
 import { TextField, Button, SvgIcon } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-const MAIN_URL = process.env.MAIN_URL;
 
-function Login() {
+function Login(props) {
     const classes = makeStyles(formStyles)();
     const router = useRouter();
     const [email, setEmail] = useState('');
@@ -20,22 +19,13 @@ function Login() {
 
     const submitLogin = (e) => {
         e.preventDefault();
-        // Auth.login(email, password)
-        // .then((data) => {
-        //     console.log(data)
-        //     setError('');
-        //     router.push('/dashboard');
-        // })
-        // .catch((err) => {
-        //     setError(err.message);
-        // });
-        axios.post(`${MAIN_URL}/api/login`, { email, password }, { withCredentials: true })
+        axios.post(`${props.mainUrl}/api/login`, { email, password }, { withCredentials: true })
         .then((res) => {
             setError('');
             router.push('/dashboard');
         })
         .catch((err) => {
-            setError(err);
+            setError(err.response ? err.response.data.message : 'An error occurred. Please try again later.');
         })
     }
 
@@ -128,6 +118,12 @@ function Login() {
             </div>
         </div>
     )
+}
+
+Login.getInitialProps = (ctx) => {
+    return {
+        mainUrl: process.env.MAIN_URL
+    }
 }
 
 export default ifNotAuth(Login);

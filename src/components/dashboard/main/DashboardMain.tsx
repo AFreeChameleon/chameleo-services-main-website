@@ -151,7 +151,7 @@ const styles: any = () => ({
     notificationHeader: {
         color: '#ffffff',
         fontSize: '16px',
-        fontWeight: 500,
+        fontWeight: 600,
         paddingLeft: '10px'
     },
     notificationList: {
@@ -170,7 +170,7 @@ const styles: any = () => ({
         color: '#ffffff'
     },
     notificationItemHeader: {
-        fontWeight: 500,
+        fontWeight: 600,
         fontSize: '14px'
     },
     notificationItemDate: {
@@ -251,7 +251,7 @@ const styles: any = () => ({
     },
     requestsChartTitle: {
         fontSize: '16px',
-        fontWeight: 500,
+        fontWeight: 600,
         paddingLeft: '10px'
     },
     statsRow: {
@@ -270,7 +270,7 @@ const styles: any = () => ({
     },
     containerTitle: {
         fontSize: '16px',
-        fontWeight: 500,
+        fontWeight: 600,
         paddingLeft: '10px',
         paddingBottom: '10px'
     },
@@ -286,13 +286,13 @@ const styles: any = () => ({
     },
     locationRowCountry: {
         paddingLeft: '10px',
-        fontWeight: 500,
+        fontWeight: 600,
         flexGrow: 1,
         fontSize: '14px'
     },
     locationRowPercent: {
         fontSize: '14px',
-        fontWeight: 500
+        fontWeight: 600
     },
     locationSeeMore: {
         textDecoration: 'underline',

@@ -8,7 +8,7 @@ import formStyles from '../styles/formStyles';
 import { TextField, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
-function Register() {
+function Register(props) {
     const classes = makeStyles(formStyles)();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ function Register() {
     const [success, setSuccess] = useState('');
 
     const resendEmail = (e) => {
-        axios.post(`${process.env.MAIN_URL}/api/resend-email/verify-email`, {
+        axios.post(`${props.mainUrl}/api/resend-email/verify-email`, {
             email: email,
             username: username
         })
@@ -33,14 +33,18 @@ function Register() {
     const submit = (e) => {
         e.preventDefault();
         if (confirmPassword === password) {
-            Auth.register(email, password, username)
-            .then((data) => {
-                setSuccess(data.message);
-                setError('');
+            console.log(props);
+            axios.post(`${props.mainUrl}/api/register`, {
+                email: email,
+                username: username,
+                password: password
             })
-            .catch((err) => {
-                setError(err.message);
-                setSuccess('');
+            .then(({ data }) => {
+                setError('');
+                setSuccess(data.message);
+            })
+            .catch(err => {
+                setError(err.response.data.message);
             });
         } else {
             setError('Passwords do not match.')
@@ -147,5 +151,12 @@ function Register() {
         </div>
     )
 }
+
+Register.getInitialProps = (ctx) => {
+    return {
+        mainUrl: process.env.MAIN_URL
+    }
+}
+
 
 export default Register;
