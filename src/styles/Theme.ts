@@ -1,29 +1,44 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
 
-const chameleoGreen = '#51C85D';
+const chameleoGreen = '#00AF55';
+const navy = '#212B36';
+const lightNavy = '#435361';
+const blue = '#456EBD';
+const paleBlue = '#919EAB';
 const darkGreen = '#0e803d';
+
+const lightGrey = '#EDEDED';
+
+const error = '#B72136';
+const errorBg = 'rgb(255, 72, 66, 0.1)';
+
 const themeObj = {
     palette: {
         primary: {
-            main: '#ffffff',
-            contrastText: '#000000'
+            main: chameleoGreen,
+            contrastText: navy
         },
         secondary: {
-            main: chameleoGreen,
+            main: navy,
             contrastText: '#ffffff'
         },
         error: {
-            main: red.A400,
+            main: error,
+            light: errorBg
         },
         background: {
-            light: chameleoGreen,
+            light: chameleoGreen + '22',
             default: '#ffffff',
             dark: darkGreen,
-            contrastText: '#ffffff',
+            contrastText: navy,
         },
         text: {
-            primary: '#000000',
+            primary: lightNavy,
+            secondary: navy
+        },
+        grey: {
+            A200: paleBlue,
+            ['50']: lightGrey
         }
     },
     typography: {
@@ -33,7 +48,8 @@ const themeObj = {
         button: {
             fontWeight: 600
         }
-    }
+    },
+    
 }
 
 // Create a theme instance.

@@ -1,9 +1,14 @@
 import React from 'react';
+import Image from 'next/image';
 import { withStyles } from '@material-ui/core/styles';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'; 
-import { Breadcrumbs } from '@material-ui/core';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
 import Flags from 'country-flag-icons/react/3x2';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon } from '../../Icons';
+import CloudGraphic from '../../../img/cloud.svg';
 
 class DashboardMain extends React.Component {
     constructor(props) {
@@ -14,120 +19,117 @@ class DashboardMain extends React.Component {
         const { classes }: any = this.props;
         return (
             <div className={classes.root}>
-                <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
-                    <div className={classes.breadcrumbMain}>Dashboard</div>
-                </Breadcrumbs>
-                <div className={classes.notificationContainer}> 
-                    <div className={classes.notificationHeader}>
-                        Notifications
-                    </div>
-                    <div className={classes.notificationList}>
-                        <div className={classes.notificationItem}>
-                            <div className={classes.notificationItemHeader}>
-                                Auth ran into an error while logging a user in
+                <Typography 
+                    gutterBottom
+                    color="secondary"
+                    className={classes.breadcrumbMain}
+                >
+                    Dashboard
+                </Typography>
+                <Grid container className={classes.row} justify="space-between">
+                    <Grid xs={8}>
+                        <div className={classes.welcomeContainer}>
+                            <div className={classes.welcomeInner}>
+                                <Typography
+                                    className={classes.welcomeTitle}
+                                    color="secondary"
+                                >
+                                    Welcome, Ben!
+                                </Typography>
+                                <Typography
+                                    className={classes.welcomeText}
+                                    color="secondary"
+                                >
+                                    If this is your first time using Chameleo, take a tour of our features!
+                                </Typography>
+                                <div className={classes.flexGrow}></div>
+                                <button className={classes.getStartedButton}>
+                                    Get Started
+                                </button>
                             </div>
-                            <div className={classes.notificationItemDate}>
-                                11:04 04/12/2020
-                            </div>
-                            <div className={classes.flexGrow}></div>
-                            <div className={classes.notificationItemFooter}>
-                                <div className={classes.caution}>
-                                    Caution
-                                </div>
-                                <div className={classes.dismiss}>
-                                    Dismiss
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classes.notificationItem}>
-                            <div className={classes.notificationItemHeader}>
-                                Someone tried logging into your account
-                            </div>
-                            <div className={classes.notificationItemDate}>
-                                11:04 04/12/2020
-                            </div>
-                            <div className={classes.flexGrow}></div>
-                            <div className={classes.notificationItemFooter}>
-                                <div className={classes.urgent}>
-                                    Urgent
-                                </div>
-                                <div className={classes.dismiss}>
-                                    Dismiss
-                                </div>
+                            <div className={classes.welcomeInner}>
+                                <Image src={CloudGraphic} />
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className={classes.timespanContainer}>
-                    <div className={classes.timespan}>
-                        <CalendarIcon className={classes.calendarIcon}/>
-                        <LeftArrowIcon className={classes.arrowIcon}/>
-                        <div className={classes.timespanContent}>
-                            01 Nov 2019 - 01 Dec 2020
-                        </div>
-                        <RightArrowIcon className={classes.arrowIcon}/>
-                    </div>
-                    <div className={classes.timespanMeasure}>
-                        Today
-                    </div>
-                    <div className={classes.timespanMeasure}>
-                        Yesterday
-                    </div>
-                    <div className={classes.timespanMeasure}>
-                        Week
-                    </div>
-                    <div className={classes.timespanMeasure}>
-                        Month
-                    </div>
-                </div>
-                <div className={classes.requestsChartContainer}>
-                    <div className={classes.requestsChartTitle}>
-                        Requests to your containers
-                    </div>
-                </div>
-                <div className={classes.statsRow}>
-                    <div className={classes.locationContainer}>
-                        <div className={classes.containerTitle}>Who's using your services</div>
-                        <div className={classes.locationRow}>
-                            <div className={classes.locationRowFlag}>
-                                <Flags.ES/>
+                    </Grid>
+                    <Grid xs={4}>
+                        <div className={classes.whatsNewContainer}>
+                            <div className={classes.whatsNewInner}>
+                                <Typography
+                                    className={classes.whatsNewText}
+                                >
+                                    What's New?
+                                </Typography>
                             </div>
-                            <div className={classes.locationRowCountry}>Spain</div>
-                            <div className={classes.locationRowPercent}>17%</div>
                         </div>
-                        <div className={classes.locationRow}>
-                            <div className={classes.locationRowFlag}>
-                                <Flags.GB/>
+                    </Grid>
+                </Grid>
+                <Grid container className={classes.row} justify="space-between">
+                    <Grid xs={12}>
+                        <div className={classes.cpuUsageContainer}>
+                            <div className={classes.cpuUsageInner}>
+                                <Typography
+                                    className={classes.cpuUsageTitle}
+                                    color="secondary"
+                                >
+                                    CPU usage
+                                </Typography>
+
                             </div>
-                            <div className={classes.locationRowCountry}>UK</div>
-                            <div className={classes.locationRowPercent}>11.5%</div>
                         </div>
-                        <div className={classes.locationRow}>
-                            <div className={classes.locationRowFlag}>
-                                <Flags.US/>
+                    </Grid>
+                </Grid>
+                <Grid container className={classes.row} justify="space-between">
+                    <Grid xs={12}>
+                        <div className={classes.containersContainer}>
+                            <div className={classes.containersInner}>
+                                <Typography
+                                    className={classes.containersTitle}
+                                    color="secondary"
+                                >
+                                    Containers
+                                </Typography>
+                                <table className={classes.containersTable}>
+                                    <tr>
+                                        <th className={classes.containersHeader}>
+                                            <Checkbox 
+                                                color="primary"
+                                            />
+                                        </th>
+                                        <th className={classes.containersHeader}>Name</th>
+                                        <th className={classes.containersHeader}>Type</th>
+                                        <th className={classes.containersHeader}>Runtime</th>
+                                        <th className={classes.containersHeader}>Status</th>
+                                    </tr>
+                                    <tr>
+                                        <td className={classes.containersCell}>
+                                            <Checkbox 
+                                                color="secondary"
+                                            />    
+                                        </td>
+                                        <td className={classes.containersCell}>
+                                            New Container
+                                        </td>
+                                        <td className={classes.containersCell}>Authentication</td>
+                                        <td className={classes.containersCell}>1d 23h</td>
+                                        <td className={classes.containersCell}>
+                                            Running
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div className={classes.locationRowCountry}>America</div>
-                            <div className={classes.locationRowPercent}>9.5%</div>
                         </div>
-                        <div className={classes.flexGrow}></div>
-                        <div className={classes.locationSeeMore}>
-                            See more
-                        </div>
-                    </div>
-                    <div className={classes.timeofdayContainer}>
-                        <div className={classes.containerTitle}>When your services are being used</div>
-                    </div>
-                </div>
+                    </Grid>
+                </Grid>
             </div>
         )
     }
 }
 
-const styles: any = () => ({
+export default withStyles((theme) => ({
     root: {
-        backgroundColor: '#212121',
-        padding: '15px',
-        color: '#ffffff',
+        backgroundColor: theme.palette.background.default,
+        padding: '20px',
         overflowY: 'auto',
         '&::-webkit-scrollbar': {
             width: '8px',
@@ -139,175 +141,81 @@ const styles: any = () => ({
         }
     },
     breadcrumbMain: {
-        color: '#ffffff',
-    },
-    notificationContainer: {
-        width: '100%',
-        backgroundColor: '#2C2C2C',
-        borderRadius: '10px',
-        padding: '10px',
-        marginTop: '10px'
-    },
-    notificationHeader: {
-        color: '#ffffff',
-        fontSize: '16px',
+        fontSize: '18px',
         fontWeight: 600,
-        paddingLeft: '10px'
+        marginBottom: '20px'
     },
-    notificationList: {
+    row: {
+        maxWidth: '100%',
+        flexWrap: 'nowrap',
+        columnGap: '20px',
+        marginBottom: '20px'
+    },
+    welcomeContainer: {
         display: 'flex',
-        marginTop: '10px',
-        columnGap: '15px'
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: '300px',
+        backgroundColor: '#C8FACD',
+        backgroundImage: 'url("/img/welcome-bg.svg")',
+        padding: '0 40px',
+        boxShadow: theme.shadows['2']
     },
-    notificationItem: {
-        backgroundColor: '#212121',
-        width: '230px',
-        height: '130px',
-        borderRadius: '10px',
-        padding: '10px 15px',
+    welcomeInner: {
+        height: '200px',
         display: 'flex',
         flexDirection: 'column',
-        color: '#ffffff'
     },
-    notificationItemHeader: {
-        fontWeight: 600,
-        fontSize: '14px'
+    welcomeTitle: {
+        fontSize: '28px',
+        fontWeight: 'bold',
+        marginBottom: '30px'
     },
-    notificationItemDate: {
-        paddingTop: '10px',
-        fontSize: '12px'
+    welcomeText: {
+        fontSize: '16px'
     },
-    notificationItemFooter: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        fontSize: '12px'
+    getStartedButton: {
+        width: '110px',
+        height: '40px',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.secondary.contrastText,
+        fontWeight: 500,
+        border: 'none',
+        fontSize: '14px',
+        cursor: 'pointer',
+        transition: '0.2s',
+        '&:hover': {
+            backgroundColor: theme.palette.background['dark']
+        }
+    },
+    whatsNewContainer: {
+        padding: '0 0 50px 30px',
+        backgroundColor: theme.palette.secondary.main,
+        height: '100%',
+        boxShadow: theme.shadows['2'],
+        display: 'grid',
+        alignItems: 'end'
+    },
+    whatsNewInner: {
+
+    },
+    whatsNewText: {
+        color: theme.palette.secondary.contrastText,
+        fontSize: '20px',
+        fontWeight: 700
     },
     flexGrow: {
         flexGrow: 1
     },
-    caution: {
-        color: '#F9A825'
+    cpuUsageContainer: {
+        boxShadow: theme.shadows['2']
     },
-    urgent: {
-        color: '#ff1744'
+    containersContainer: {
+        boxShadow: theme.shadows['2'],
+        padding: '20px'
     },
-    dismiss: {
-        color: '#6F6F76',
-        cursor: 'pointer',
-        textDecoration: 'underline'
-    },
-    timespanContainer: {
-        marginTop: '15px',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center'
-    },
-    timespan: {
-        border: '1px solid #51C85D',
-        borderRadius: '20px',
-        display: 'flex',
-        // padding: '10px 0',
-        height: '40px',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    calendarIcon: {
-        marginLeft: '10px',
-        height: '20px',
-    },
-    arrowIcon: {
-        margin: '0 10px',
-        cursor: 'pointer',
-        '&:hover path': {
-            fill: '#ffffff',
-        }
-    },
-    timespanContent: {
-        // paddingTop: '2px'
-    },
-    timespanMeasure: {
-        marginLeft: '20px',
-        padding: '0 15px',
-        height: '40px',
-        border: '1px solid #6F6F76',
-        borderRadius: '50px',
-        cursor: 'pointer',
-        transition: '0.2s',
-        display: 'grid',
-        placeItems: 'center',
-        '&:hover': {
-            backgroundColor: '#51C85D',
-            border: '1px solid #51C85D',
-            color: '#ffffff'
-        }
-    },
-    requestsChartContainer: {
-        marginTop: '15px',
-        backgroundColor: '#2C2C2C',
-        width: '100%',
-        padding: '10px',
-        borderRadius: '10px',
-        height: '370px'
-    },
-    requestsChartTitle: {
-        fontSize: '16px',
+    containersTitle: {
         fontWeight: 600,
-        paddingLeft: '10px'
+        fontSize: '18px'
     },
-    statsRow: {
-        marginTop: '15px',
-        display: 'flex',
-        columnGap: '15px',
-        width: '100%'
-    },
-    locationContainer: {
-        backgroundColor: '#2C2C2C',
-        padding: '15px 10px 15px 10px',
-        borderRadius: '10px',
-        width: '280px',
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    containerTitle: {
-        fontSize: '16px',
-        fontWeight: 600,
-        paddingLeft: '10px',
-        paddingBottom: '10px'
-    },
-    locationRow: {
-        display: 'flex',
-        borderBottom: '1px solid #6F6F76',
-        padding: '10px 10px',
-        alignItems: 'center'
-    },
-    locationRowFlag: {
-        width: '30px',
-        height: '20px',
-    },
-    locationRowCountry: {
-        paddingLeft: '10px',
-        fontWeight: 600,
-        flexGrow: 1,
-        fontSize: '14px'
-    },
-    locationRowPercent: {
-        fontSize: '14px',
-        fontWeight: 600
-    },
-    locationSeeMore: {
-        textDecoration: 'underline',
-        color: '#6F6F76',
-        padding: '10px 10px 0 10px',
-        fontSize: '13px',
-        cursor: 'pointer',
-    },
-    timeofdayContainer: {
-        backgroundColor: '#2C2C2C',
-        padding: '15px 10px 15px 10px',
-        borderRadius: '10px',
-        width: 'calc(100% - 280px)',
-        height: '300px'
-    }
-})
-
-export default withStyles(styles)(DashboardMain);
+}))(DashboardMain);

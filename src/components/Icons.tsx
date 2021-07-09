@@ -1,6 +1,6 @@
 export const DashboardIcon = (props) => (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" {...props} >
-        <path d="M0 10H8V0H0V10ZM0 18H8V12H0V18ZM10 18H18V8H10V18ZM10 0V6H18V0H10Z" fill="#6F6F76"/>
+    <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <path d="M16 2.31571V4.41029H12V2.31571H16ZM6 2.31571V8.59944H2V2.31571H6ZM16 10.694V16.9777H12V10.694H16ZM6 14.8832V16.9777H2V14.8832H6ZM18 0.221138H10V6.50487H18V0.221138ZM8 0.221138H0V10.694H8V0.221138ZM18 8.59944H10V19.0723H18V8.59944ZM8 12.7886H0V19.0723H8V12.7886Z" fill="#00AF55"/>
     </svg>
 )
 

@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core';
 import LeftSidebar from '../../components/dashboard/left_sidebar/LeftSidebar';
 import DashboardMain from '../../components/dashboard/main/DashboardMain';
 import RightSidebar from '../../components/dashboard/right_sidebar/RightSidebar';
+import Header from '../../components/dashboard/header/Header';
 
 class Dashboard extends Component<{ classes?: any }> {
     constructor(props) {
@@ -19,8 +20,10 @@ class Dashboard extends Component<{ classes?: any }> {
             <Provider store={store}>
                 <div className={classes.root}>
                     <LeftSidebar selectedTab="dashboard" />
-                    <DashboardMain/>
-                    <RightSidebar/>
+                    <div>
+                        <Header/>
+                        <DashboardMain/>
+                    </div>
                 </div>
             </Provider>
         )
@@ -31,7 +34,7 @@ const styles = (): any => ({
     root: {
         height: '100vh', 
         display: 'grid', 
-        gridTemplateColumns: '100px auto 300px'
+        gridTemplateColumns: '280px auto'
     }
 })
 

@@ -18,6 +18,7 @@ function Login(props) {
     const [error, setError] = useState(router.query.error ? router.query.error : '');
 
     const submitLogin = (e) => {
+        console.log(props);
         e.preventDefault();
         axios.post(`${props.mainUrl}/api/login`, { email, password }, { withCredentials: true })
         .then((res) => {
@@ -121,6 +122,7 @@ function Login(props) {
 }
 
 Login.getInitialProps = (ctx) => {
+    console.log(process.env.MAIN_URL)
     return {
         mainUrl: process.env.MAIN_URL
     }
