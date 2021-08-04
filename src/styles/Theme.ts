@@ -1,9 +1,11 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { createMuiTheme, Theme, ThemeOptions } from '@material-ui/core/styles';
 
 const chameleoGreen = '#00AF55';
 const navy = '#212B36';
 const lightNavy = '#435361';
 const blue = '#456EBD';
+const green = '#00AF55';
+const red = '#B72136';
 const paleBlue = '#919EAB';
 const darkGreen = '#0e803d';
 
@@ -31,6 +33,9 @@ const themeObj = {
             default: '#ffffff',
             dark: darkGreen,
             contrastText: navy,
+            blue: blue,
+            red: red,
+            green: green
         },
         text: {
             primary: lightNavy,
@@ -46,6 +51,14 @@ const themeObj = {
         fontWeightMedium: 600,
         fontWeightBold: 700,
         button: {
+            fontWeight: 600
+        },
+        h1: {
+            fontSize: '32px',
+            fontWeight: 700
+        },
+        h6: {
+            fontSize: '18px',
             fontWeight: 600
         }
     },

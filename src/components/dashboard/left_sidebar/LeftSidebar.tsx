@@ -18,6 +18,7 @@ import { DatabaseIcon, AuthIcon, DashboardIcon, ExitIcon } from '../../Icons';
 type LeftSidebarProps = {
     classes: any;
     containers: any[];
+    containerId: string;
     selectedTab: 'dashboard' | 'authentication' | 'database';
     dispatchFetchContainers: () => void;
 }
@@ -30,16 +31,16 @@ type LeftSidebarState = {
 class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
     constructor(props) {
         super(props);
-        const { dispatchFetchContainers } = this.props;
+        const { selectedTab, dispatchFetchContainers } = this.props;
         dispatchFetchContainers();
         this.state = {
-            authDropdownOpen: false,
-            dbDropdownOpen: false,
+            authDropdownOpen: selectedTab === 'authentication',
+            dbDropdownOpen: selectedTab === 'database',
         }
     }
 
     render() {
-        const { classes, selectedTab, containers } = this.props;
+        const { classes, selectedTab, containers, containerId } = this.props;
         const { authDropdownOpen, dbDropdownOpen } = this.state;
         return (
             <div className={classes.root}>
@@ -58,9 +59,9 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                     </div>
                     <Link href="/dashboard">
                         <div 
-                            className={`${classes.sidebarItem} ${selectedTab === 'dashboard' ? classes.selected : ''}`}
+                            className={`${classes.sidebarItem} ${selectedTab === 'dashboard' ? classes.sidebarItemSelected : ''}`}
                         >
-                            <DashboardIcon/> 
+                            <DashboardIcon className={`${classes.smallIcon} ${selectedTab === 'dashboard' && classes.sidebarIconSelected}`} /> 
                             <Typography
                                 variant="body1"
                                 className={classes.selectedText}
@@ -73,7 +74,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                         className={`${classes.sidebarItem} ${authDropdownOpen && classes.sidebarItemSelected}`} 
                         onClick={(e) => this.setState({ authDropdownOpen: !authDropdownOpen })}
                     >
-                        <AuthIcon className={classes.smallIcon} />
+                        <AuthIcon className={`${classes.smallIcon} ${selectedTab === 'authentication' && classes.sidebarIconSelected}`} />
                         <Typography
                             className={classes.selectedText}
                             style={{paddingTop: '3px'}}
@@ -85,10 +86,10 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                     </div>
                     <Collapse in={authDropdownOpen}>
                         { containers.filter(c => c.type === 'auth').map((c: any, i) => {console.log(c); return (
-                            <Link href={`/dashboard/auth/${encodeURI(c.name)}`} key={i}>
-                                <div className={classes.sidebarItem}>
+                            <Link href={`/dashboard/auth/container/${encodeURI(c.id)}`} key={i}>
+                                <div className={`${classes.sidebarItem} ${(c.id == containerId) && classes.sidebarListItemSelected}`}>
                                     <div className={classes.smallIcon}>&#8226;</div>
-                                    <Typography>
+                                    <Typography className={`${(c.id == containerId) && classes.sidebarListItemTextSelected}`}>
                                         {c.name}
                                     </Typography>
                                 </div>
@@ -107,7 +108,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                         className={`${classes.sidebarItem} ${dbDropdownOpen && classes.sidebarItemSelected}`} 
                         onClick={(e) => this.setState({ dbDropdownOpen: !dbDropdownOpen })}
                     >
-                        <DatabaseIcon className={classes.smallIcon} />
+                        <DatabaseIcon className={`${classes.smallIcon} ${selectedTab === 'database' && classes.sidebarIconSelected}`} />
                         <Typography
                             className={classes.selectedText}
                             style={{paddingTop: '3px'}}
@@ -180,6 +181,23 @@ const styles = withStyles((theme: any) => ({
     },
     sidebarItemSelected: {
         borderBottom: `1px solid ${theme.palette.grey['50']}`
+    },
+    sidebarListItemSelected: {
+        backgroundColor: theme.palette.background.light
+    },
+    sidebarListItemIconSelected: {
+        '& > path': {
+            fill: '#000000'
+        }
+    },
+    sidebarListItemTextSelected: {
+        color: '#000000',
+        fontWeight: 600
+    },
+    sidebarIconSelected: {
+        '& > path': {
+            fill: "#00AF55"
+        }
     },
     smallIcon: {
         width: '20px',
