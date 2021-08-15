@@ -4,7 +4,8 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import { getGoogleAuthURL, getTokens } from '../../../../../lib/oauth/google';
 import withSession, { NextApiRequestWithSession } from '../../../../../lib/session';
 import prisma from '../../../../../lib/prisma';
-import { salt } from '../../../../../lib/db_metadata';
+import { salt } from '../../../../../lib/auth';
+import { Prisma } from '@prisma/client';
 
 export default withSession(async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     switch (req.method) {
@@ -49,7 +50,7 @@ const getGoogleRedirect = async (req: NextApiRequestWithSession, res: NextApiRes
     });
     let user = await prisma.user.findFirst({
         where: {
-            email: googleUser.email
+            email: googleUser.email,
         }
     });
     if (!user) {
@@ -64,8 +65,13 @@ const getGoogleRedirect = async (req: NextApiRequestWithSession, res: NextApiRes
                 }
             }
         });
+    } else if (user.oauth['type'] !== 'google') {
+        return res.status(401).json({
+            errors: ['User is not signed in with OAuth']
+        });
+    } else {
+        req.session.set('user', user.id);
+        await req.session.save();
+        return res.redirect(`/dashboard`);
     }
-    req.session.set('user', user.id);
-    await req.session.save();
-    return res.redirect(`/dashboard`);
 }

@@ -57,7 +57,7 @@ function VerifyToken({ error, message }) {
 
 VerifyToken.getInitialProps = async ({ query }) => {
     try {
-        const res = await axios.post(`${process.env.MAIN_URL}/api/verify-email/${query.token}`);
+        const res = await axios.post(`/api/user/verify-email/${query.token}`);
         return {
             error: false,
             message: res.data.message

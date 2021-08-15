@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../../../lib/prisma';
-import { salt } from '../../../lib/db_metadata';
+import { salt } from '../../../lib/auth';
 import { sendVerifyEmail } from '../../../lib/mail';
 
 const schema = yup.object().shape({
@@ -77,6 +77,7 @@ const postRegister = async (req: NextApiRequest, res: NextApiResponse) => {
         }
     })
     .catch((err) => {
+        console.log(err)
         return res.status(500).json({
             errors: err.errors
         });

@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import bcrypt from 'bcrypt';
 import prisma from '../../../lib/prisma';
 import withSession, { NextApiRequestWithSession } from '../../../lib/session';
-import { salt } from '../../../lib/db_metadata';
+import { salt } from '../../../lib/auth';
 
 export default withSession(async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     switch (req.method) {

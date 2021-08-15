@@ -9,7 +9,7 @@ const mailer = mailgun({
 
 export const sendVerifyEmail = (userEmail: string, token: string) => {
     return new Promise((resolve, reject) => {
-        const verifyEmailHTML = readFileSync(path.join(__dirname, '../../templates/verification-email.html'))
+        const verifyEmailHTML = readFileSync(path.join(__dirname, '../../../../../html/verification-email.html'))
             .toString()
             .replace('TOKEN_URL', `${process.env.HOST}/verify-email/${token}`);
         const data = {
@@ -18,7 +18,6 @@ export const sendVerifyEmail = (userEmail: string, token: string) => {
             subject: 'Verify your email!',
             html: verifyEmailHTML
         }
-        console.log(data)
         mailer.messages().send(data, (err, body) => {
             if (err) {
                 reject({
@@ -37,7 +36,7 @@ export const sendVerifyEmail = (userEmail: string, token: string) => {
 
 export const sendResetPassEmail = (userEmail: string, token: string) => {
     return new Promise((resolve, reject) => {
-        const resetPassHTML = readFileSync(path.join(__dirname, '../../templates/reset-pass-email.html'))
+        const resetPassHTML = readFileSync(path.join(__dirname, '../../../../../html/reset-pass-email.html'))
             .toString()
             .replace('TOKEN_URL', `${process.env.HOST}/forgot-password/${token}`);
         const data = {
