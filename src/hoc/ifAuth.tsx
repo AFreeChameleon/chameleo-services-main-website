@@ -10,8 +10,9 @@ const ifAuth = <T extends object>(C: NextPage<T>) => {
             const childComponentProps = C.getInitialProps ? await C.getInitialProps(ctx) : {};
             try {
                 if (ctx.req) {
-                    const res = await axios.post('/api/user/logged-in', {}, 
-                    { withCredentials: true, headers: { Cookie: ctx.req.headers.cookie } })
+                    const res = await axios.post(process.env.HOST + '/api/user/logged-in', {}, 
+                        { withCredentials: true, headers: { Cookie: ctx.req.headers.cookie } });
+                    console.log(res.data);
                     if (res.status !== 200) {
                         redirect(ctx, "/login");
                     }
@@ -20,8 +21,9 @@ const ifAuth = <T extends object>(C: NextPage<T>) => {
                         ...childComponentProps
                     }
                 } else {
-                    const res = await axios.post('/api/user/logged-in', {}, 
+                    const res = await axios.post(process.env.HOST + '/api/user/logged-in', {}, 
                     { withCredentials: true })
+                    console.log(res.data);
                     if (res.status !== 200) {
                         redirect(ctx, "/login");
                     }
@@ -31,7 +33,7 @@ const ifAuth = <T extends object>(C: NextPage<T>) => {
                     }
                 }
             } catch (err) {
-                console.log(err)
+                console.log(err.message)
                 redirect(ctx, "/login");
                 return {
                     loggedIn: false,

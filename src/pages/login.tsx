@@ -84,7 +84,7 @@ function Login(props) {
                             </Button>
                         </div>
                         <div className={classes.innerCardButton}>
-                            <Link href={`http://localhost:8080/api/auth/google`}>
+                            <Link href={`/api/user/oauth/google`}>
                                 <Button
                                     variant="outlined"
                                     fullWidth

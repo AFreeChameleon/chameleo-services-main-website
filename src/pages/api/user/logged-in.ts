@@ -16,19 +16,23 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
             });
             break;
         default:
-            console.log('unsupported');
+            res.status(404).json({
+                errors: ['Could not find route specified.']
+            });
             break;
     }
 });
 
 const postLoggedIn = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     const id = req.session.get('user') || -1;
+    console.log('id', id)
     const user = await prisma.user.findFirst({
         where: {
             id: id
         }
     });
     if (user) {
+        console.log('User is logged in', user)
         return res.json({
             logged_in: true
         });

@@ -34,7 +34,7 @@ function Register(props) {
         e.preventDefault();
         if (confirmPassword === password) {
             console.log(props);
-            axios.post(`${props.mainUrl}/api/register`, {
+            axios.post(`/api/user/register`, {
                 email: email,
                 username: username,
                 password: password

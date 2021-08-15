@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { nanoid } from 'nanoid';
 import * as yup from 'yup';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import prisma from '../../../lib/prisma';
 import { salt } from '../../../lib/db_metadata';
+import { sendVerifyEmail } from '../../../lib/mail';
 
 const schema = yup.object().shape({
     username: yup.string()
@@ -66,8 +69,10 @@ const postRegister = async (req: NextApiRequest, res: NextApiResponse) => {
                     password: await bcrypt.hash(password, salt),
                 }
             });
+            const token = jwt.sign(email, process.env.NODEMAILER_TOKEN);
+            await sendVerifyEmail(email, token);
             return res.json({
-                message: 'User successfully created.'
+                message: 'Success! You have been sent an email. Click on the link to login'
             });
         }
     })
