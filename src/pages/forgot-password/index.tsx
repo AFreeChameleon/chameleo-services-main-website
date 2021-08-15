@@ -20,28 +20,28 @@ function ForgotPassword() {
 
     const submitForgotPassword = (e) => {
         e.preventDefault();
-        Auth.resetPassword(email)
-        .then((data) => {
-            setError('');
-            setSuccess(data.message);
-        })
-        .catch((err) => {
-            console.log(err)
-            setSuccess('');
-            setError(err.message);
-        })
+        // Auth.resetPassword(email)
+        // .then((data) => {
+        //     setError('');
+        //     setSuccess(data.message);
+        // })
+        // .catch((err) => {
+        //     console.log(err)
+        //     setSuccess('');
+        //     setError(err.message);
+        // })
     }
 
     const resendEmail = (e) => {
-        Auth.resetPassword(email)
-        .then((data) => {
-            setError('');
-            setSuccess(data.message);
-        })
-        .catch((err) => {
-            setSuccess('');
-            setError(err.message);
-        })
+        // Auth.resetPassword(email)
+        // .then((data) => {
+        //     setError('');
+        //     setSuccess(data.message);
+        // })
+        // .catch((err) => {
+        //     setSuccess('');
+        //     setError(err.message);
+        // })
     }
 
     return (

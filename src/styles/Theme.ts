@@ -1,4 +1,4 @@
-import { createMuiTheme, Theme, ThemeOptions } from '@material-ui/core/styles';
+import { createTheme, Theme, ThemeOptions } from '@material-ui/core/styles';
 
 const chameleoGreen = '#00AF55';
 const navy = '#212B36';
@@ -66,7 +66,7 @@ const themeObj = {
 }
 
 // Create a theme instance.
-const theme: any = createMuiTheme(themeObj);
+const theme: any = createTheme(themeObj);
 
 export const secondary = '#13AA52';
 

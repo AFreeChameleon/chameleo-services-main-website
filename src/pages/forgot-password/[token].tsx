@@ -25,19 +25,19 @@ function ForgotPasswordToken({ token }) {
     const submitResetPassword = (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
-            Auth.verifyResetPasswordToken(token, password)
-            .then((data) => {
-                console.log(data);
-                setSuccess(data.message);
-                setError('');
-                setTimeout(() => {
-                    router.push('/login');
-                }, 1000);
-            })
-            .catch((err) => {
-                console.log(err);
-                setError(err.message);
-            })
+            // Auth.resetPassword(token, password)
+            // .then((data) => {
+            //     console.log(data);
+            //     setSuccess(data.message);
+            //     setError('');
+            //     setTimeout(() => {
+            //         router.push('/login');
+            //     }, 1000);
+            // })
+            // .catch((err) => {
+            //     console.log(err);
+            //     setError(err.message);
+            // })
         } else {
             setError('Passwords must be identical.');
         }

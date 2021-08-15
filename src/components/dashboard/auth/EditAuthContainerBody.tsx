@@ -50,7 +50,7 @@ import theme from '../../../styles/Theme';
 
 type NewAuthContainerBodyProps = {
     classes?: any;
-    container: { [key: string]: any };
+    container: any;
     container_errors: string[];
     router: NextRouter;
     dispatchSetContainerName: (value: string) => null;
@@ -123,6 +123,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     submitCreateContainer(e) {
         const { container, router, dispatchSetConfigErrors } = this.props;
         const { containerName } = this.state;
+        const { config } = container;
         const errors = this.checkErrorsExist(config);
         console.log(`${MAIN_URL}/api/containers/auth/new`)
         if (errors.length > 0) {

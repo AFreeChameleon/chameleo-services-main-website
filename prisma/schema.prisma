@@ -1,0 +1,33 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url = "postgresql://dev:carto@localhost:5432/chameleo-services-main?schema=public"
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    email String @unique
+    username String
+    password String
+    verified Boolean @default(false)
+    oauth Json?
+    uuid String @unique @db.Uuid @default(uuid())
+    db_username String?
+    db_password String?
+    db_schema String? @unique
+    containers Container[]
+}
+
+model Container {
+    id String @unique @db.Uuid
+    user_id Int
+    type String
+    name String
+    status String @default("Stopped")
+    tier String
+    config Json?
+    user User @relation(fields: [user_id], references: [id])
+}

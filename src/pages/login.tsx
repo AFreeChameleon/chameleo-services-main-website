@@ -20,7 +20,7 @@ function Login(props) {
     const submitLogin = (e) => {
         console.log(props);
         e.preventDefault();
-        axios.post(`${props.mainUrl}/api/login`, { email, password }, { withCredentials: true })
+        axios.post(`/api/user/login`, { email, password }, { withCredentials: true })
         .then((res) => {
             setError('');
             router.push('/dashboard');

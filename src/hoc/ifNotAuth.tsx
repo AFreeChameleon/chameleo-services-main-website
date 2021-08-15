@@ -13,7 +13,7 @@ const ifNotAuth = <T extends object>(C: NextPage<T>) => {
                     // const loggedIn = await Auth.verifyUser({
                     //     cookie: ctx.req.headers.cookie
                     // });
-                    const res = await axios.post('http://localhost:8080/api/verify-user', {}, 
+                    const res = await axios.post('/api/user/logged-in', {}, 
                     { withCredentials: true, headers: { Cookie: ctx.req.headers.cookie } })
                     if (res.status !== 200) {
                         redirect(ctx, "/dashboard");
@@ -24,7 +24,7 @@ const ifNotAuth = <T extends object>(C: NextPage<T>) => {
                     };
                 } else {
                     // const loggedIn = await Auth.verifyUser();
-                    const res = await axios.post('http://localhost:8080/api/verify-user', {}, 
+                    const res = await axios.post('/api/user/logged-in', {}, 
                     { withCredentials: true })
                     if (res.status !== 200) {
                         redirect(ctx, "/dashboard");
