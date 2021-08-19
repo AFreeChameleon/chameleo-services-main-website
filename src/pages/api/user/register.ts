@@ -2,8 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { nanoid } from 'nanoid';
 import * as yup from 'yup';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import prisma from '../../../lib/prisma';
+import { prismaMain }  from '../../../lib/prisma';
 import { salt } from '../../../lib/auth';
 import { sendVerifyEmail } from '../../../lib/mail';
 
@@ -52,7 +51,7 @@ const postRegister = async (req: NextApiRequest, res: NextApiResponse) => {
             email,
             password
         } = req.body;
-        const user = await prisma.user.findFirst({
+        const user = await prismaMain.user.findFirst({
             where: {
                 email: email
             }
@@ -62,14 +61,22 @@ const postRegister = async (req: NextApiRequest, res: NextApiResponse) => {
                 errors: ['Email already registered.']
             });
         } else {
-            let newUser = await prisma.user.create({
+            const token = nanoid(32);
+            let newUser = await prismaMain.user.create({
                 data: {
                     username,
                     email,
                     password: await bcrypt.hash(password, salt),
-                }
+                    tokens: {
+                        create: [
+                            {
+                                token: token,
+                                purpose: 'verify-email',
+                            }
+                        ]
+                    }
+                },
             });
-            const token = jwt.sign(email, process.env.NODEMAILER_TOKEN);
             await sendVerifyEmail(email, token);
             return res.json({
                 message: 'Success! You have been sent an email. Click on the link to login'

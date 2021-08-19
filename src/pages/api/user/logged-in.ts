@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as yup from 'yup';
 import bcrypt from 'bcrypt';
-import prisma from '../../../lib/prisma';
+import { prismaMain }  from '../../../lib/prisma';
 import withSession, { NextApiRequestWithSession } from '../../../lib/session';
 
 export default withSession(async (req: NextApiRequestWithSession, res: NextApiResponse) => {
@@ -26,7 +26,7 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
 const postLoggedIn = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     const id = req.session.get('user') || -1;
     console.log('id', id)
-    const user = await prisma.user.findFirst({
+    const user = await prismaMain.user.findFirst({
         where: {
             id: id
         }

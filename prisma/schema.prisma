@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url = "postgresql://dev:carto@localhost:5432/chameleo-services-main?schema=public"
+    url = env("MAIN_DATABASE_URL")
 }
 
 model User {
@@ -19,6 +19,7 @@ model User {
     db_password String?
     db_schema String? @unique
     containers Container[]
+    tokens Token[]
 }
 
 model Container {
@@ -30,4 +31,14 @@ model Container {
     tier String
     config Json?
     user User @relation(fields: [user_id], references: [id])
+}
+
+model Token {
+    id Int @id @default(autoincrement())
+    user User @relation(fields: [user_id], references: [id])
+    user_id Int
+    token String @unique @db.Uuid @default(uuid())
+    purpose String
+    createdAt DateTime? @default(now())
+    updatedAt DateTime? @updatedAt
 }

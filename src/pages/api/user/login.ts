@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as yup from 'yup';
 import bcrypt from 'bcrypt';
-import prisma from '../../../lib/prisma';
+import { prismaMain } from '../../../lib/prisma';
 import withSession, { NextApiRequestWithSession } from '../../../lib/session';
 
 const schema = yup.object().shape({
@@ -42,7 +42,7 @@ const postLogin = async (req: NextApiRequestWithSession, res: NextApiResponse) =
             email,
             password
         } = req.body;
-        const user = await prisma.user.findFirst({
+        const user = await prismaMain.user.findFirst({
             where: {
                 email: email
             }

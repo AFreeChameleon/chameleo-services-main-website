@@ -3,9 +3,8 @@ import bcrypt from 'bcrypt';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { getGoogleAuthURL, getTokens } from '../../../../../lib/oauth/google';
 import withSession, { NextApiRequestWithSession } from '../../../../../lib/session';
-import prisma from '../../../../../lib/prisma';
+import { prismaMain }  from '../../../../../lib/prisma';
 import { salt } from '../../../../../lib/auth';
-import { Prisma } from '@prisma/client';
 
 export default withSession(async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     switch (req.method) {
@@ -48,13 +47,13 @@ const getGoogleRedirect = async (req: NextApiRequestWithSession, res: NextApiRes
         console.log(`Failed to fetch user`);
         throw new Error(error.message);
     });
-    let user = await prisma.user.findFirst({
+    let user = await prismaMain.user.findFirst({
         where: {
             email: googleUser.email,
         }
     });
     if (!user) {
-        user = await prisma.user.create({
+        user = await prismaMain.user.create({
             data: {
                 email: googleUser.email,
                 username: googleUser.name,

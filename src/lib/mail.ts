@@ -1,22 +1,26 @@
 import path from 'path';
+import { nanoid } from 'nanoid';
 import mailgun from 'mailgun-js';
 import { readFileSync } from 'fs';
+import { prismaMain } from './prisma';
 
 const mailer = mailgun({
     apiKey: process.env.MAILGUN_API_KEY,
     domain: process.env.MAILGUN_DOMAIN
 });
 
+const verifyEmailHTML = readFileSync(path.join(__dirname, '../../../../../html/verification-email.html'));
+const resetPassHTML = readFileSync(path.join(__dirname, '../../../../../html/reset-pass-email.html'))
+
 export const sendVerifyEmail = (userEmail: string, token: string) => {
     return new Promise((resolve, reject) => {
-        const verifyEmailHTML = readFileSync(path.join(__dirname, '../../../../../html/verification-email.html'))
-            .toString()
+        let newVerifyEmailHTML = verifyEmailHTML.toString()
             .replace('TOKEN_URL', `${process.env.HOST}/verify-email/${token}`);
         const data = {
             from: 'Support Chameleo <info@chamel.io>',
             to: userEmail,
             subject: 'Verify your email!',
-            html: verifyEmailHTML
+            html: newVerifyEmailHTML
         }
         mailer.messages().send(data, (err, body) => {
             if (err) {
@@ -36,14 +40,13 @@ export const sendVerifyEmail = (userEmail: string, token: string) => {
 
 export const sendResetPassEmail = (userEmail: string, token: string) => {
     return new Promise((resolve, reject) => {
-        const resetPassHTML = readFileSync(path.join(__dirname, '../../../../../html/reset-pass-email.html'))
-            .toString()
+        const newResetPassHTML = resetPassHTML.toString()
             .replace('TOKEN_URL', `${process.env.HOST}/forgot-password/${token}`);
         const data = {
             from: 'Support Chameleo <info@chamel.io>',
             to: userEmail,
             subject: 'Reset your password!',
-            html: resetPassHTML
+            html: newResetPassHTML
         }
         mailer.messages().send(data, (err, body) => {
             if (err) {
