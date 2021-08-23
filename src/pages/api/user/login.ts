@@ -30,7 +30,9 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
             });
             break;
         default:
-            console.log('unsupported');
+            res.status(404).json({
+                errors: ['Could not find route specified.']
+            });
             break;
     }
 });
@@ -54,19 +56,17 @@ const postLogin = async (req: NextApiRequestWithSession, res: NextApiResponse) =
             return res.status(404).end();
         } else {
             const valid = bcrypt.compareSync(password, user.password);
+            console.log(valid)
             if (valid) {
                 req.session.set('user', user.id);
                 await req.session.save();
-                // console.log(req.session.get('user'))
-                res.json({
+                return res.json({
                     message: 'Successfully logged in!'
                 });
-                return res.status(200).end();
             } else {
-                res.json({
+                return res.status(401).json({
                     errors: ['Invalid credentials.']
                 });
-                return res.status(401).end();
             }
         }
     })

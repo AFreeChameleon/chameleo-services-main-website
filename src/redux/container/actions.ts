@@ -11,7 +11,7 @@ export const fetchContainers = () => {
         dispatch({
             type: FETCH_CONTAINERS_REQUEST
         });
-        return fetch(`${MAIN_URL}/api/containers`, { credentials: 'include' })
+        return fetch(`/api/container/all`, { credentials: 'include' })
             .then((raw) => raw.json())
             .then((res) => {
                 console.log(res)
