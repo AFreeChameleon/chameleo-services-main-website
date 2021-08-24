@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import store from '../../../redux/store';
 import ifAuth from '../../../hoc/ifAuth';
 import LeftSidebar from '../../../components/dashboard/left_sidebar/LeftSidebar';
-import NewAuthContainerBody from '../../../components/dashboard/auth/NewAuthContainerBody';
+import NewAuthContainerBody from '../../../components/dashboard/auth/create/CreateContainerBody';
 
 class NewAuthContainer extends React.Component<{ classes?: any }> {
     constructor(props) {
@@ -28,7 +28,7 @@ const styles = (): any => ({
     root: {
         height: '100vh', 
         display: 'grid', 
-        gridTemplateColumns: '100px auto'
+        gridTemplateColumns: '280px auto'
     }
 })
 

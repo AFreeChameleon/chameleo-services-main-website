@@ -18,7 +18,7 @@ const themeObj = {
     palette: {
         primary: {
             main: chameleoGreen,
-            contrastText: navy
+            contrastText: '#ffffff'
         },
         secondary: {
             main: navy,

@@ -61,7 +61,6 @@ const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiR
                         }
                     },  
                 });
-                console.log(newContainer);
                 return res.json({
                     message: 'New container created!'
                 });

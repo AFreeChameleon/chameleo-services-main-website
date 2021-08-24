@@ -55,7 +55,7 @@ function Login(props) {
                                 }}
                                 label="Email address"
                                 type="email"
-                                color="secondary"
+                                color="primary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -68,7 +68,7 @@ function Login(props) {
                                 }}
                                 label="Password"
                                 type="password"
-                                color="secondary"
+                                color="primary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -76,7 +76,7 @@ function Login(props) {
                         <div className={classes.innerCardButton}>
                             <Button
                             variant="contained"
-                            color="secondary"
+                            color="primary"
                             fullWidth
                             type="submit"
                             disableRipple>

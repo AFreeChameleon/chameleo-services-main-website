@@ -28,7 +28,7 @@ const styles = (): any => ({
     root: {
         height: '100vh', 
         display: 'grid', 
-        gridTemplateColumns: '100px auto'
+        gridTemplateColumns: '280px auto'
     }
 })
 
