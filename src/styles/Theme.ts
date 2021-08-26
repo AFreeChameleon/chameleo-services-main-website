@@ -57,8 +57,20 @@ const themeObj = {
             fontSize: '32px',
             fontWeight: 700
         },
-        h6: {
+        h3: {
+            fontSize: '24px',
+            fontWeight: 600,
+        },
+        h5: {
             fontSize: '18px',
+            fontWeight: 600,
+        },
+        h6: {
+            fontSize: '1rem',
+            fontWeight: 600
+        },
+        subtitle1: {
+            fontSize: '1rem',
             fontWeight: 600
         }
     },

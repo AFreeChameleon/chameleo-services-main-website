@@ -15,12 +15,17 @@ import {
     REMOVE_CONFIG_MODEL_ROW,
     ADD_CONFIG_MODEL_ROW,
     CHANGE_CONFIG_MODEL_TITLE,
-    TOGGLE_CONFIG_AUTH_OAUTH
+    TOGGLE_CONFIG_AUTH_OAUTH,
+
+    SET_CONTAINER_TIER,
+    SET_CONTAINER_LOCATION
 } from './types';
 
 const configState: any = {
     loading: false,
     errors: [],
+    tier: '',
+    location: '',
     data: {
         auth: {
             emailColumnName: 'email',
@@ -36,8 +41,8 @@ const configState: any = {
             },
             sessionExpiresIn: {
                 forever: false,
-                days: 30,
-                minutes: 0
+                days: 0,
+                hours: 0
             }
         },
         db: {
@@ -46,22 +51,33 @@ const configState: any = {
         },
         model: [
             {
-                name: 'username',
-                unique: false,
+                name: 'email',
+                unique: true,
                 allowNull: false,
                 default: '',
-                type: 'Username',
+                type: 'Email',
                 length: {
                     max: 250,
                     min: 3
                 }
             },
             {
-                name: 'email',
-                unique: true,
+                name: 'password',
+                unique: false,
                 allowNull: false,
                 default: '',
-                type: 'Email',
+                type: 'Password',
+                length: {
+                    max: 250,
+                    min: 3
+                }
+            },
+            {
+                name: 'username',
+                unique: false,
+                allowNull: false,
+                default: '',
+                type: 'Username',
                 length: {
                     max: 250,
                     min: 3
@@ -78,28 +94,16 @@ const configState: any = {
                     min: 3
                 }
             },
-            {
-                name: 'password',
-                unique: false,
-                allowNull: false,
-                default: '',
-                type: 'Password',
-                length: {
-                    max: 250,
-                    min: 3
-                }
-            }
         ],
         mail: {
             enabled: true,
             fromAddress: '',
-            verificationType: 'link',
         
-            verifySubject: 'Verify your email!',
-            verifyContent: 'Verify your email by clicking this link: {__verify__}',
+            verifySubject: '',
+            verifyContent: '',
         
-            resetSubject: 'Your password has been reset!',
-            resetContent: 'Your password has been reset to: {__temporary password__}'
+            resetSubject: '',
+            resetContent: ''
         },
         pass: {
             lowercase: true,
@@ -131,6 +135,16 @@ const configReducer = (state = configState, action) => {
                 ...state,
                 loading: false,
                 errors: [action.error]
+            }
+        case SET_CONTAINER_TIER:
+            return {
+                ...state,
+                tier: action.value
+            }
+        case SET_CONTAINER_LOCATION:
+            return {
+                ...state,
+                location: action.value
             }
         case SET_CONFIG_ERRORS:
             return {

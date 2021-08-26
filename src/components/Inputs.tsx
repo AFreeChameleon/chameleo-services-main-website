@@ -31,17 +31,8 @@ export const StyledMenu = withStyles({
 
 export const NumberInputNoTicks = withStyles({
     root: {
-        '& > label': {
-            color: '#6F6F76',
-        },
         '& > div > input': {
-            color: '#ffffff'
-        },
-        '& > div > input:disabled': {
-            color: '#6F6F76'
-        },
-        '& > div::before': {
-            borderColor: '#51C85D !important'
+            textAlign: 'center',
         },
         '& .MuiInputBase-root .MuiInputBase-input::-webkit-outer-spin-button': {
             WebkitAppearance: 'none',
@@ -60,13 +51,13 @@ export const StyledTextField = withStyles({
             color: '#6F6F76',
         },
         '& > div > input': {
-            color: '#ffffff'
+            // color: '#ffffff'
         },
         '& > div > input:disabled': {
             color: '#6F6F76'
         },
         '& > div > textarea': {
-            color: '#ffffff'
+            // color: '#ffffff'
         },
         '& > div > textarea:disabled': {
             color: '#6F6F76'
@@ -83,41 +74,18 @@ export const StyledTextField = withStyles({
 export const StyledCheckbox = withStyles({
     root: {
         padding: '5px',
-        '& > span > svg > path': {
-            fill: '#ffffff'
-        },
-        '&.Mui-disabled > span > svg > path': {
-            fill: '#6F6F76 !important'
-        }
-    },
-    checked: {
-        '& > span > svg > path': {
-            fill: '#51C85D'
-        }
-    },
-    disabled: {
-        backgroundColor: 'red',
-        '&': {
-            
-        }
     }
 })(Checkbox);
 
 export const StyledSelect = withStyles({
     root: {
         fontSize: '14px',
-        color: '#ffffff',
-        '& fieldset': {
-            border: 'none'
+        backgroundColor: 'transparent',
+        '& .MuiSelect-select': {
+            paddingRight: '0px',
         },
-        '& .MuiSelect-select:focus': {
-            backgroundColor: 'transparent'
-        },
-        '& > svg > path': {
-            fill: '#6F6F76'
-        }
     }
-})(InputBase);
+})(Select);
 
 export const StyledRadio = withStyles({
     root: {

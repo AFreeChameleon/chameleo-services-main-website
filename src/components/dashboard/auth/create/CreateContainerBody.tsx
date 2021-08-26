@@ -10,6 +10,9 @@ import MuiStep from '@material-ui/core/Step';
 import MuiStepLabel from '@material-ui/core/StepLabel';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon, SettingsIcon } from '../../../Icons';
+import CreateContainerConfig from './CreateContainerConfig';
+import CreateContainerPricing from './CreateContainerPricing';
+import CreateContainerLocation from './CreateContainerLocation';
 
 const Step = withStyles((theme) => ({
     root: {
@@ -41,7 +44,22 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     constructor(props) {
         super(props);
         this.state = {
-            selectedPage: 0
+            selectedPage: 0,
+        }
+
+        this.renderSelectedPage = this.renderSelectedPage.bind(this);
+    }
+
+    renderSelectedPage() {
+        const { selectedPage } = this.state;
+
+        switch (selectedPage) {
+            case 0:
+                return <CreateContainerConfig changeSelectedPage={(val) => this.setState({ selectedPage: val })} />
+            case 1:
+                return <CreateContainerPricing changeSelectedPage={(val) => this.setState({ selectedPage: val })} />
+            case 2:
+                return <CreateContainerLocation changeSelectedPage={(val) => this.setState({ selectedPage: val })} />;
         }
     }
 
@@ -66,9 +84,15 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             <StepLabel>Choose your payment plan</StepLabel>
                         </Step>
                         <Step>
+                            <StepLabel>Choose the location</StepLabel>
+                        </Step>
+                        <Step>
                             <StepLabel>All done!</StepLabel>
                         </Step>
                     </Stepper>
+                </div>
+                <div className={classes.pageContainer}>
+                    { this.renderSelectedPage() }
                 </div>
             </div>
         )
@@ -100,7 +124,7 @@ export default compose(
         stepperContainer: {
             width: '820px',
             margin: '0 auto',
-            paddingTop: '20px'
+            paddingTop: '40px'
         }
     }))
 )(NewAuthContainerBody);
