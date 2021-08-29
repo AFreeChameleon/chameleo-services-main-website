@@ -34,6 +34,7 @@ import {
     TextField,
     Tabs,
     Tab as MuiTab,
+    Input,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab'
 import { withStyles } from '@material-ui/core/styles';
@@ -41,6 +42,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import {
     StyledFormControlLabel,
     StyledCheckbox,
@@ -209,20 +211,12 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     Name
                                 </Typography>
                             </div>
-                            <div className={`${classes.tableHeader} ${classes.center}`}>
+                            <div className={`${classes.tableHeader}`}>
                                 <Typography
                                     variant="body1"
                                     className={classes.tableHeaderText}
                                 >
-                                    Unique
-                                </Typography>
-                            </div>
-                            <div className={`${classes.tableHeader} ${classes.center}`}>
-                                <Typography
-                                    variant="body1"
-                                    className={classes.tableHeaderText}
-                                >
-                                    Required
+                                    Attributes
                                 </Typography>
                             </div>
                             <div className={classes.tableHeader}>
@@ -271,23 +265,45 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             }
                                         />
                                     </div>
-                                    <div className={`${classes.tableColumn} ${classes.center}`}>
-                                        <StyledCheckbox
-                                            color="primary"
-                                            checked={row.unique}
-                                            onChange={(e) => {
-                                                dispatchChangeConfigModel(row.name, 'unique', e.target.checked)
-                                            }}
-                                        />
-                                    </div>
-                                    <div className={`${classes.tableColumn} ${classes.center}`}>
-                                        <StyledCheckbox
+                                    <div className={`${classes.tableColumn} ${classes.tableColumnPaddingBottom}`}>
+                                        {/* <StyledCheckbox
                                             color="primary"
                                             checked={!row.allowNull}
                                             onChange={(e) => {
                                                 dispatchChangeConfigModel(row.name, 'allowNull', !e.target.checked)
                                             }}
-                                        />
+                                        /> */}
+                                        <Select
+                                            multiple
+                                            fullWidth
+                                            input={<Input />}
+                                            value={row.attributes}
+                                            onChange={(e) => {
+                                                dispatchChangeConfigModel(row.name, 'attributes', e.target.value)
+                                            }}
+                                            renderValue={(selected: any) => selected.join(', ')}
+                                        >
+                                            <MenuItem value="Email" className={classes.menuItem}>
+                                                <Checkbox checked={row.attributes.includes('Email')} color="primary" />
+                                                Email
+                                            </MenuItem>
+                                            <MenuItem value="Password" className={classes.menuItem}>
+                                                <Checkbox checked={row.attributes.includes('Password')} color="primary" />
+                                                Password
+                                            </MenuItem>
+                                            <MenuItem value="Username" className={classes.menuItem}>
+                                                <Checkbox checked={row.attributes.includes('Username')} color="primary" />
+                                                Username
+                                            </MenuItem>
+                                            <MenuItem value="Phone number" className={classes.menuItem}>
+                                                <Checkbox checked={row.attributes.includes('Phone number')} color="primary" />
+                                                Phone number
+                                            </MenuItem>
+                                            <MenuItem value="Verifiable" className={classes.menuItem}>
+                                                <Checkbox checked={row.attributes.includes('Verifiable')} color="primary" />
+                                                Verifiable
+                                            </MenuItem>
+                                        </Select>
                                     </div>
                                     <div className={classes.tableColumn}>
                                         { !row.allowNull ? (
@@ -756,12 +772,13 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                 </Collapse>
                 <div className={classes.submitButton}>
                     <Button
-                        fullWidth
+                        // fullWidth
                         variant="contained"
                         color="primary"
                         onClick={(e) => changeSelectedPage(1)}
+                        endIcon={<ArrowForwardIcon/>}
                     >
-                        Next Step
+                        GO TO PRICING
                     </Button>
                 </div>
             </div>
@@ -847,7 +864,7 @@ export default compose<any>(
         },
         tableHeaders: {
             display: 'grid',
-            gridTemplateColumns: '26% 6% 8% 15% 15% 11% 11% 8%',
+            gridTemplateColumns: '20% 27% 15% 11% 11% 10% 6%',
             width: '100%',
             height: '60px',
             backgroundColor: theme.palette.primary.main,
@@ -869,7 +886,7 @@ export default compose<any>(
         },
         tableRow: {
             display: 'grid',
-            gridTemplateColumns: '26% 6% 8% 15% 15% 11% 11% 8%',
+            gridTemplateColumns: '20% 27% 15% 11% 11% 10% 6%',
             width: '100%',
             height: '60px',
             alignItems: 'center',

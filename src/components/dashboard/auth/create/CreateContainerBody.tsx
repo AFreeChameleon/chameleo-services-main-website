@@ -52,7 +52,9 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
 
     renderSelectedPage() {
         const { selectedPage } = this.state;
-
+        if (typeof window !== 'undefined') {
+            window.scrollTo(0, 0);
+        }
         switch (selectedPage) {
             case 0:
                 return <CreateContainerConfig changeSelectedPage={(val) => this.setState({ selectedPage: val })} />

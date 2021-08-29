@@ -12,6 +12,8 @@ const schema = yup.object({
         .min(3)
         .max(50),
     type: yup.string()
+        .required(),
+    tier: yup.string()
         .required()
 }).noUnknown(true);
 
@@ -34,7 +36,7 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
 
 const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     try {
-        const { config, name, type } = schema.validateSync(req.body);
+        const { config, name, type, tier } = schema.validateSync(req.body);
         if (type === 'auth') {
             const existingContainer = await prismaMain.container.findFirst({
                 where: {
@@ -53,7 +55,7 @@ const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiR
                         type: 'auth',
                         name: name,
                         config: config,
-                        tier: 'Free',
+                        tier: tier,
                         user: {
                             connect: {
                                 id: req.user.id

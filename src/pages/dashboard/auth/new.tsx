@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import store from '../../../redux/store';
 import ifAuth from '../../../hoc/ifAuth';
 import LeftSidebar from '../../../components/dashboard/left_sidebar/LeftSidebar';
+import Header from '../../../components/dashboard/header/Header';
 import NewAuthContainerBody from '../../../components/dashboard/auth/create/CreateContainerBody';
 
 class NewAuthContainer extends React.Component<{ classes?: any }> {
@@ -17,7 +18,10 @@ class NewAuthContainer extends React.Component<{ classes?: any }> {
             <Provider store={store}>
                 <div className={classes.root}>
                     <LeftSidebar selectedTab={'authentication'} />
-                    <NewAuthContainerBody/>
+                    <div>
+                        <Header/>
+                        <NewAuthContainerBody/>
+                    </div>
                 </div>
             </Provider>
         )

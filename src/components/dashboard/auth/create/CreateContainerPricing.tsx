@@ -3,7 +3,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { setContainerTier } from '../../../../redux/container/auth/config/actions';
 
 type CreateContainerPricingProps = {
@@ -27,7 +28,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, changeSelectedPage } = this.props;
         return (
             <div className={classes.root}>
                 <div className={classes.cards}>
@@ -284,6 +285,16 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         </Typography>
                     </div>
                 </div>
+                <div className={classes.backButtonContainer}>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<ArrowBackIcon/>}
+                        onClick={(e) => changeSelectedPage(0)}
+                    >
+                        GO BACK TO CONFIG
+                    </Button>
+                </div>
             </div>
         )
     }
@@ -352,6 +363,9 @@ export default compose<any>(
         },
         letterSpacing: {
             letterSpacing: '1px'
+        },
+        backButtonContainer: {
+            paddingTop: '40px'
         }
     }))
 )(CreateContainerPricing);

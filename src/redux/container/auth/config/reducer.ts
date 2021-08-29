@@ -52,10 +52,9 @@ const configState: any = {
         model: [
             {
                 name: 'email',
-                unique: true,
-                allowNull: false,
                 default: '',
-                type: 'Email',
+                type: 'String',
+                attributes: ['Email', 'Username', 'Verifiable', 'Unique', 'Required'],
                 length: {
                     max: 250,
                     min: 3
@@ -63,10 +62,9 @@ const configState: any = {
             },
             {
                 name: 'password',
-                unique: false,
-                allowNull: false,
                 default: '',
-                type: 'Password',
+                type: 'String',
+                attributes: ['Password', 'Required'],
                 length: {
                     max: 250,
                     min: 3
@@ -74,10 +72,9 @@ const configState: any = {
             },
             {
                 name: 'username',
-                unique: false,
-                allowNull: false,
                 default: '',
-                type: 'Username',
+                type: 'String',
+                attributes: ['Username', 'Required'],
                 length: {
                     max: 250,
                     min: 3
@@ -85,10 +82,9 @@ const configState: any = {
             },
             {
                 name: 'name',
-                unique: false,
-                allowNull: true,
                 default: 'John Doe',
                 type: 'String',
+                attributes: [],
                 length: {
                     max: 250,
                     min: 3
