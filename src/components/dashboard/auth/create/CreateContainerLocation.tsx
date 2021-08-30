@@ -273,7 +273,7 @@ export default compose<any>(
         },
         container: {
             boxShadow: theme.shadows['2'],
-            width: '100%',
+            width: '810px',
             padding: '20px'
         },
         map: {

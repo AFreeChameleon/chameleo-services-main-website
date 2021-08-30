@@ -74,7 +74,9 @@ const themeObj = {
             fontWeight: 600
         }
     },
-    
+    shape: {
+        borderRadius: 0
+    }
 }
 
 // Create a theme instance.

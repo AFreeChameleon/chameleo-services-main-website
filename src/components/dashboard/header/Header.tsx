@@ -90,7 +90,7 @@ const styles = withStyles((theme) => ({
         height: '90px'
     },
     root: {
-        width: 'calc(100vw - 280px)',
+        // width: 'calc(100vw - 280px)',
         height: '90px',
         display: 'flex',
         alignItems: 'center',
@@ -100,7 +100,7 @@ const styles = withStyles((theme) => ({
         background: `${theme.palette.background.default}DD`,
         WebkitBackdropFilter: 'blur(10px)',
         backdropFilter: 'blur(10px)',
-        zIndex: 2000
+        zIndex: 600
     },
     rootGrid: {
         display: 'grid',

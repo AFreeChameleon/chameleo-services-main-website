@@ -149,7 +149,6 @@ const configReducer = (state = configState, action) => {
             }
         case CHANGE_CONFIG_MODEL:
             newModel = [ ...state.data.model ];
-            console.log(newModel[newModel.findIndex(row => row.name === action.rowName)])
             newModel[newModel.findIndex(row => row.name === action.rowName)][action.key] = action.value
             return {
                 ...state,
@@ -266,11 +265,11 @@ const configReducer = (state = configState, action) => {
                     model: [
                         ...state.data.model,
                         {
-                            name: 'columnName',
-                            allowNull: true,
-                            length: {min: 3, max: 250},
+                            name: 'New column',
+                            default: '',
                             type: 'String',
-                            unique: false
+                            length: {min: 3, max: 250},
+                            attributes: [],
                         }
                     ]
                 }

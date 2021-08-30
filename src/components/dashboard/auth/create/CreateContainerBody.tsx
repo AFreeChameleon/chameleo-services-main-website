@@ -105,7 +105,7 @@ export default compose(
     connect(),
     withStyles((theme) => ({
         root: {
-            maxWidth: '1300px',
+            maxWidth: 'fit-content',
             margin: '0 auto',
             padding: '20px'
         },
