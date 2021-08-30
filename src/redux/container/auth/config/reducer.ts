@@ -18,7 +18,8 @@ import {
     TOGGLE_CONFIG_AUTH_OAUTH,
 
     SET_CONTAINER_TIER,
-    SET_CONTAINER_LOCATION
+    SET_CONTAINER_LOCATION,
+    SET_CONTAINER_NAME
 } from './types';
 
 const configState: any = {
@@ -26,6 +27,7 @@ const configState: any = {
     errors: [],
     tier: '',
     location: '',
+    name: '',
     data: {
         auth: {
             emailColumnName: 'email',
@@ -141,6 +143,11 @@ const configReducer = (state = configState, action) => {
             return {
                 ...state,
                 location: action.value
+            }
+        case SET_CONTAINER_NAME:
+            return {
+                ...state,
+                name: action.value
             }
         case SET_CONFIG_ERRORS:
             return {

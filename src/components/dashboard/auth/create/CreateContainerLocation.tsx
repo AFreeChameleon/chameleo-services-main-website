@@ -4,6 +4,7 @@ import Image from 'next/image';
 import ping from 'web-pingjs';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { setContainerLocation, setContainerName } from '../../../../redux/container/auth/config/actions';
 import { Typography, withStyles, Button, Modal, TextField } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,7 +14,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { setContainerLocation } from '../../../../redux/container/auth/config/actions';
 import WorldMap from '../../../../../public/img/worldmap.png'
 import AddIcon from '@material-ui/icons/Add';
 
@@ -21,13 +21,13 @@ type CreateContainerLocationProps = {
     classes: any;
     container: any;
     changeSelectedPage: (val: number) => void;
+    dispatchSetContainerName: (val: string) => void;
+    dispatchSetContainerLocation: (val: string) => void;
 }
 
 type CreateContainerLocationState = {
     containerNameOpen: boolean;
     latencyTestOpen: boolean;
-    containerName: string;
-    location: string;
     averageLatency: {
         london?: number;
     }
@@ -43,8 +43,6 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
         this.state = {
             containerNameOpen: false,
             latencyTestOpen: false,
-            containerName: '',
-            location: '',
             averageLatency: {}
         }
     }
@@ -87,12 +85,12 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
 
     submitCreateContainer(e) {
         const { container } = this.props;
-        const { containerName, location, averageLatency } = this.state;
-
-        axios.post('/api/container/new', {
-            name: containerName,
+        console.log(container)
+        axios.post('/api/container/auth/new', {
+            name: container.name,
             tier: container.tier,
-            config: container.config
+            config: container.data,
+            location: container.location
         }, { withCredentials: true })
         .then((res) => {
             console.log(res)
@@ -103,8 +101,8 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
     }
 
     render() {
-        const { classes, changeSelectedPage, container } = this.props;
-        const { containerNameOpen, latencyTestOpen, containerName, averageLatency } = this.state;
+        const { classes, changeSelectedPage, container, dispatchSetContainerLocation, dispatchSetContainerName } = this.props;
+        const { containerNameOpen, latencyTestOpen, averageLatency } = this.state;
         return (
             <div className={classes.root}>
                 <div className={classes.container}>
@@ -118,10 +116,12 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                             <div className={classes.pins}>
                                 <div
                                     className={`${classes.pin} ${classes.ukPin}`} 
-                                    onClick={(e) => this.setState({ 
-                                        containerNameOpen: true,
-                                        location: 'london'
-                                    })}
+                                    onClick={(e) => {
+                                        this.setState({ 
+                                            containerNameOpen: true,
+                                        });
+                                        dispatchSetContainerLocation('london');
+                                    }}
                                 >
                                     <div className={classes.markerText}>London</div>
                                     <div className={classes.marker}></div>
@@ -164,8 +164,8 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                                 fullWidth
                                 color="primary"
                                 placeholder="Container name"
-                                value={containerName}
-                                onChange={(e) => this.setState({ containerName: e.target.value })}
+                                value={container.name}
+                                onChange={(e) => dispatchSetContainerName(e.target.value)}
                             />
                         </div>
                         <div className={classes.modalCreateContainerButton}>
@@ -233,8 +233,8 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                                         this.setState({ 
                                             latencyTestOpen: false,
                                             containerNameOpen: true,
-                                            location: Object.keys(averageLatency).filter(l => averageLatency[l] === Math.min(...Object.values(averageLatency)))[0]
                                         });
+                                        dispatchSetContainerLocation(Object.keys(averageLatency).filter(l => averageLatency[l] === Math.min(...Object.values(averageLatency)))[0])
                                     }}
                                 >
                                     SELECT {Object.keys(averageLatency).filter(l => averageLatency[l] === Math.min(...Object.values(averageLatency)))[0]}
@@ -262,7 +262,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    dispatchSetContainerLocation: (value: string) => dispatch(setContainerLocation(value))
+    dispatchSetContainerLocation: (value: string) => dispatch(setContainerLocation(value)),
+    dispatchSetContainerName: (value: string) => dispatch(setContainerName(value))
 })
 
 export default compose<any>(
