@@ -33,33 +33,24 @@ import {
     Checkbox,
     TextField,
     Tabs,
-    Tab as MuiTab,
+    Tab,
     Input,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab'
 import { withStyles } from '@material-ui/core/styles';
-import RemoveIcon from '@material-ui/icons/Remove';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import AddIcon from '@material-ui/icons/Add';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import {
-    StyledFormControlLabel,
-    StyledCheckbox,
     StyledSelect,
-    StyledTextField,
-    StyledRadio,
     NumberInputNoTicks,
     GreenButton,
-    RedButton
 } from '../../../Inputs';
 import TabPanel from '../../../TabPanel';
-
-const Tab = withStyles((theme) => ({
-    selected: {
-    }
-}))(MuiTab)
+import {
+    checkConfig
+} from '../../../../lib/container/validate';
 
 const NameTextField = withStyles((theme) => ({
     root: {
@@ -91,6 +82,7 @@ type NewAuthContainerBodyState = {
     selectedOAuthCompany: number;
     containerName: string;
     configTab: number;
+    reviewError: string;
 }
 
 class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, NewAuthContainerBodyState> {
@@ -99,7 +91,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         this.state = {
             selectedOAuthCompany: 0,
             containerName: 'New Container',
-            configTab: 0
+            configTab: 0,
+            reviewError: ''
         }
         this.submitCreateContainer = this.submitCreateContainer.bind(this);
     }
@@ -164,6 +157,26 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         }
     }
 
+    minMaxEnabled(type: string) {
+        switch (type) {
+            case 'Date':
+                return false;
+            case 'DateTime':
+                return false;
+            case 'Boolean':
+                return false;
+            case 'Char':
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    validateConfig(config) {
+        const validated = checkConfig(config);
+        return validated;
+    }
+
     render() {
         const { 
             classes, 
@@ -180,7 +193,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
             dispatchChangeConfigAuthOAuth,
             dispatchSetConfigOAuthEnabled
         } = this.props;
-        const { selectedOAuthCompany, containerName, configTab } = this.state;
+        const { selectedOAuthCompany, containerName, configTab, reviewError } = this.state;
         console.log(config.auth.oauth)
         return (
             <div className={classes.root}>
@@ -205,6 +218,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                         <Tab label="Registration" />
                         <Tab label="Mail" />
                         <Tab label="OAuth" />
+                        <Tab label="Review" />
                     </Tabs>
                     <div className={classes.container}>
                         <TabPanel value={configTab} index={0}>
@@ -320,6 +334,10 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                         <Checkbox checked={row.attributes.includes('Verifiable')} color="primary" />
                                                         Verifiable
                                                     </MenuItem>
+                                                    <MenuItem value="Unique" className={classes.menuItem}>
+                                                        <Checkbox checked={row.attributes.includes('Unique')} color="primary" />
+                                                        Unique
+                                                    </MenuItem>
                                                     <MenuItem value="Required" className={classes.menuItem}>
                                                         <Checkbox checked={row.attributes.includes('Required')} color="primary" />
                                                         Required
@@ -331,11 +349,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     <Tooltip title={"Can't be edited if the row is required."}>
                                                         <TextField
                                                             disabled
-                                                            value={row.default}
                                                             className={classes.invisibleInput}
-                                                            onChange={(e) => {
-                                                                dispatchChangeConfigModel(row.name, 'default', e.target.value)
-                                                            }}
                                                         />
                                                     </Tooltip>
                                                 ) : (
@@ -370,32 +384,56 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                 </Select>
                                             </div>
                                             <div className={classes.tableColumn}>
-                                                <NumberInputNoTicks
-                                                    value={
-                                                        row.length && 
-                                                            (!isNaN(row.length.min) ?
-                                                            row.length.min : 
-                                                            ''
-                                                    )}
-                                                    className={`${classes.invisibleInput} ${classes.center}`}
-                                                    onChange={(e) => {
-                                                        dispatchChangeConfigModelLength(row.name, 'min', parseInt(e.target.value))
-                                                    }}
-                                                />
+                                                {
+                                                    this.minMaxEnabled(row.type) ? (
+                                                        <NumberInputNoTicks
+                                                            value={
+                                                                row.length && 
+                                                                    (!isNaN(row.length.min) ?
+                                                                    row.length.min : 
+                                                                    ''
+                                                            )}
+                                                            className={`${classes.invisibleInput} ${classes.center}`}
+                                                            onChange={(e) => {
+                                                                dispatchChangeConfigModelLength(row.name, 'min', parseInt(e.target.value))
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <Tooltip title={"Can't be edited if the row has a type of Date, DateTime, Boolean or Char."}>
+                                                            <NumberInputNoTicks
+                                                                disabled
+                                                                className={`${classes.invisibleInput} ${classes.center}`}
+                                                                value={''}
+                                                            />
+                                                        </Tooltip>
+                                                    )
+                                                }
                                             </div>
                                             <div className={classes.tableColumn}>
-                                                <NumberInputNoTicks
-                                                    value={
-                                                        row.length && 
-                                                            (!isNaN(row.length.max) ? 
-                                                            row.length.max : 
-                                                            ''
-                                                    )}
-                                                    className={`${classes.invisibleInput} ${classes.center}`}
-                                                    onChange={(e) => {
-                                                        dispatchChangeConfigModelLength(row.name, 'max', parseInt(e.target.value))
-                                                    }}
-                                                />
+                                                {
+                                                    this.minMaxEnabled(row.type) ? (
+                                                        <NumberInputNoTicks
+                                                            value={
+                                                                row.length && 
+                                                                    (!isNaN(row.length.max) ? 
+                                                                    row.length.max : 
+                                                                    ''
+                                                            )}
+                                                            className={`${classes.invisibleInput} ${classes.center}`}
+                                                            onChange={(e) => {
+                                                                dispatchChangeConfigModelLength(row.name, 'max', parseInt(e.target.value))
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <Tooltip title={"Can't be edited if the row has a type of Date, DateTime, Boolean or Char."}>
+                                                            <NumberInputNoTicks
+                                                                disabled
+                                                                className={`${classes.invisibleInput} ${classes.center}`}
+                                                                value={''}
+                                                            />
+                                                        </Tooltip>
+                                                    )
+                                                }
                                             </div>
                                             <div className={`${classes.modelColumn} ${classes.center}`}>
                                                 <IconButton
@@ -609,8 +647,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     How your verification and reset emails will look
                                 </Typography>
                             </div>
-                            <div>
-                                <FormControlLabel 
+                            <div className={classes.fromAddress}>
+                                {/* <FormControlLabel 
                                     label="Disable Mailing"
                                     className={classes.passwordCheckbox}
                                     control={<Checkbox
@@ -620,88 +658,85 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             dispatchChangeConfigMail('enabled', !e.target.checked);
                                         }}
                                     />}
+                                /> */}
+                                <a href="#" className={classes.skipLink} onClick={() => {
+                                    dispatchChangeConfigMail('enabled', false);
+                                    this.setState({ configTab: 3 });
+                                }} >Skip mailing</a>
+                            </div>
+                            <div className={classes.fromAddress}>
+                                <TextField
+                                    fullWidth
+                                    placeholder="From address e.g john.doe@company.com"
+                                    color="primary"
+                                    value={config.mail.fromAddress}
+                                    onChange={(e) => {
+                                        dispatchChangeConfigMail('fromAddress', e.target.value);
+                                    }}
                                 />
                             </div>
-                            <Collapse in={config.mail.enabled}>
-                                <div className={classes.fromAddress}>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="From address e.g john.doe@company.com"
-                                        color="primary"
-                                        disabled={!config.mail.enabled}
-                                        value={config.mail.fromAddress}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigMail('fromAddress', e.target.value);
-                                        }}
-                                    />
-                                </div>
-                                <div className={classes.emailSubject}>
-                                    <Typography
-                                        variant="subtitle1"
-                                        gutterBottom
-                                    >
-                                        Account verification email
-                                    </Typography>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="Email subject"
-                                        color="primary"
-                                        disabled={!config.mail.enabled}
-                                        value={config.mail.verifySubject}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigMail('verifySubject', e.target.value);
-                                        }}
-                                    />
-                                </div>
-                                <div className={classes.emailHTML}>
-                                    <TextField
-                                        fullWidth
-                                        multiline
-                                        maxRows={10}
-                                        placeholder="Email HTML"
-                                        color="primary"
-                                        disabled={!config.mail.enabled}
-                                        value={config.mail.verifyContent}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigMail('verifyContent', e.target.value);
-                                        }}
-                                        helperText="{__verify__} will be replaced with the link or code depending on which you choose."
-                                    />
-                                </div>
-                                <div className={classes.emailSubject}>
-                                    <Typography
-                                        variant="subtitle1"
-                                        gutterBottom
-                                    >
-                                        Reset password email
-                                    </Typography>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="Email subject"
-                                        color="primary"
-                                        disabled={!config.mail.enabled}
-                                        value={config.mail.resetSubject}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigMail('resetSubject', e.target.value);
-                                        }}
-                                    />
-                                </div>
-                                <div className={classes.emailHTML}>
-                                    <TextField
-                                        fullWidth
-                                        multiline
-                                        maxRows={10}
-                                        placeholder="Email HTML"
-                                        color="primary"
-                                        disabled={!config.mail.enabled}
-                                        value={config.mail.resetContent}
-                                        onChange={(e) => {
-                                            dispatchChangeConfigMail('resetContent', e.target.value);
-                                        }}
-                                        helperText="{__temporary password__} will be replaced with the temporary password."
-                                    />
-                                </div>
-                            </Collapse>
+                            <div className={classes.emailSubject}>
+                                <Typography
+                                    variant="subtitle1"
+                                    gutterBottom
+                                >
+                                    Account verification email
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    placeholder="Email subject"
+                                    color="primary"
+                                    value={config.mail.verifySubject}
+                                    onChange={(e) => {
+                                        dispatchChangeConfigMail('verifySubject', e.target.value);
+                                    }}
+                                />
+                            </div>
+                            <div className={classes.emailHTML}>
+                                <TextField
+                                    fullWidth
+                                    multiline
+                                    maxRows={10}
+                                    placeholder="Email HTML"
+                                    color="primary"
+                                    value={config.mail.verifyContent}
+                                    onChange={(e) => {
+                                        dispatchChangeConfigMail('verifyContent', e.target.value);
+                                    }}
+                                    helperText="{__verify__} will be replaced with the link or code depending on which you choose."
+                                />
+                            </div>
+                            <div className={classes.emailSubject}>
+                                <Typography
+                                    variant="subtitle1"
+                                    gutterBottom
+                                >
+                                    Reset password email
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    placeholder="Email subject"
+                                    color="primary"
+                                    value={config.mail.resetSubject}
+                                    onChange={(e) => {
+                                        dispatchChangeConfigMail('resetSubject', e.target.value);
+                                    }}
+                                />
+                            </div>
+                            <div className={classes.emailHTML}>
+                                <TextField
+                                    fullWidth
+                                    multiline
+                                    maxRows={10}
+                                    placeholder="Email HTML"
+                                    color="primary"
+                                    value={config.mail.resetContent}
+                                    onChange={(e) => {
+                                        dispatchChangeConfigMail('resetContent', e.target.value);
+                                    }}
+                                    helperText="{__temporary password__} will be replaced with the temporary password."
+                                />
+                            </div>
                             <div className={classes.nextButton}>
                                 <GreenButton
                                     color="primary"
@@ -730,7 +765,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     Allow users to sign up through other methods
                                 </Typography>
                             </div>
-                            <div>
+                            {/* <div>
                                 <FormControlLabel 
                                     label="Disable OAuth"
                                     className={classes.passwordCheckbox}
@@ -742,74 +777,375 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         }}
                                     />}
                                 />
+                            </div> */}
+                            <div className={classes.fromAddress}>
+                                <a href="#" className={classes.skipLink} onClick={() => {
+                                    dispatchSetConfigOAuthEnabled(false);
+                                    this.setState({ configTab: 4 });
+                                }} >Skip OAuth</a>
                             </div>
-                            <Collapse in={config.auth.oauth.enabled}>
-                                <div className={classes.oauthContainer}>
-                                    <div className={classes.oauthTabs}>
-                                        <Tabs
-                                            textColor="primary"
-                                            indicatorColor="primary"
-                                            orientation="vertical"
-                                            variant="scrollable"
-                                            value={selectedOAuthCompany}
-                                            onChange={(e, newValue) => this.setState({ selectedOAuthCompany: newValue })}
-                                        >
-                                            <Tab label="Google"/>
-                                            <Tab label="Twitter" />
-                                        </Tabs>
-                                        <div className={classes.oauthFormContainer}>
-                                            <TabPanel value={selectedOAuthCompany} index={0}>
-                                                <div className={classes.title}>
-                                                    <Typography
-                                                        variant="h5"
-                                                    >
-                                                        Google
-                                                    </Typography>
-                                                </div>
-                                                <div className={classes.oauthInput}>
-                                                    <TextField
-                                                        fullWidth
-                                                        label="Client ID"
-                                                        color="primary"
-                                                        value={config.auth.oauth.google.clientID}
-                                                        onChange={(e) => {
-                                                            dispatchChangeConfigAuthOAuth('google', 'clientID', e.target.value);
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div className={classes.oauthInput}>
-                                                    <TextField
-                                                        fullWidth
-                                                        label="Client Secret"
-                                                        color="primary"
-                                                        value={config.auth.oauth.google.clientSecret}
-                                                        onChange={(e) => {
-                                                            dispatchChangeConfigAuthOAuth('google', 'clientSecret', e.target.value);
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div className={classes.oauthInput}>
-                                                    <TextField
-                                                        fullWidth
-                                                        label="Redirect URI"
-                                                        color="primary"
-                                                        value={config.auth.oauth.google.redirectURI}
-                                                        onChange={(e) => {
-                                                            dispatchChangeConfigAuthOAuth('google', 'redirectURI', e.target.value);
-                                                        }}
-                                                    />
-                                                </div>
-                                            </TabPanel>
-                                        </div>
+                            <div className={classes.oauthContainer}>
+                                <div className={classes.oauthTabs}>
+                                    <Tabs
+                                        textColor="primary"
+                                        indicatorColor="primary"
+                                        orientation="vertical"
+                                        variant="scrollable"
+                                        value={selectedOAuthCompany}
+                                        onChange={(e, newValue) => this.setState({ selectedOAuthCompany: newValue })}
+                                    >
+                                        <Tab label="Google"/>
+                                        {/* <Tab label="Twitter" /> */}
+                                    </Tabs>
+                                    <div className={classes.oauthFormContainer}>
+                                        <TabPanel value={selectedOAuthCompany} index={0}>
+                                            <div className={classes.title}>
+                                                <Typography
+                                                    variant="h5"
+                                                >
+                                                    Google
+                                                </Typography>
+                                            </div>
+                                            <div className={classes.oauthInput}>
+                                                <TextField
+                                                    fullWidth
+                                                    label="Client ID"
+                                                    color="primary"
+                                                    value={config.auth.oauth.google.clientID}
+                                                    onChange={(e) => {
+                                                        dispatchChangeConfigAuthOAuth('google', 'clientID', e.target.value);
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className={classes.oauthInput}>
+                                                <TextField
+                                                    fullWidth
+                                                    label="Client Secret"
+                                                    color="primary"
+                                                    value={config.auth.oauth.google.clientSecret}
+                                                    onChange={(e) => {
+                                                        dispatchChangeConfigAuthOAuth('google', 'clientSecret', e.target.value);
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className={classes.oauthInput}>
+                                                <TextField
+                                                    fullWidth
+                                                    label="Redirect URI"
+                                                    color="primary"
+                                                    value={config.auth.oauth.google.redirectURI}
+                                                    onChange={(e) => {
+                                                        dispatchChangeConfigAuthOAuth('google', 'redirectURI', e.target.value);
+                                                    }}
+                                                />
+                                            </div>
+                                        </TabPanel>
                                     </div>
                                 </div>
-                            </Collapse>
+                            </div>
                             <div className={classes.submitButton}>
+                                <GreenButton
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={(e) => {
+                                        this.setState({ configTab: 4 })
+                                    }}
+                                    endIcon={<ArrowForwardIcon/>}
+                                >
+                                    Next
+                                </GreenButton>
+                            </div>
+                        </TabPanel>
+                        <TabPanel value={configTab} index={4}>
+                            <div className={classes.title}>
+                                <Typography
+                                    variant="h5"
+                                    gutterBottom
+                                >
+                                    Review
+                                </Typography>
+                                <Typography
+                                    variant="caption"
+                                    gutterBottom
+                                >
+                                    See your changes before you save
+                                </Typography>
+                            </div>
+                            { reviewError && <Alert variant="filled" severity="error" className={classes.errorAlert}>
+                                {reviewError}
+                            </Alert> }
+                            <div className={classes.reviewSection}>
+                                <div className={classes.reviewTableHeaders}>
+                                    <div className={classes.tableHeader}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.tableHeaderText}
+                                        >
+                                            Name
+                                        </Typography>
+                                    </div>
+                                    <div className={`${classes.tableHeader}`}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.tableHeaderText}
+                                        >
+                                            Attributes
+                                        </Typography>
+                                    </div>
+                                    <div className={classes.tableHeader}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.tableHeaderText}
+                                        >
+                                            Default
+                                        </Typography>
+                                    </div>
+                                    <div className={classes.tableHeader}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.tableHeaderText}
+                                        >
+                                            Type
+                                        </Typography>
+                                    </div>
+                                    <div className={`${classes.tableHeader} ${classes.center}`}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.tableHeaderText}
+                                        >
+                                            Max. Length
+                                        </Typography>
+                                    </div>
+                                    <div className={`${classes.tableHeader} ${classes.center}`}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.tableHeaderText}
+                                        >
+                                            Min. Length
+                                        </Typography>
+                                    </div>
+                                </div>
+                                <div className={classes.tableBody}>
+                                    { config.model.map((row, i) => (
+                                        <div className={classes.reviewTableRow} key={i}>
+                                            <div className={classes.tableColumn}>
+                                                <Typography className={`${classes.reviewTablePadding} ${classes.reviewTableCell}`}>
+                                                    {row.name}
+                                                </Typography>
+                                            </div>
+                                            <div className={`${classes.tableColumn}`}>
+                                                <Typography className={`${classes.reviewTableCell}`}>
+                                                    {row.attributes.length > 0 ? row.attributes.join(', ') : 'null'}
+                                                </Typography>
+                                            </div>
+                                            <div className={classes.tableColumn}>
+                                                <Typography className={`${classes.reviewTableCell}`}>
+                                                    { !row.attributes.includes('Required') ? (row.default ? row.default : 'null') : 'n/a' }
+                                                </Typography>
+                                            </div>
+                                            <div className={`${classes.tableColumn}`}>
+                                                <Typography className={`${classes.reviewTableCell}`}>
+                                                    { row.type }
+                                                </Typography>
+                                            </div>
+                                            <div className={classes.tableColumn}>
+                                                <Typography className={`${classes.reviewTableCell} ${classes.center}`}>
+                                                    { this.minMaxEnabled(row.type) ? row.length.min : 'n/a' }
+                                                </Typography>
+                                            </div>
+                                            <div className={classes.tableColumn}>
+                                                <Typography className={`${classes.reviewTableCell} ${classes.center}`}>
+                                                    { this.minMaxEnabled(row.type) ? row.length.max : 'n/a' }
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    )) }
+                                </div>
+                            </div>
+                            <div className={classes.reviewSection}>
+                                <Typography
+                                    gutterBottom
+                                    variant="h6"
+                                    className={classes.reviewHeader}
+                                >
+                                    Password requirements
+                                </Typography>
+                                {config.pass.uppercase && <Typography
+                                    gutterBottom
+                                >
+                                    • At least one uppercase letter
+                                </Typography> }
+                                {config.pass.lowercase && <Typography
+                                    gutterBottom
+                                >
+                                    • At least one lowercase letter
+                                </Typography> }
+                                { config.pass.requireNumbers && <Typography
+                                    gutterBottom
+                                >
+                                    • At least one number
+                                </Typography>}
+                                { config.pass.requireSpecialChars && <Typography
+                                    gutterBottom
+                                >
+                                    • At least one special character
+                                </Typography>}
+                                <Typography
+                                    gutterBottom
+                                    variant="h6"
+                                    className={classes.reviewHeader}
+                                >
+                                    Registration policy
+                                </Typography>
+                                {config.auth.userSignUp ? <Typography
+                                    gutterBottom
+                                >
+                                    • Allow users to register
+                                </Typography> : <Typography>
+                                    • Only allow administrators to make an account
+                                </Typography>}
+                                <Typography
+                                    gutterBottom
+                                    variant="h6"
+                                    className={classes.reviewHeader}
+                                >
+                                    Session expires in
+                                </Typography>
+                                {config.auth.sessionExpiresIn.forever ? <Typography
+                                >
+                                    • Never
+                                </Typography> : <Typography
+                                >
+                                    • {config.auth.sessionExpiresIn.days} days, {config.auth.sessionExpiresIn.hours} hours
+                                </Typography>}
+                            </div>
+                            <div className={classes.reviewSection}>
+                                <Typography
+                                    gutterBottom
+                                    variant="h6"
+                                    className={classes.reviewHeader}
+                                >
+                                    Mail configuration
+                                </Typography>
+                                {config.mail.enabled ? (<>
+                                    <Typography
+                                        gutterBottom
+                                        variant="subtitle2"
+                                        className={classes.reviewSubHeader}
+                                    >
+                                        From address
+                                    </Typography>
+                                    <Typography
+                                        gutterBottom
+                                    >
+                                        {config.mail.fromAddress ? config.mail.fromAddress : 'Null'}
+                                    </Typography>
+                                    <Typography
+                                        gutterBottom
+                                        variant="subtitle2"
+                                        className={classes.reviewSubHeader}
+                                    >
+                                        Account verification email subject
+                                    </Typography>
+                                    <Typography>
+                                        {config.mail.verifySubject ? config.mail.verifySubject : 'Null'}
+                                    </Typography>
+                                    <Typography
+                                        gutterBottom
+                                        variant="subtitle2"
+                                        className={classes.reviewSubHeader}
+                                    >
+                                        Account verification email html
+                                    </Typography>
+                                    <Typography>
+                                        {config.mail.verifyContent ? config.mail.verifyContent : 'Null'}
+                                    </Typography>
+                                    <Typography
+                                        gutterBottom
+                                        variant="subtitle2"
+                                        className={classes.reviewSubHeader}
+                                    >
+                                        Reset password email subject
+                                    </Typography>
+                                    <Typography>
+                                        {config.mail.resetSubject ? config.mail.resetSubject : 'Null'}
+                                    </Typography>
+                                    <Typography
+                                        gutterBottom
+                                        variant="subtitle2"
+                                        className={classes.reviewSubHeader}
+                                    >
+                                        Reset password email html
+                                    </Typography>
+                                    <Typography>
+                                        {config.mail.resetContent ? config.mail.resetContent : 'Null'}
+                                    </Typography>
+                                </>) : (<Typography>
+                                    Disabled
+                                </Typography>)}
+                            </div>
+                            <div className={classes.reviewSection}>
+                                <Typography
+                                    gutterBottom
+                                    variant="h6"
+                                    className={classes.reviewHeader}
+                                >
+                                    OAuth
+                                </Typography>
+                                { config.auth.oauth.enabled ? (
+                                    (config.auth.oauth.google.clientID || 
+                                    config.auth.oauth.google.clientSecret || 
+                                    config.auth.oauth.google.redirectURI) && (<>
+                                        <Typography
+                                            gutterBottom
+                                            variant="subtitle2"
+                                            className={classes.reviewSubHeader}
+                                        >
+                                            Google client ID
+                                        </Typography>
+                                        <Typography>
+                                            {config.auth.oauth.google.clientID ? config.auth.oauth.google.clientID : 'Null'}
+                                        </Typography>
+                                        <Typography
+                                            gutterBottom
+                                            variant="subtitle2"
+                                            className={classes.reviewSubHeader}
+                                        >
+                                            Google client secret
+                                        </Typography>
+                                        <Typography>
+                                            {config.auth.oauth.google.clientSecret ? config.auth.oauth.google.clientSecret : 'Null'}
+                                        </Typography>
+                                        <Typography
+                                            gutterBottom
+                                            variant="subtitle2"
+                                            className={classes.reviewSubHeader}
+                                        >
+                                            Google redirect URI
+                                        </Typography>
+                                        <Typography>
+                                            {config.auth.oauth.google.redirectURI ? config.auth.oauth.google.redirectURI : 'Null'}
+                                        </Typography>
+                                    </>)
+                                ) : (<Typography>
+                                    Disabled
+                                </Typography>)}
+                            </div>
+                            <div className={classes.reviewSection}>
                                 <Button
                                     // fullWidth
                                     variant="contained"
                                     color="primary"
-                                    onClick={(e) => changeSelectedPage(1)}
+                                    onClick={(e) => {
+                                        const validate = checkConfig(config);
+                                        console.log(validate)
+                                        if (!validate) {
+                                            this.setState({reviewError: ''})
+                                            changeSelectedPage(1)
+                                        } else {
+                                            this.setState({reviewError: validate.message})
+                                        }
+                                    }}
                                     endIcon={<SaveIcon/>}
                                 >
                                     Save Changes
@@ -817,7 +1153,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             </div>
                         </TabPanel>
                     </div>
-
                 </div>
             </div>
         )
@@ -935,7 +1270,24 @@ export default compose<any>(
             height: '60px',
             alignItems: 'center',
             borderRadius: '5px',
-            
+        },
+        reviewTableHeaders: {
+            display: 'grid',
+            gridTemplateColumns: '26% 27% 15% 11% 11% 10%',
+            width: '100%',
+            height: '60px',
+            backgroundColor: theme.palette.primary.main,
+            alignItems: 'center',
+            padding: '0 5px'
+        },
+        reviewTableRow: {
+            display: 'grid',
+            gridTemplateColumns: '26% 27% 15% 11% 11% 10%',
+            width: '100%',
+            height: '60px',
+            alignItems: 'center',
+            borderRadius: '5px',
+            borderBottom: `1px solid ${theme.palette.grey['200']}`
         },
         tableColumn: {
             padding: '0 5px',
@@ -1056,6 +1408,8 @@ export default compose<any>(
             maxWidth: '550px',
             marginTop: '10px',
             borderRadius: '10px',
+            display: 'flex',
+            columnGap: '10px'
         },
         containerName: {
             width: '415px',
@@ -1063,6 +1417,21 @@ export default compose<any>(
         },
         nextButton: {
             paddingTop: '20px'
+        },
+        reviewTablePadding: {
+            padding: '0px 8px 8px 8px'
+        },
+        reviewSection: {
+            marginTop: '20px'
+        },
+        reviewHeader: {
+            marginTop: '40px'
+        },
+        reviewSubHeader: {
+            marginTop: '20px'
+        },
+        skipLink: {
+            color: theme.palette.grey['600']
         }
     })), 
 )(withRouter(NewAuthContainerBody));

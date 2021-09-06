@@ -93,10 +93,10 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
             location: container.location
         }, { withCredentials: true })
         .then((res) => {
-            console.log(res)
+            console.log(res);
         })
         .catch((err) => {
-            console.log('Error', err)
+            console.log('Error', err);
         })
     }
 

@@ -61,23 +61,24 @@ const postRegister = async (req: NextApiRequest, res: NextApiResponse) => {
                 errors: ['Email already registered.']
             });
         } else {
-            const token = nanoid(32);
             let newUser = await prismaMain.user.create({
                 data: {
-                    username,
-                    email,
+                    username: username,
+                    email: email,
                     password: await bcrypt.hash(password, salt),
                     tokens: {
                         create: [
                             {
-                                token: token,
                                 purpose: 'verify-email',
                             }
                         ]
                     }
                 },
+                select: {
+                    tokens: true
+                }
             });
-            await sendVerifyEmail(email, token);
+            await sendVerifyEmail(email, newUser.tokens[0].token);
             return res.json({
                 message: 'Success! You have been sent an email. Click on the link to login'
             });
