@@ -70,7 +70,8 @@ const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiR
                 },  
             });
             return res.json({
-                message: 'New container created!'
+                message: 'New container created!',
+                uuid: newContainer.id
             });
         }
     } catch (err) {

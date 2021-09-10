@@ -1139,7 +1139,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     onClick={(e) => {
                                         const validate = checkConfig(config);
                                         console.log(validate)
-                                        if (!validate) {
+                                        if (!validate.error) {
                                             this.setState({reviewError: ''})
                                             changeSelectedPage(1)
                                         } else {

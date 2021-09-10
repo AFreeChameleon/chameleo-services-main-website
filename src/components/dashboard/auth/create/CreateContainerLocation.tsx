@@ -1,11 +1,13 @@
 import React from 'react';
+import { withRouter, NextRouter } from 'next/router';
 import axios from 'axios';
 import Image from 'next/image';
 import ping from 'web-pingjs';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { setContainerLocation, setContainerName } from '../../../../redux/container/auth/config/actions';
-import { Typography, withStyles, Button, Modal, TextField } from '@material-ui/core';
+import { Typography, withStyles, Button, Modal, TextField, Snackbar } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -20,6 +22,7 @@ import AddIcon from '@material-ui/icons/Add';
 type CreateContainerLocationProps = {
     classes: any;
     container: any;
+    router: NextRouter;
     changeSelectedPage: (val: number) => void;
     dispatchSetContainerName: (val: string) => void;
     dispatchSetContainerLocation: (val: string) => void;
@@ -28,6 +31,7 @@ type CreateContainerLocationProps = {
 type CreateContainerLocationState = {
     containerNameOpen: boolean;
     latencyTestOpen: boolean;
+    errorText: string;
     averageLatency: {
         london?: number;
     }
@@ -43,7 +47,8 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
         this.state = {
             containerNameOpen: false,
             latencyTestOpen: false,
-            averageLatency: {}
+            averageLatency: {},
+            errorText: ''
         }
     }
 
@@ -84,8 +89,7 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
     }
 
     submitCreateContainer(e) {
-        const { container } = this.props;
-        console.log(container)
+        const { container, router } = this.props;
         axios.post('/api/container/auth/new', {
             name: container.name,
             tier: container.tier,
@@ -93,18 +97,31 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
             location: container.location
         }, { withCredentials: true })
         .then((res) => {
-            console.log(res);
+            if (res.status === 200) {
+                router.push(`/dashboard/auth/container/${res.data.uuid}`);
+            } else {
+                this.setState({ errorText: res.data.errors[0] });
+            }
         })
         .catch((err) => {
-            console.log('Error', err);
+            if (err.response) {
+                this.setState({ errorText: err.response.data.errors[0] });
+            } else {
+                this.setState({ errorText: 'Could not create your container at this time. Please try again soon' });
+            }
         })
     }
 
     render() {
         const { classes, changeSelectedPage, container, dispatchSetContainerLocation, dispatchSetContainerName } = this.props;
-        const { containerNameOpen, latencyTestOpen, averageLatency } = this.state;
+        const { containerNameOpen, latencyTestOpen, averageLatency, errorText } = this.state;
         return (
             <div className={classes.root}>
+                <Snackbar open={Boolean(errorText)} autoHideDuration={6000} onClose={() => this.setState({ errorText: '' })}>
+                    <Alert onClose={() => this.setState({ errorText: '' })} severity="error" variant="filled">
+                        {errorText}
+                    </Alert>
+                </Snackbar>
                 <div className={classes.container}>
                     <Typography
                         variant="h5"
@@ -267,6 +284,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default compose<any>(
+    withRouter,
     connect(mapStateToProps, mapDispatchToProps),
     withStyles((theme) => ({
         root: {
