@@ -69,13 +69,89 @@ export const checkConfig = (config: any) => {
     if (phoneEmailCheck.error) {
         return phoneEmailCheck;
     }
-    if (config.mail.enabled) {
-        if (!config.mail.fromAddress) {
+    const mailValidated = checkMailConfig(config.mail);
+    if (mailValidated.error) {
+        return mailValidated;
+    }
+    const authValidated = checkAuthConfig(config.auth);
+    if (authValidated.error) {
+        return authValidated;
+    }
+    return {error: false};
+}
+
+export const checkMailConfig = (mail: any) => {
+    if (mail.enabled) {
+        if (!mail.fromAddress) {
             return {
                 error: true,
                 message: 'Missing from address.'
-            };
+            }
+        }
+        if (!mail.verifySubject) {
+            return {
+                error: true,
+                message: 'Missing verifification email subject.'
+            }
+        }
+        if (!mail.verifyContent) {
+            return {
+                error: true,
+                message: 'Missing verifification email content.'
+            }
+        }
+        if (!mail.resetSubject) {
+            return {
+                error: true,
+                message: 'Missing reset password email subject.'
+            }
+        }
+        if (!mail.resetContent) {
+            return {
+                error: true,
+                message: 'Missing reset password email content.'
+            }
+        }
+    } else {
+        return {
+            error: false
         }
     }
-    return {error: false};
+}
+
+export const checkAuthConfig = (auth: any) => {
+    const { oauth } = auth;
+    if (oauth.enabled) {
+        if (!(oauth.google.clientID && oauth.google.clientSecret && oauth.google.redirectURI)) {
+            if (!oauth.google.clientID) {
+                return {
+                    error: true,
+                    message: 'Missing Google client ID.'
+                }
+            }
+            if (!oauth.google.clientSecret) {
+                return {
+                    error: true,
+                    message: 'Missing Google client secret.'
+                }
+            }
+            if (!oauth.google.redirectURI) {
+                return {
+                    error: true,
+                    message: 'Missing Google redirect URI.'
+                }
+            }
+        }
+    }
+    if (!auth.sessionExpiresIn.forever) {
+        if ((auth.sessionExpiresIn.days + auth.sessionExpiresIn.hours) <= 0) {
+            return {
+                error: true,
+                message: 'Session length must have a time.'
+            }
+        }
+    }
+    return {
+        error: false
+    }
 }
