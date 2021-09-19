@@ -112,8 +112,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                 errors.push('Mail: From address missing.');
             if (!mail.verifyContent.includes('{__verify__}'))
                 errors.push('Mail: {__verify__} is missing in email content');
-            if (!mail.resetContent.includes('{__temporary password__}'))
-                errors.push('Mail: {__temporary password__} is missing in email content');
+            if (!mail.resetContent.includes('{__password__}'))
+                errors.push('Mail: {__password__} is missing in email content');
         }
         return errors;
     }
@@ -591,7 +591,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 onChange={(e) => {
                                     dispatchChangeConfigMail('resetContent', e.target.value);
                                 }}
-                                helperText="{__temporary password__} will be replaced with the temporary password."
+                                helperText="{__password__} will be replaced with the temporary password."
                             />
                         </div>
                     </Collapse>

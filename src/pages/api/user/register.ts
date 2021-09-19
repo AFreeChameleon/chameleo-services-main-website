@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { nanoid } from 'nanoid';
 import * as yup from 'yup';
 import bcrypt from 'bcrypt';
 import { prismaMain }  from '../../../lib/prisma';

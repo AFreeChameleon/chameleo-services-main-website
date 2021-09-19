@@ -6,6 +6,7 @@ import ifAuth from '../../../hoc/ifAuth';
 import LeftSidebar from '../../../components/dashboard/left_sidebar/LeftSidebar';
 import Header from '../../../components/dashboard/header/Header';
 import NewAuthContainerBody from '../../../components/dashboard/auth/create/CreateContainerBody';
+import ErrorList from '../../../components/ErrorList';
 
 class NewAuthContainer extends React.Component<{ classes?: any }> {
     constructor(props) {
@@ -23,6 +24,7 @@ class NewAuthContainer extends React.Component<{ classes?: any }> {
                         <NewAuthContainerBody/>
                     </div>
                 </div>
+                <ErrorList/>
             </Provider>
         )
     }

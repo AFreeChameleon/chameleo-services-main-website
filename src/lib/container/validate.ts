@@ -112,6 +112,9 @@ export const checkMailConfig = (mail: any) => {
                 message: 'Missing reset password email content.'
             }
         }
+        return {
+            error: false
+        }
     } else {
         return {
             error: false

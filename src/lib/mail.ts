@@ -1,5 +1,4 @@
 import path from 'path';
-import { nanoid } from 'nanoid';
 import mailgun from 'mailgun-js';
 import { readFileSync } from 'fs';
 import { prismaMain } from './prisma';

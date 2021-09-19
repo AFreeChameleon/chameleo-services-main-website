@@ -17,6 +17,10 @@ import {
     setConfigOAuthEnabled,
     setConfigErrors
 } from '../../../../redux/container/auth/config/actions';
+import {
+    setErrorMessages,
+    setErrorOpen
+} from '../../../../redux/errors/actions';
 import { 
     Breadcrumbs, 
     Select, 
@@ -64,6 +68,7 @@ type NewAuthContainerBodyProps = {
     classes?: any;
     config: { [key: string]: any };
     config_errors: string[];
+    errors: string[];
     router: NextRouter;
     changeSelectedPage: (val: number) => void;
     dispatchChangeConfigModel: (rowName: string, key: string, value: any) => null;
@@ -76,6 +81,8 @@ type NewAuthContainerBodyProps = {
     dispatchChangeConfigAuthOAuth: (company: string, key: string, value: any) => null;
     dispatchSetConfigOAuthEnabled: (enabled: boolean) => null;
     dispatchSetConfigErrors: (errors: string[]) => null;
+    dispatchSetErrorMessages: (values: string[]) => void;
+    dispatchSetErrorOpen: (val: boolean) => void;
 }
 
 type NewAuthContainerBodyState = {
@@ -94,67 +101,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
             configTab: 0,
             reviewError: ''
         }
-        this.submitCreateContainer = this.submitCreateContainer.bind(this);
-    }
-
-    checkErrorsExist(config: any) {
-        const { model, mail } = config;
-        const errors = [];
-        const modelEmailRows = model.filter((row) => row.type === 'Email');
-        const modelPasswordRows = model.filter((row) => row.type === 'Password');
-        if (modelEmailRows.length === 0) {
-            errors.push('Model: missing row with type: Email.');
-        } else {
-            if (modelEmailRows.length > 1)
-                errors.push('Model: Only one row can have the Email type.');
-            if (!modelEmailRows[0].unique === true)
-                errors.push('Model: Email row needs to be unique.');
-            if (modelEmailRows[0].allowNull)
-                errors.push('Model: Email row needs to be required.');
-        }
-        if (modelPasswordRows.length === 0) {
-            errors.push('Model: missing row with type: Password.');
-        } else {
-            if (modelPasswordRows.length > 1)
-                errors.push('Model: Only one row can have the Password type.');
-            if (modelPasswordRows[0].allowNull)
-                errors.push('Model: Password row needs to be required.');
-        }
-        if (mail.enabled) {
-            if (mail.fromAddress)
-                errors.push('Mail: From address missing.');
-            if (!mail.verifyContent.includes('{__verify__}'))
-                errors.push('Mail: {__verify__} is missing in email content');
-            if (!mail.resetContent.includes('{__temporary password__}'))
-                errors.push('Mail: {__temporary password__} is missing in email content');
-        }
-        return errors;
-    }
-
-    submitCreateContainer(e) {
-        const { config, router, dispatchSetConfigErrors } = this.props;
-        const { containerName } = this.state;
-        const errors = this.checkErrorsExist(config);
-        if (errors.length > 0) {
-            dispatchSetConfigErrors(errors);
-            document.getElementById('top').scrollIntoView({ behavior: 'smooth' })
-        } else {
-            // Do stuff
-            console.log('No errors', config);
-            axios.post(`/api/container/new`, {
-                config: config,
-                name: containerName,
-                type: 'auth'
-            }, { withCredentials: true })
-            .then((res: AxiosResponse) => {
-                dispatchSetConfigErrors([]);
-                console.log(res.data.message);
-                router.push(`/dashboard`);
-            })
-            .catch((err: AxiosError) => {
-                dispatchSetConfigErrors([err.response.data.message]);
-            })
-        }
     }
 
     minMaxEnabled(type: string) {
@@ -172,11 +118,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         }
     }
 
-    validateConfig(config) {
-        const validated = checkConfig(config);
-        return validated;
-    }
-
     render() {
         const { 
             classes, 
@@ -191,13 +132,15 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
             dispatchChangeConfigAuth,
             dispatchChangeConfigMail,
             dispatchChangeConfigAuthOAuth,
-            dispatchSetConfigOAuthEnabled
+            dispatchSetConfigOAuthEnabled,
+            dispatchSetErrorMessages,
+            dispatchSetErrorOpen
         } = this.props;
         const { selectedOAuthCompany, containerName, configTab, reviewError } = this.state;
         console.log(config.auth.oauth)
         return (
             <div className={classes.root}>
-                <Snackbar open={config_errors.length > 0} autoHideDuration={6000}>
+                {/* <Snackbar open={config_errors.length > 0} autoHideDuration={6000}>
                     <div>
                         { config_errors.map((error, i) => (
                             <Alert variant="filled" severity="error" className={classes.errorAlert} key={i}>
@@ -205,7 +148,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             </Alert> 
                         )) }
                     </div>
-                </Snackbar>
+                </Snackbar> */}
                 <div className={classes.tabsContainer}>
                     <Tabs 
                         indicatorColor="primary"
@@ -734,7 +677,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     onChange={(e) => {
                                         dispatchChangeConfigMail('resetContent', e.target.value);
                                     }}
-                                    helperText="{__temporary password__} will be replaced with the temporary password."
+                                    helperText="{__password__} will be replaced with the temporary password."
                                 />
                             </div>
                             <div className={classes.nextButton}>
@@ -1140,10 +1083,14 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         const validate = checkConfig(config);
                                         console.log(validate)
                                         if (!validate.error) {
-                                            this.setState({reviewError: ''})
+                                            console.log('set errors')
+                                            dispatchSetErrorMessages([]);
                                             changeSelectedPage(1)
                                         } else {
-                                            this.setState({reviewError: validate.message})
+                                            setTimeout(() => {
+                                                dispatchSetErrorOpen(true);
+                                                dispatchSetErrorMessages([validate.message]);
+                                            }, 100);
                                         }
                                     }}
                                     endIcon={<SaveIcon/>}
@@ -1161,7 +1108,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
 
 const mapStateToProps = (state) => ({
     config: state.container.auth.config.data,
-    config_errors: state.container.auth.config.errors
+    config_errors: state.container.auth.config.errors,
+    errors: state.errors
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1174,7 +1122,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatchChangeConfigMail: (key: string, value: any) => dispatch(changeConfigMail(key, value)),
     dispatchChangeConfigAuthOAuth: (company: string, key: string, value: any) => dispatch(changeConfigAuthOAuth(company, key, value)),
     dispatchSetConfigErrors: (errors: string[]) => dispatch(setConfigErrors(errors)),
-    dispatchSetConfigOAuthEnabled: (enabled: boolean) => dispatch(setConfigOAuthEnabled(enabled))
+    dispatchSetConfigOAuthEnabled: (enabled: boolean) => dispatch(setConfigOAuthEnabled(enabled)),
+    dispatchSetErrorMessages: (values: string[] | []) => dispatch(setErrorMessages(values)),
+    dispatchSetErrorOpen: (val: boolean) => dispatch(setErrorOpen(val))
 })
 
 export default compose<any>(

@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { nanoid } from "nanoid";
 import { prismaMain } from '../../../../lib/prisma';
 import { setupUserAccount } from "../../../../lib/set_up_user";
 
