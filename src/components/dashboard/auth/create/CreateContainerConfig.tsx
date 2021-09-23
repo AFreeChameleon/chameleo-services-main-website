@@ -137,7 +137,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
             dispatchSetErrorOpen
         } = this.props;
         const { selectedOAuthCompany, containerName, configTab, reviewError } = this.state;
-        console.log(config.auth.oauth)
         return (
             <div className={classes.root}>
                 {/* <Snackbar open={config_errors.length > 0} autoHideDuration={6000}>
@@ -153,9 +152,29 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                     <Tabs 
                         indicatorColor="primary"
                         value={configTab} 
-                        onChange={(e, newValue) => this.setState({
-                            configTab: newValue
-                        })}
+                        onChange={(e, newValue) => {
+                            if (
+                                !(config.mail.resetRedirectURI && config.mail.resetContent && config.mail.resetSubject &&
+                                config.mail.verifyRedirectURI && config.mail.verifyContent && config.mail.verifySubject &&
+                                config.mail.fromAddress)
+                            ) {
+                                dispatchChangeConfigMail('enabled', false);
+                            } else {
+                                dispatchChangeConfigMail('enabled', true);
+                            }
+                            if (
+                                !(config.auth.oauth.google.clientID && 
+                                config.auth.oauth.google.clientSecret &&
+                                config.auth.oauth.google.redirectURI)
+                            ) {
+                                dispatchSetConfigOAuthEnabled(false);
+                            } else {
+                                dispatchSetConfigOAuthEnabled(true);
+                            }
+                            this.setState({
+                                configTab: newValue
+                            });
+                        }}
                     >
                         <Tab label="User Model" />
                         <Tab label="Registration" />
@@ -486,7 +505,13 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     />
                                 </div>
                             </div>
-                            <div className={classes.subtitle}>Registration policies</div>
+                            <Typography
+                                variant="subtitle2"
+                                className={classes.subtitle}
+                                component="div"
+                            >
+                                Registration policies
+                            </Typography>
                             <RadioGroup
                                 className={classes.sessionRadioButtons}
                                 value={config.auth.userSignUp}
@@ -508,7 +533,13 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 />
                             </RadioGroup>
                             <div className={classes.sessionExpiresInContainer}>
-                                <div className={classes.subtitle}>Session expires in</div>
+                                <Typography 
+                                    variant="subtitle2"
+                                    className={classes.subtitle}
+                                    component="div"
+                                >
+                                    Session expires in
+                                </Typography>
                                 <div className={classes.sessionExpiresInCheckbox}>
                                     <FormControlLabel
                                         label="Never"
@@ -608,9 +639,14 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 }} >Skip mailing</a>
                             </div>
                             <div className={classes.fromAddress}>
+                                <Typography
+                                    variant="subtitle2"
+                                >
+                                    From Address
+                                </Typography>
                                 <TextField
                                     fullWidth
-                                    placeholder="From address e.g john.doe@company.com"
+                                    placeholder="john.doe@company.com"
                                     color="primary"
                                     value={config.mail.fromAddress}
                                     onChange={(e) => {
@@ -620,14 +656,19 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             </div>
                             <div className={classes.emailSubject}>
                                 <Typography
-                                    variant="subtitle1"
-                                    gutterBottom
+                                    variant="h5"
+                                    className={classes.emailHeader}
                                 >
                                     Account verification email
                                 </Typography>
+                                <Typography
+                                    variant="subtitle2"
+                                >
+                                    Email Subject
+                                </Typography>
                                 <TextField
                                     fullWidth
-                                    placeholder="Email subject"
+                                    placeholder="Verify your email!"
                                     color="primary"
                                     value={config.mail.verifySubject}
                                     onChange={(e) => {
@@ -636,29 +677,57 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 />
                             </div>
                             <div className={classes.emailHTML}>
+                                <Typography
+                                    variant="subtitle2"
+                                >
+                                    Email Content
+                                </Typography>
                                 <TextField
                                     fullWidth
                                     multiline
                                     maxRows={10}
-                                    placeholder="Email HTML"
+                                    placeholder="Accepts HTML or plain text"
                                     color="primary"
                                     value={config.mail.verifyContent}
+                                    className={classes.multilineInput}
                                     onChange={(e) => {
                                         dispatchChangeConfigMail('verifyContent', e.target.value);
                                     }}
-                                    helperText="{__verify__} will be replaced with the link or code depending on which you choose."
+                                    helperText="{__verify__} will be replaced with the link or code depending on which you choose"
+                                />
+                            </div>
+                            <div className={classes.emailRedirection}>
+                                <Typography
+                                    variant="subtitle2"
+                                >
+                                    Redirection URI
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    placeholder="https://website.com/verified"
+                                    color="primary"
+                                    value={config.mail.verifyRedirectURI}
+                                    onChange={(e) => {
+                                        dispatchChangeConfigMail('verifyRedirectURI', e.target.value);
+                                    }}
+                                    helperText="Where you want to send the user after they have been verified"
                                 />
                             </div>
                             <div className={classes.emailSubject}>
                                 <Typography
-                                    variant="subtitle1"
-                                    gutterBottom
+                                    variant="h5"
+                                    className={classes.emailHeader}
                                 >
                                     Reset password email
                                 </Typography>
+                                <Typography
+                                    variant="subtitle2"
+                                >
+                                    Email Subject
+                                </Typography>
                                 <TextField
                                     fullWidth
-                                    placeholder="Email subject"
+                                    placeholder="Reset your password!"
                                     color="primary"
                                     value={config.mail.resetSubject}
                                     onChange={(e) => {
@@ -667,17 +736,40 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 />
                             </div>
                             <div className={classes.emailHTML}>
+                                <Typography
+                                    variant="subtitle2"
+                                >
+                                    Email Content
+                                </Typography>
                                 <TextField
                                     fullWidth
                                     multiline
                                     maxRows={10}
-                                    placeholder="Email HTML"
+                                    placeholder="Accepts HTML or plain text"
                                     color="primary"
                                     value={config.mail.resetContent}
+                                    className={classes.multilineInput}
                                     onChange={(e) => {
                                         dispatchChangeConfigMail('resetContent', e.target.value);
                                     }}
-                                    helperText="{__password__} will be replaced with the temporary password."
+                                    helperText="{__password__} will be replaced with the temporary password"
+                                />
+                            </div>
+                            <div className={classes.emailRedirection}>
+                                <Typography
+                                    variant="subtitle2"
+                                >
+                                    Redirection URI
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    placeholder="https://website.com/verified"
+                                    color="primary"
+                                    value={config.mail.resetRedirectURI}
+                                    onChange={(e) => {
+                                        dispatchChangeConfigMail('resetRedirectURI', e.target.value);
+                                    }}
+                                    helperText="Where you want to send the user after they have reset their password"
                                 />
                             </div>
                             <div className={classes.nextButton}>
@@ -685,7 +777,16 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     color="primary"
                                     variant="contained"
                                     onClick={(e) => {
-                                        this.setState({ configTab: 3 })
+                                        if (
+                                            !(config.mail.resetRedirectURI && config.mail.resetContent && config.mail.resetSubject &&
+                                            config.mail.verifyRedirectURI && config.mail.verifyContent && config.mail.verifySubject &&
+                                            config.mail.fromAddress)
+                                        ) {
+                                            dispatchChangeConfigMail('enabled', false);
+                                        } else {
+                                            dispatchChangeConfigMail('enabled', true);
+                                        }
+                                        this.setState({ configTab: 3 });
                                     }}
                                     endIcon={<ArrowForwardIcon/>}
                                 >
@@ -791,7 +892,16 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     color="primary"
                                     variant="contained"
                                     onClick={(e) => {
-                                        this.setState({ configTab: 4 })
+                                        if (
+                                            !(config.auth.oauth.google.clientID && 
+                                            config.auth.oauth.google.clientSecret &&
+                                            config.auth.oauth.google.redirectURI)
+                                        ) {
+                                            dispatchSetConfigOAuthEnabled(false);
+                                        } else {
+                                            dispatchSetConfigOAuthEnabled(true);
+                                        }
+                                        this.setState({ configTab: 4 });
                                     }}
                                     endIcon={<ArrowForwardIcon/>}
                                 >
@@ -943,9 +1053,9 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 {config.auth.userSignUp ? <Typography
                                     gutterBottom
                                 >
-                                    • Allow users to register
+                                    Allow users to register
                                 </Typography> : <Typography>
-                                    • Only allow administrators to make an account
+                                    Only allow administrators to make an account
                                 </Typography>}
                                 <Typography
                                     gutterBottom
@@ -956,10 +1066,10 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 </Typography>
                                 {config.auth.sessionExpiresIn.forever ? <Typography
                                 >
-                                    • Never
+                                    Never
                                 </Typography> : <Typography
                                 >
-                                    • {config.auth.sessionExpiresIn.days} days, {config.auth.sessionExpiresIn.hours} hours
+                                    {config.auth.sessionExpiresIn.days} days, {config.auth.sessionExpiresIn.hours} hours
                                 </Typography>}
                             </div>
                             <div className={classes.reviewSection}>
@@ -968,7 +1078,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     variant="h6"
                                     className={classes.reviewHeader}
                                 >
-                                    Mail configuration
+                                    Mail Configuration
                                 </Typography>
                                 {config.mail.enabled ? (<>
                                     <Typography
@@ -1008,6 +1118,16 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         variant="subtitle2"
                                         className={classes.reviewSubHeader}
                                     >
+                                        Account verification redirect URI
+                                    </Typography>
+                                    <Typography>
+                                        {config.mail.verifyRedirectURI ? config.mail.verifyRedirectURI : 'Null'}
+                                    </Typography>
+                                    <Typography
+                                        gutterBottom
+                                        variant="subtitle2"
+                                        className={classes.reviewSubHeader}
+                                    >
                                         Reset password email subject
                                     </Typography>
                                     <Typography>
@@ -1022,6 +1142,16 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     </Typography>
                                     <Typography>
                                         {config.mail.resetContent ? config.mail.resetContent : 'Null'}
+                                    </Typography>
+                                    <Typography
+                                        gutterBottom
+                                        variant="subtitle2"
+                                        className={classes.reviewSubHeader}
+                                    >
+                                        Reset password redirect URI
+                                    </Typography>
+                                    <Typography>
+                                        {config.mail.resetRedirectURI ? config.mail.resetRedirectURI : 'Null'}
                                     </Typography>
                                 </>) : (<Typography>
                                     Disabled
@@ -1081,9 +1211,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     color="primary"
                                     onClick={(e) => {
                                         const validate = checkConfig(config);
-                                        console.log(validate)
                                         if (!validate.error) {
-                                            console.log('set errors')
                                             dispatchSetErrorMessages([]);
                                             changeSelectedPage(1)
                                         } else {
@@ -1161,6 +1289,11 @@ export default compose<any>(
             // marginTop: '40px',
             padding: '20px',
             boxShadow: theme.shadows['2']
+        },
+        multilineInput: {
+            '& textarea': {
+                whiteSpace: 'pre'
+            }
         },
         smallContainer: {
             maxWidth: '550px',
@@ -1301,21 +1434,27 @@ export default compose<any>(
         },
         fromAddress: {
             width: '415px',
-            paddingTop: '10px'
+            paddingTop: '20px'
         },
         verificationRadioButtons: {
             paddingBottom: '10px'
         },
         emailSubject: {
             width: '415px',
-            paddingTop: '20px'
+            paddingTop: '30px'
         },
         emailHTML: {
-            paddingTop: '10px'
+            paddingTop: '20px'
+        },
+        emailRedirection: {
+            width: '415px',
+            paddingTop: '20px',
+        },
+        emailHeader: {
+            marginBottom: '1.5em'
         },
         subtitle: {
             paddingTop: '10px',
-            fontWeight: 500
         },
         oauthGrid: {
             display: 'flex',
@@ -1381,7 +1520,7 @@ export default compose<any>(
             marginTop: '20px'
         },
         skipLink: {
-            color: theme.palette.grey['600']
-        }
+            color: theme.palette.primary.main
+        },
     })), 
 )(withRouter(NewAuthContainerBody));

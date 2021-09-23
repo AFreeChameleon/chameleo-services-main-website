@@ -10,7 +10,8 @@ import Header from '../../../../components/dashboard/header/Header';
 const styles = {
     root: {
         height: '100vh', 
-        display: 'flex', 
+        display: 'grid', 
+        gridTemplateColumns: '280px auto'
     }
 }
 
@@ -29,7 +30,8 @@ function ContainerOne({ container_id }) {
     )
 }
 
-ContainerOne.getInitialProps = async ({ query }) => {
+export const getInitialProps = async (ctx) => {
+    const { query } = ctx;
     return {
         container_id: query.container_id
     }

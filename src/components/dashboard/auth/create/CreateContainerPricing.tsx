@@ -31,6 +31,16 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
         const { classes, changeSelectedPage } = this.props;
         return (
             <div className={classes.root}>
+                <div className={classes.backButtonContainer}>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<ArrowBackIcon/>}
+                        onClick={(e) => changeSelectedPage(0)}
+                    >
+                        GO BACK TO CONFIG
+                    </Button>
+                </div>
                 <div className={classes.cards}>
                     <div className={classes.card} onClick={(e) => this.selectPlan('hobby')}>
                         <Typography
@@ -285,16 +295,6 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         </Typography>
                     </div>
                 </div>
-                <div className={classes.backButtonContainer}>
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        startIcon={<ArrowBackIcon/>}
-                        onClick={(e) => changeSelectedPage(0)}
-                    >
-                        GO BACK TO CONFIG
-                    </Button>
-                </div>
             </div>
         )
     }
@@ -365,7 +365,7 @@ export default compose<any>(
             letterSpacing: '1px'
         },
         backButtonContainer: {
-            paddingTop: '40px'
+            // paddingTop: '40px'
         }
     }))
 )(CreateContainerPricing);

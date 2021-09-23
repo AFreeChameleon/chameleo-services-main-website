@@ -117,6 +117,16 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
         const { containerNameOpen, latencyTestOpen, averageLatency, errorText } = this.state;
         return (
             <div className={classes.root}>
+                <div className={classes.backButtonContainer}>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<ArrowBackIcon/>}
+                        onClick={(e) => changeSelectedPage(1)}
+                    >
+                        GO BACK TO PRICING
+                    </Button>
+                </div>
                 <Snackbar open={Boolean(errorText)} autoHideDuration={6000} onClose={() => this.setState({ errorText: '' })}>
                     <Alert onClose={() => this.setState({ errorText: '' })} severity="error" variant="filled">
                         {errorText}
@@ -153,16 +163,6 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                             <a className={classes.latencyTestText} href="#" onClick={this.runLatencyTest}>Run latency test</a>
                         </Typography>
                     </div>
-                </div>
-                <div className={classes.backButtonContainer}>
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        startIcon={<ArrowBackIcon/>}
-                        onClick={(e) => changeSelectedPage(1)}
-                    >
-                        GO BACK TO PRICING
-                    </Button>
                 </div>
                 <Modal
                     open={containerNameOpen}
@@ -288,12 +288,14 @@ export default compose<any>(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles((theme) => ({
         root: {
-            marginTop: '40px'
+            // marginTop: '40px'
+            width: '960px'
         },
         container: {
             boxShadow: theme.shadows['2'],
-            width: '810px',
-            padding: '20px'
+            width: '100%',
+            padding: '20px',
+            marginTop: '20px'
         },
         map: {
             paddingTop: '20px',
@@ -304,7 +306,7 @@ export default compose<any>(
             backgroundImage: `url('/img/worldmap.png')`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center'
+            backgroundPosition: 'center center'
         },
         pins: {
             position: 'absolute'
@@ -317,8 +319,8 @@ export default compose<any>(
             rowGap: '10px'
         },
         ukPin: {
-            top: '45px',
-            left: '285px'
+            top: '30px',
+            left: '350px'
         },
         marker: {
             width: '10px',
@@ -352,7 +354,7 @@ export default compose<any>(
             color: theme.palette.primary.main
         },
         backButtonContainer: {
-            paddingTop: '40px'
+            // paddingTop: '40px'
         },
         center: {
             display: 'grid',

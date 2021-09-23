@@ -15,6 +15,8 @@ const schema = yup.object({
         .min(3)
         .max(50),
     tier: yup.string()
+        .required(),
+    location: yup.string()
         .required()
 }).noUnknown(true);
 
@@ -37,7 +39,8 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
 
 const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     try {
-        const { config, name, tier } = schema.validateSync(req.body);
+        const { config, name, location, tier } = schema.validateSync(req.body);
+        console.log(config)
         const configValidate = checkConfig(config);
         if (configValidate.error) {
             return res.status(400).json({
@@ -62,6 +65,7 @@ const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiR
                     name: name,
                     config: config,
                     tier: tier,
+                    location: location,
                     user: {
                         connect: {
                             id: req.user.id
