@@ -6,6 +6,7 @@ import { isUserLoggedIn } from '../../../../middleware/auth';
 import {
     checkConfig
 } from '../../../../lib/container/validate';
+import { getDBFromLocation } from '../../../../lib/container/locate';
 
 const schema = yup.object({
     config: yup.mixed()
@@ -63,7 +64,12 @@ const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiR
                 data: {
                     type: 'auth',
                     name: name,
-                    config: config,
+                    config: {
+                        ...config,
+                        db: {
+                            server_url: getDBFromLocation(location)
+                        }
+                    },
                     tier: tier,
                     location: location,
                     user: {

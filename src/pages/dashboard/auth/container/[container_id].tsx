@@ -30,7 +30,7 @@ function ContainerOne({ container_id }) {
     )
 }
 
-export const getInitialProps = async (ctx) => {
+ContainerOne.getInitialProps = async (ctx) => {
     const { query } = ctx;
     return {
         container_id: query.container_id

@@ -49,11 +49,11 @@ const postLogin = async (req: NextApiRequestWithSession, res: NextApiResponse) =
                 email: email
             }
         });
+        console.log(user)
         if (!user) {
-            res.json({
-                errors: ['User doesn\'t exist.']
+            return res.status(401).json({
+                errors: ['Invalid credentials.']
             });
-            return res.status(404).end();
         } else {
             const valid = bcrypt.compareSync(password, user.password);
             console.log(valid)

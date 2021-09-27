@@ -26,7 +26,7 @@ function Login(props) {
             router.push('/dashboard');
         })
         .catch((err) => {
-            setError(err.response ? err.response.data.message : 'An error occurred. Please try again later.');
+            setError(err.response ? err.response.data.errors[0] : 'An error occurred. Please try again later.');
         })
     }
 

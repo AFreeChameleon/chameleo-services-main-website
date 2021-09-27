@@ -47,10 +47,6 @@ const configState: any = {
                 hours: 0
             }
         },
-        db: {
-            host: 'localhost',
-            name: 'chameleo-services-auth'
-        },
         model: [
             {
                 name: 'email',

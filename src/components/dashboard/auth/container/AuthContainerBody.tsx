@@ -52,7 +52,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
     render() {
         const { classes, stats, containerId, containers } = this.props;
         const { container } = this.state;
-        console.log(stats)
+        console.log(stats, container)
         return (
             <div className={classes.root}>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
@@ -67,7 +67,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                         color="secondary"
                         className={classes.breadcrumbMain}
                     >
-                        {container && container.name}
+                        {containerId}
                     </Typography>
                 </Breadcrumbs>
                 <div className={classes.colorStatsGrid}>
@@ -83,11 +83,11 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                                 >
                                     {stats.userCount}
                                 </Typography>
-                                <Typography
+                                { (container && container.tier === 'Free') && (<Typography
                                     className={`${classes.darkBlue} ${classes.bold}`}
                                 >
-                                    / {container && this.getUserLimitFromTier(container.tier).toLocaleString()}
-                                </Typography>
+                                    / {this.getUserLimitFromTier(container.tier).toLocaleString()}
+                                </Typography>) }
                             </div>
                             <div className={`${classes.colorStatsItemTitle} ${classes.semiDarkBlue} ${classes.bold}`}>
                                 Registered Users
@@ -209,7 +209,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
 
 const mapStateToProps = (state) => ({
     stats: state.container.auth.stats,
-    containers: state.containers.containers
+    containers: state.containers.containers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
