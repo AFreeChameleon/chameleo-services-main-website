@@ -4,7 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import store from '../../../redux/store';
 import ifAuth from '../../../hoc/ifAuth';
 import LeftSidebar from '../../../components/dashboard/left_sidebar/LeftSidebar';
-import NewAuthContainerBody from '../../../components/dashboard/auth/NewAuthContainerBody';
+import Header from '../../../components/dashboard/header/Header';
+import NewAuthContainerBody from '../../../components/dashboard/auth/create/CreateContainerBody';
+import ErrorList from '../../../components/ErrorList';
 
 class NewAuthContainer extends React.Component<{ classes?: any }> {
     constructor(props) {
@@ -17,8 +19,12 @@ class NewAuthContainer extends React.Component<{ classes?: any }> {
             <Provider store={store}>
                 <div className={classes.root}>
                     <LeftSidebar selectedTab={'authentication'} />
-                    <NewAuthContainerBody/>
+                    <div>
+                        <Header/>
+                        <NewAuthContainerBody/>
+                    </div>
                 </div>
+                <ErrorList/>
             </Provider>
         )
     }
@@ -28,7 +34,7 @@ const styles = (): any => ({
     root: {
         height: '100vh', 
         display: 'grid', 
-        gridTemplateColumns: '100px auto'
+        gridTemplateColumns: '280px auto'
     }
 })
 

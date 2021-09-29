@@ -34,7 +34,7 @@ function Register(props) {
         e.preventDefault();
         if (confirmPassword === password) {
             console.log(props);
-            axios.post(`${props.mainUrl}/api/register`, {
+            axios.post(`/api/user/register`, {
                 email: email,
                 username: username,
                 password: password
@@ -90,7 +90,6 @@ function Register(props) {
                                 }}
                                 label="Username"
                                 type="text"
-                                color="secondary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -103,7 +102,6 @@ function Register(props) {
                                 }}
                                 label="Email address"
                                 type="email"
-                                color="secondary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -116,7 +114,6 @@ function Register(props) {
                                 }}
                                 label="Password"
                                 type="password"
-                                color="secondary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -129,7 +126,6 @@ function Register(props) {
                                 }}
                                 label="Confirm Password"
                                 type="password"
-                                color="secondary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -137,7 +133,7 @@ function Register(props) {
                         <div className={classes.innerCardButton}>
                             <Button
                                 variant="contained"
-                                color="secondary"
+                                color="primary"
                                 fullWidth
                                 disableRipple
                                 type="submit"

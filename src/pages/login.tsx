@@ -20,13 +20,13 @@ function Login(props) {
     const submitLogin = (e) => {
         console.log(props);
         e.preventDefault();
-        axios.post(`${props.mainUrl}/api/login`, { email, password }, { withCredentials: true })
+        axios.post(`/api/user/login`, { email, password }, { withCredentials: true })
         .then((res) => {
             setError('');
             router.push('/dashboard');
         })
         .catch((err) => {
-            setError(err.response ? err.response.data.message : 'An error occurred. Please try again later.');
+            setError(err.response ? err.response.data.errors[0] : 'An error occurred. Please try again later.');
         })
     }
 
@@ -55,7 +55,7 @@ function Login(props) {
                                 }}
                                 label="Email address"
                                 type="email"
-                                color="secondary"
+                                color="primary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -68,7 +68,7 @@ function Login(props) {
                                 }}
                                 label="Password"
                                 type="password"
-                                color="secondary"
+                                color="primary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -76,7 +76,7 @@ function Login(props) {
                         <div className={classes.innerCardButton}>
                             <Button
                             variant="contained"
-                            color="secondary"
+                            color="primary"
                             fullWidth
                             type="submit"
                             disableRipple>
@@ -84,7 +84,7 @@ function Login(props) {
                             </Button>
                         </div>
                         <div className={classes.innerCardButton}>
-                            <Link href={`http://localhost:8080/api/auth/google`}>
+                            <Link href={`/api/user/oauth/google`}>
                                 <Button
                                     variant="outlined"
                                     fullWidth

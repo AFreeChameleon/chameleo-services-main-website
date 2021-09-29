@@ -99,7 +99,7 @@ const configState: any = {
             verifyContent: 'Verify your email by clicking this link: {__verify__}',
         
             resetSubject: 'Your password has been reset!',
-            resetContent: 'Your password has been reset to: {__temporary password__}'
+            resetContent: 'Your password has been reset to: {__password__}'
         },
         pass: {
             lowercase: true,

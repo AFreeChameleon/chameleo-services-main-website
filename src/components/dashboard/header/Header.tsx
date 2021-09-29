@@ -47,42 +47,40 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         const { classes } = this.props;
         const { langAnchorEl } = this.state;
         return (
-            <>
-                <div className={classes.root}>
-                    <div className={classes.rootGrid}>
-                        <SearchIcon/>
-                        <input
-                            placeholder="Search..."
-                            className={classes.searchInput}
+            <div className={classes.root}>
+                <div className={classes.rootGrid}>
+                    <SearchIcon/>
+                    <input
+                        placeholder="Search..."
+                        className={classes.searchInput}
+                    />
+                    <IconButton className={classes.flagButton} onClick={this.openLangDropdown}>
+                        <Flags.GB/>
+                    </IconButton>
+                    <Menu
+                        anchorEl={langAnchorEl}
+                        keepMounted
+                        open={Boolean(langAnchorEl)}
+                        onClose={this.closeLangDropdown}
+                    >
+                        <MenuItem onClick={this.closeLangDropdown}>Profile</MenuItem>
+                        <MenuItem onClick={this.closeLangDropdown}>My account</MenuItem>
+                        <MenuItem onClick={this.closeLangDropdown}>Logout</MenuItem>
+                    </Menu>
+                    <IconButton>
+                        <NotificationsIcon/>
+                    </IconButton>
+                    <IconButton>
+                        <Image
+                            src={ProfilePicDefault}
+                            width={26}
+                            height={26}
+                            alt="Profile picture"
+                            layout="fixed"
                         />
-                        <IconButton className={classes.flagButton} onClick={this.openLangDropdown}>
-                            <Flags.GB/>
-                        </IconButton>
-                        <Menu
-                            anchorEl={langAnchorEl}
-                            keepMounted
-                            open={Boolean(langAnchorEl)}
-                            onClose={this.closeLangDropdown}
-                        >
-                            <MenuItem onClick={this.closeLangDropdown}>Profile</MenuItem>
-                            <MenuItem onClick={this.closeLangDropdown}>My account</MenuItem>
-                            <MenuItem onClick={this.closeLangDropdown}>Logout</MenuItem>
-                        </Menu>
-                        <IconButton>
-                            <NotificationsIcon/>
-                        </IconButton>
-                        <IconButton>
-                            <Image
-                                src={ProfilePicDefault}
-                                width={26}
-                                height={26}
-                                alt="Profile picture"
-                                layout="fixed"
-                            />
-                        </IconButton>
-                    </div>
+                    </IconButton>
                 </div>
-            </>
+            </div>
         )
     }
 }
@@ -92,7 +90,7 @@ const styles = withStyles((theme) => ({
         height: '90px'
     },
     root: {
-        width: 'calc(100vw - 280px)',
+        // width: 'calc(100vw - 280px)',
         height: '90px',
         display: 'flex',
         alignItems: 'center',
@@ -101,14 +99,15 @@ const styles = withStyles((theme) => ({
         top: 0,
         background: `${theme.palette.background.default}DD`,
         WebkitBackdropFilter: 'blur(10px)',
-        backdropFilter: 'blur(10px)'
+        backdropFilter: 'blur(10px)',
+        zIndex: 600
     },
     rootGrid: {
         display: 'grid',
         gridTemplateColumns: '20px auto 50px 50px 50px',
         alignItems: 'center',
         columnGap: '10px',
-        width: '80vw'
+        width: '90%'
     },
     searchInput: {
         fontSize: '16px',

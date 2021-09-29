@@ -74,7 +74,6 @@ class DashboardMain extends React.Component {
                                 >
                                     CPU usage
                                 </Typography>
-
                             </div>
                         </div>
                     </Grid>

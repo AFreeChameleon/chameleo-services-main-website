@@ -1,3 +1,11 @@
+export const DeleteIcon = (props) => (
+    <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="8" width="1" height="6" fill="#B72136"/>
+        <path d="M11 6V16H3V6H11ZM9.5 0H4.5L3.5 1H0V3H14V1H10.5L9.5 0ZM13 4H1V16C1 17.1 1.9 18 3 18H11C12.1 18 13 17.1 13 16V4Z" fill="#B72136"/>
+        <rect x="5" y="8" width="1" height="6" fill="#B72136"/>
+    </svg>
+)
+
 export const DashboardIcon = (props) => (
     <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props} >
         <path fill="#435361" d="M16 2.31571V4.41029H12V2.31571H16ZM6 2.31571V8.59944H2V2.31571H6ZM16 10.694V16.9777H12V10.694H16ZM6 14.8832V16.9777H2V14.8832H6ZM18 0.221138H10V6.50487H18V0.221138ZM8 0.221138H0V10.694H8V0.221138ZM18 8.59944H10V19.0723H18V8.59944ZM8 12.7886H0V19.0723H8V12.7886Z"/>

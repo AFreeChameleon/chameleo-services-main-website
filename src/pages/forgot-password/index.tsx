@@ -1,6 +1,5 @@
-import { Auth } from '../../auth/auth';
 import { useState } from 'react';
-
+import axios from 'axios';
 import {
     TextField,
     Button
@@ -15,33 +14,32 @@ import formStyles from '../../styles/formStyles';
 function ForgotPassword() {
     const classes = makeStyles(formStyles)();
     const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');
 
     const submitForgotPassword = (e) => {
         e.preventDefault();
-        Auth.resetPassword(email)
-        .then((data) => {
-            setError('');
-            setSuccess(data.message);
+        setErrors([]);
+        setSuccess('');
+        axios.post('/api/user/reset-password', {
+            email: email
+        })
+        .then((res) => {
+            console.log(res.data, res.status)
+            if (res.status === 200) {
+                setSuccess(res.data.message);
+            } else {
+                setErrors(res.data.errors);
+            }
         })
         .catch((err) => {
-            console.log(err)
-            setSuccess('');
-            setError(err.message);
-        })
-    }
-
-    const resendEmail = (e) => {
-        Auth.resetPassword(email)
-        .then((data) => {
-            setError('');
-            setSuccess(data.message);
-        })
-        .catch((err) => {
-            setSuccess('');
-            setError(err.message);
-        })
+            console.log(err);
+            if (err.response) {
+                setErrors(err.response.data.errors);
+            } else {
+                setErrors(['An error occurred while resetting your password. Please try again soon.'])
+            }
+        });
     }
 
     return (
@@ -52,11 +50,11 @@ function ForgotPassword() {
                     Enter in your email address and you'll recieve a link to reset your password
                 </div>
                 <div className={classes.innerCardForm}>
-                    { error !== '' && (
+                    { errors.map((e) => (
                         <Alert severity="error">
-                            {error}
+                            {e}
                         </Alert>
-                    ) }
+                    )) }
                     { success !== '' && (
                         <>
                             <Alert severity="success">
@@ -66,12 +64,12 @@ function ForgotPassword() {
                                 <div className={classes.resendEmailTitle}>Didn't recieve the email?</div>
                                 <a
                                     className={classes.resendEmailLink}
-                                    onClick={resendEmail}
+                                    onClick={submitForgotPassword}
                                 >Resend email</a>
                             </div>
                         </>
                     ) }
-                    <form action="/forgot-password" method="POST" onSubmit={submitForgotPassword} className={classes.form}>
+                    <form action="/api/user/reset-password" method="POST" onSubmit={submitForgotPassword} className={classes.form}>
                         <div className={classes.innerCardInput}>
                             <TextField
                                 value={email}
@@ -80,7 +78,7 @@ function ForgotPassword() {
                                 }}
                                 label="Email address"
                                 type="email"
-                                color="secondary"
+                                color="primary"
                                 variant="outlined"
                                 fullWidth
                             />
@@ -88,7 +86,7 @@ function ForgotPassword() {
                         <div className={classes.innerCardButton}>
                             <Button
                                 variant="contained"
-                                color="secondary"
+                                color="primary"
                                 fullWidth
                                 type="submit"
                                 disableRipple

@@ -17,7 +17,11 @@ import {
     REMOVE_CONFIG_MODEL_ROW,
     ADD_CONFIG_MODEL_ROW,
     CHANGE_CONFIG_MODEL_TITLE,
-    TOGGLE_CONFIG_AUTH_OAUTH
+    TOGGLE_CONFIG_AUTH_OAUTH,
+
+    SET_CONTAINER_TIER,
+    SET_CONTAINER_LOCATION,
+    SET_CONTAINER_NAME
 } from './types';
 
 export const fetchConfig = (project_id: string) => {
@@ -47,6 +51,21 @@ export const fetchConfig = (project_id: string) => {
             })
     }
 }
+
+export const setContainerLocation = (value: string) => ({
+    type: SET_CONTAINER_LOCATION,
+    value: value
+});
+
+export const setContainerName = (value: string) => ({
+    type: SET_CONTAINER_NAME,
+    value: value
+})
+
+export const setContainerTier = (value: string) => ({
+    type: SET_CONTAINER_TIER,
+    value: value
+});
 
 export const setConfigErrors = (errors: string[]) => {
     return {

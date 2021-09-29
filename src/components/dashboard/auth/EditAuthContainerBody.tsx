@@ -50,7 +50,7 @@ import theme from '../../../styles/Theme';
 
 type NewAuthContainerBodyProps = {
     classes?: any;
-    container: { [key: string]: any };
+    container: any;
     container_errors: string[];
     router: NextRouter;
     dispatchSetContainerName: (value: string) => null;
@@ -112,8 +112,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                 errors.push('Mail: From address missing.');
             if (!mail.verifyContent.includes('{__verify__}'))
                 errors.push('Mail: {__verify__} is missing in email content');
-            if (!mail.resetContent.includes('{__temporary password__}'))
-                errors.push('Mail: {__temporary password__} is missing in email content');
+            if (!mail.resetContent.includes('{__password__}'))
+                errors.push('Mail: {__password__} is missing in email content');
         }
         return errors;
     }
@@ -123,6 +123,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     submitCreateContainer(e) {
         const { container, router, dispatchSetConfigErrors } = this.props;
         const { containerName } = this.state;
+        const { config } = container;
         const errors = this.checkErrorsExist(config);
         console.log(`${MAIN_URL}/api/containers/auth/new`)
         if (errors.length > 0) {
@@ -590,7 +591,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 onChange={(e) => {
                                     dispatchChangeConfigMail('resetContent', e.target.value);
                                 }}
-                                helperText="{__temporary password__} will be replaced with the temporary password."
+                                helperText="{__password__} will be replaced with the temporary password."
                             />
                         </div>
                     </Collapse>

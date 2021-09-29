@@ -1,4 +1,4 @@
-import { createMuiTheme, Theme, ThemeOptions } from '@material-ui/core/styles';
+import { createTheme, Theme, ThemeOptions } from '@material-ui/core/styles';
 
 const chameleoGreen = '#00AF55';
 const navy = '#212B36';
@@ -18,7 +18,7 @@ const themeObj = {
     palette: {
         primary: {
             main: chameleoGreen,
-            contrastText: navy
+            contrastText: '#ffffff'
         },
         secondary: {
             main: navy,
@@ -57,16 +57,30 @@ const themeObj = {
             fontSize: '32px',
             fontWeight: 700
         },
-        h6: {
+        h3: {
+            fontSize: '24px',
+            fontWeight: 600,
+        },
+        h5: {
             fontSize: '18px',
+            fontWeight: 600,
+        },
+        h6: {
+            fontSize: '1rem',
+            fontWeight: 600
+        },
+        subtitle1: {
+            fontSize: '1rem',
             fontWeight: 600
         }
     },
-    
+    shape: {
+        borderRadius: 0
+    }
 }
 
 // Create a theme instance.
-const theme: any = createMuiTheme(themeObj);
+const theme: any = createTheme(themeObj);
 
 export const secondary = '#13AA52';
 

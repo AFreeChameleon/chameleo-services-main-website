@@ -1,4 +1,3 @@
-import { Auth } from '../../auth/auth';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -13,33 +12,42 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 import formStyles from '../../styles/formStyles';
+import { setErrors } from '../../redux/projects/auth/new/errors/actions';
 
 function ForgotPasswordToken({ token }) {
     const classes = makeStyles(formStyles)();
     const router = useRouter();
+    const [oldPassword, setOldPassword] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');
 
     const submitResetPassword = (e) => {
         e.preventDefault();
+        setErrors([]);
+        setSuccess('');
         if (password === confirmPassword) {
-            Auth.verifyResetPasswordToken(token, password)
-            .then((data) => {
-                console.log(data);
-                setSuccess(data.message);
-                setError('');
-                setTimeout(() => {
+            axios.post(`/api/user/reset-password/${token}`, {
+                password: oldPassword,
+                newPassword: password
+            })
+            .then((res) => {
+                if (res.status === 200) {
                     router.push('/login');
-                }, 1000);
+                } else {
+                    setErrors(res.data.errors);
+                }
             })
             .catch((err) => {
-                console.log(err);
-                setError(err.message);
+                if (err.response) {
+                    setErrors(err.response.data.errors);
+                } else {
+                    setErrors(['An error occurred while verifying your token.']);
+                }
             })
         } else {
-            setError('Passwords must be identical.');
+            setErrors(['Passwords must be identical.']);
         }
     }
     
@@ -51,11 +59,11 @@ function ForgotPasswordToken({ token }) {
                     Enter in your new password.
                 </div>
                 <div className={classes.innerCardForm}>
-                    { error !== '' && (
+                    { errors.map((e) => (
                         <Alert severity="error">
-                            {error}
+                            {e}
                         </Alert>
-                    ) }
+                    )) }
                     { success !== '' && (
                         <Alert severity="success">
                             {success}
@@ -64,13 +72,27 @@ function ForgotPasswordToken({ token }) {
                     <form onSubmit={submitResetPassword} className={classes.form}>
                         <div className={classes.innerCardInput}>
                             <TextField
+                                value={oldPassword}
+                                onChange={(e) => {
+                                    setOldPassword(e.target.value);
+                                }}
+                                label="Old Password"
+                                type="password"
+                                color="primary"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </div>
+                        <div className={classes.innerCardInput}>
+                            <TextField
                                 value={password}
                                 onChange={(e) => {
                                     setPassword(e.target.value);
                                 }}
                                 label="Password"
                                 type="password"
-                                color="secondary"
+                                color="primary"
+                                variant="outlined"
                                 fullWidth
                             />
                         </div>
@@ -82,15 +104,16 @@ function ForgotPasswordToken({ token }) {
                                 }}
                                 label="Confirm password"
                                 type="password"
-                                color="secondary"
+                                color="primary"
+                                variant="outlined"
                                 fullWidth
                             />
                         </div>
                         <div className={classes.innerCardButton}>
                             <Button
-                                variant="contained"
-                                color="secondary"
                                 fullWidth
+                                variant="contained"
+                                color="primary"
                                 type="submit"
                                 disableRipple
                             >
