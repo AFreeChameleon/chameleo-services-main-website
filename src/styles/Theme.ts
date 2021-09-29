@@ -72,7 +72,7 @@ const themeObj = {
         subtitle1: {
             fontSize: '1rem',
             fontWeight: 600
-        }
+        },
     },
     shape: {
         borderRadius: 0

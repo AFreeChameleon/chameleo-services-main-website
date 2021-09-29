@@ -114,7 +114,7 @@ export const getAllUsersStatistics = (user: User, container: Container, done: an
         ])
         .then(done)
         .catch(err => { 
-            throw err 
+            console.log(err); 
         });
     })
 }

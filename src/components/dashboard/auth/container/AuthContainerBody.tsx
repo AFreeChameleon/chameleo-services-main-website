@@ -13,6 +13,8 @@ import PeopleIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import FireIcon from '@material-ui/icons/WhatshotOutlined';
 import SendIcon from '@material-ui/icons/Send';
 import { Doughnut } from 'react-chartjs-2';
+import { Checkbox } from '@material-ui/core';
+import UserTable from './auth/UserTable';
 
 type AuthContainerBodyProps = {
     classes: any;
@@ -23,7 +25,6 @@ type AuthContainerBodyProps = {
 }
 
 type AuthContainerBodyState = {
-    container: any;
 }
 
 class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthContainerBodyState> {
@@ -34,10 +35,8 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
             containerId,
             dispatchFetchAllUsers, 
         } = this.props;
+        console.log(containerId)
         dispatchFetchAllUsers(containerId);
-        this.state = {
-            container: containers.find(c => c.id == containerId)
-        }
     }
 
     getUserLimitFromTier(tier: string) {
@@ -51,8 +50,8 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
 
     render() {
         const { classes, stats, containerId, containers } = this.props;
-        const { container } = this.state;
-        console.log(stats, container)
+        const container = containers.find(c => c.id === containerId);
+        console.log(stats, container, containers)
         return (
             <div className={classes.root}>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
@@ -197,10 +196,13 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                 </div>
                 <div className={classes.usersTableContainer}>
                     <div className={classes.usersTableTitle}>
-                        <Typography>
+                        <Typography
+                            variant="h6"
+                        >
                             Users
                         </Typography>
                     </div>
+                    { (container && container.config.model) && <UserTable schema={container.config.model}/> }
                 </div>
             </div>
         )
@@ -220,15 +222,15 @@ export default compose<any>(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles((theme: any) => ({
         root: {
-            padding: '20px'
+            padding: '20px',
+            maxWidth: '1300px',
+            margin: '0 auto'
         },
-        breadcrumb: {
-            color: '#6F6F76',
-            cursor: 'pointer',
-            fontSize: '18px',
-            '&:hover': {
-                textDecoration: 'underline'
-            }
+        usersTableContainer: {
+            width: '100%',
+            boxShadow: theme.shadows['2'],
+            padding: '15px 20px',
+            marginTop: '20px'
         },
         gridOne: {
             display: 'grid',
@@ -284,9 +286,19 @@ export default compose<any>(
             height: '250px',
             margin: '20px auto 0 auto'
         },
-        breadcrumbMain: {
-            fontSize: '18px',
+        breadcrumb: {
+            color: theme.palette.grey.A200,
+            cursor: 'pointer',
+            fontSize: '16px',
             fontWeight: 600,
+            '&:hover': {
+                textDecoration: 'underline'
+            }
+        },
+        breadcrumbMain: {
+            color: theme.palette.text.secondary,
+            fontSize: '16px',
+            fontWeight: 600
         },
         colorStatsGrid: {
             display: 'flex',
