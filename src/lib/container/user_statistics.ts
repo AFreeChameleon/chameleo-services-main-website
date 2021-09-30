@@ -16,6 +16,7 @@ export const getAllUsersStatistics = (user: User, container: Container, done: an
         const passwordColumnName = config.model.find((r) => r.attributes.includes('Password')).name;
         const usersPromise = client.query(`
             SELECT 
+                u.id,
                 ${columnNames.filter(n => n !== passwordColumnName).map(n => `u."${n}"`).join(', ')},
                 u.oauth,
                 u.verified,

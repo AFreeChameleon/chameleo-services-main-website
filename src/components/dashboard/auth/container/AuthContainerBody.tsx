@@ -197,6 +197,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                 <div className={classes.usersTableContainer}>
                     <div className={classes.usersTableTitle}>
                         <Typography
+                            gutterBottom
                             variant="h6"
                         >
                             Users

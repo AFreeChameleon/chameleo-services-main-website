@@ -13,8 +13,22 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    Paper
+    Paper,
+    IconButton,
+    Popper,
+    MenuList,
+    MenuItem,
+    ClickAwayListener,
+    Grow,
+    ListItemIcon,
+    ListItemText
 } from '@material-ui/core';
+
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import MoreUserModal from './MoreUserModal';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -35,33 +49,49 @@ type UserTableProps = {
 }
 
 type UserTableState = {
-    userSummary: any[];
+    userIdsSelected: number[] | ['all'];
+    userMoreSelected: number;
+    userViewModalOpen: boolean;
+    userViewSelected: any
 }
 
 class UserTable extends React.Component<UserTableProps, UserTableState> {
+    private openUserRef: React.RefObject<any>
     constructor(props) {
         super(props);
 
+        this.openUserRef = React.createRef();
         this.createHeaders = this.createHeaders.bind(this);
 
         this.state = {
-            userSummary: []
+            userIdsSelected: [],
+            userMoreSelected: -1,
+
+            userViewModalOpen: false,
+            userViewSelected: null
         }
     }
 
     createHeaders() {
         const { classes, users, schema } = this.props;
+        const { userIdsSelected } = this.state;
         
         const columnNames = schema.map(col => col.name);
         const emailColumn = schema.find(col => col.attributes.includes('Email') && col.attributes.includes('Username'));
         const usernameColumns = schema.filter(col => col.attributes.includes('Username'));
         const passwordColumn = schema.find(col => col.attributes.includes('Password'));
-        const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name)
+        const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name);
+        
         return (
             <TableRow>
                 <StyledTableCell size="small" className={classes.checkboxCol}>
                     <Checkbox
+                        checked={userIdsSelected[0] === 'all' || userIdsSelected.length === users.length}
+                        indeterminate={userIdsSelected[0] !== 'all' && (userIdsSelected.length > 0 && userIdsSelected.length !== users.length)}
                         className={classes.whiteCheckbox}
+                        onChange={(e) => this.setState({
+                            userIdsSelected: e.target.checked ? ['all'] : [] 
+                        })}
                     />
                 </StyledTableCell>
                 { filteredColumnNames.map((col, i) => (
@@ -75,65 +105,143 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                 <StyledTableCell align="center">
                     account created
                 </StyledTableCell>
+                <StyledTableCell align="center" size="small" className={classes.moreCol}>
+                </StyledTableCell>
             </TableRow>
         )
     }
 
     createBody() {
         const { classes, users, schema } = this.props;
-        
+        const { userIdsSelected, userMoreSelected, userViewSelected } = this.state;
+
         const columnNames = schema.map(col => col.name);
         const emailColumn = schema.find(col => col.attributes.includes('Email') && col.attributes.includes('Username'));
         const usernameColumns = schema.filter(col => col.attributes.includes('Username'));
         const passwordColumn = schema.find(col => col.attributes.includes('Password'));
-        const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name)
-
-        return users.map((user, i) => (
-            <TableRow key={i}>
+        const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name);
+        
+        return users.map((user, i) => (<TableRow key={i}>
                 <StyledTableCell size="small" className={classes.checkboxCol}>
                     <Checkbox
-                        className={classes.whiteCheckbox}
+                        checked={(userIdsSelected as number[]).includes(user.id) || userIdsSelected[0] === 'all'}
+                        onChange={(e) => this.setState({
+                            userIdsSelected: e.target.checked ? 
+                                [ ...userIdsSelected, user.id ] : 
+                                [ ...(userIdsSelected as number[]).filter(u => u !== user.id) ]
+                        })}
                     />
                 </StyledTableCell>
-
+                { filteredColumnNames.map((col, j) => (
+                    <StyledTableCell align="left" key={j}>
+                        {user[col]}
+                    </StyledTableCell>
+                )) }
+                <StyledTableCell align="center">
+                    {user.verified.toString()}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                    {(new Date(user.createdAt)).toLocaleTimeString()} {(new Date(user.createdAt)).toLocaleDateString()}
+                </StyledTableCell>
+                <StyledTableCell align="center" size="small" className={classes.moreCol}>
+                    <IconButton
+                        ref={this.openUserRef}
+                        onClick={(e) => {
+                            this.setState({
+                                userMoreSelected: user.id,
+                            });
+                            this.openUserRef.current.focus();
+                        }}
+                    >
+                        <MoreVertIcon/>
+                    </IconButton>
+                    <Popper
+                        open={userMoreSelected === user.id}
+                        anchorEl={this.openUserRef.current}
+                        role={undefined}
+                        placement="right-end"
+                        transition
+                        disablePortal
+                    >
+                        {({ TransitionProps, placement }) => (
+                            <Grow
+                                {...TransitionProps}
+                                style={{
+                                    transformOrigin:
+                                    placement === 'right-end' ? 'right top' : 'right bottom',
+                                }}
+                            >
+                                <Paper>
+                                    <ClickAwayListener onClickAway={(e) => this.setState({
+                                        userMoreSelected: -1
+                                    })}>
+                                        <MenuList
+                                            autoFocusItem={userMoreSelected === user.id}
+                                        >
+                                            <MenuItem onClick={(e) => {
+                                                this.setState({
+                                                    userViewModalOpen: true,
+                                                    userViewSelected: user,
+                                                    userMoreSelected: -1
+                                                });
+                                            }}>
+                                                <ListItemIcon>
+                                                    <DescriptionOutlinedIcon color="secondary"/>
+                                                </ListItemIcon>
+                                                <ListItemText>
+                                                    View
+                                                </ListItemText>
+                                            </MenuItem>
+                                            <MenuItem onClick={(e) => {
+                                                console.log('Profile')
+                                            }}>
+                                                <ListItemIcon>
+                                                    <CreateOutlinedIcon color="secondary"/>
+                                                </ListItemIcon>
+                                                <ListItemText>
+                                                    Edit
+                                                </ListItemText>
+                                            </MenuItem>
+                                            <MenuItem onClick={(e) => {
+                                                console.log('Logout')
+                                            }}>
+                                                <ListItemIcon>
+                                                    <DeleteOutlinedIcon color="secondary"/>
+                                                </ListItemIcon>
+                                                <ListItemText>
+                                                    Delete
+                                                </ListItemText>
+                                            </MenuItem>
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                </Paper>
+                            </Grow>
+                        )}
+                    </Popper>
+                </StyledTableCell>
             </TableRow>
         ))
     }
 
     render() {
-        const { classes, users } = this.props;
-        const { userSummary } = this.state;
+        const { classes, users, schema } = this.props;
+        const { userViewModalOpen, userMoreSelected, userViewSelected } = this.state;
 
-        console.log(users)
         return (
             <div className={classes.root}>
+                <MoreUserModal 
+                    schema={schema}
+                    open={userViewModalOpen} 
+                    user={userViewSelected} 
+                    handleClose={() => this.setState({ userViewModalOpen: false })}
+                />
                 <TableContainer>
                     <Table>
                         <TableHead>
                             {this.createHeaders()}
                         </TableHead>
                         <TableBody>
-                            <TableRow>
-                                <StyledTableCell size="small">
-                                    <Checkbox
-                                    />
-                                </StyledTableCell>
-                                <StyledTableCell align="left">
-                                    ben.evans@chamel.io
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    Ben Evans
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    Benamon
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    True
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    26/06/2020
-                                </StyledTableCell>
-                            </TableRow>
+                            {this.createBody()}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -173,6 +281,9 @@ export default compose<any>(
         cell: {
             minWidth: '120px'
         },
+        moreCol: {
+            width: '0px'
+        },
         row: {
             height: '60px',
             display: 'flex',
@@ -195,59 +306,3 @@ export default compose<any>(
         }
     }))
 )(UserTable);
-
-               /* <div className={classes.headers}>
-                    <Checkbox
-                        className={classes.whiteCheckbox}
-                    />
-                    <Typography 
-                        variant="subtitle1"
-                        className={`${classes.header} ${classes.flexGrow}`}
-                    >
-                        Email
-                    </Typography>
-                    <Typography 
-                        variant="subtitle1"
-                        className={classes.header}
-                    >
-                        Name
-                    </Typography>
-                    <Typography 
-                        variant="subtitle1"
-                        className={classes.header}
-                    >
-                        Verified
-                    </Typography>
-                    <Typography 
-                        variant="subtitle1"
-                        className={classes.header}
-                    >
-                        Username
-                    </Typography>
-                    <Typography 
-                        variant="subtitle1"
-                        className={classes.header}
-                    >
-                        Account Created
-                    </Typography>
-                </div>
-                <div className={classes.row}>
-                    <Checkbox
-                        color="default"
-                    />
-                    <Typography
-                        className={`${classes.flexGrow} ${classes.cell}`}
-                    >
-                        ben.evans@chameleo.dev
-                    </Typography>
-                    <Typography
-                        className={classes.cell}
-                    >
-                        Ben Evans
-                    </Typography>
-                    <Typography
-                        className={classes.cell}
-                    >
-                        Ben Evans
-                    </Typography>
-                </div> */
