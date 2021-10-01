@@ -28,6 +28,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Cancel';
+
 import MoreUserModal from './MoreUserModal';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -52,7 +55,8 @@ type UserTableState = {
     userIdsSelected: number[] | ['all'];
     userMoreSelected: number;
     userViewModalOpen: boolean;
-    userViewSelected: any
+    userViewSelected: any;
+    editingUser: {[key: string]: any};
 }
 
 class UserTable extends React.Component<UserTableProps, UserTableState> {
@@ -68,7 +72,9 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
             userMoreSelected: -1,
 
             userViewModalOpen: false,
-            userViewSelected: null
+            userViewSelected: null,
+
+            editingUser: {}
         }
     }
 
@@ -111,9 +117,56 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
         )
     }
 
+    createEditingUserRow(user: any) {
+        const { classes, users, schema } = this.props;
+        const { userIdsSelected, userMoreSelected, userViewSelected, editingUser } = this.state;
+
+        const columnNames = schema.map(col => col.name);
+        const emailColumn = schema.find(col => col.attributes.includes('Email') && col.attributes.includes('Username'));
+        const usernameColumns = schema.filter(col => col.attributes.includes('Username'));
+        const passwordColumn = schema.find(col => col.attributes.includes('Password'));
+        const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name);
+
+        return (
+            <TableRow>
+                <StyledTableCell size="small" className={classes.checkboxCol}>
+                    <IconButton
+                        onClick={(e) => {
+                            this.setState({
+                                editingUser: {}
+                            });
+                        }}
+                    >
+                        <CancelIcon/>
+                    </IconButton>
+                </StyledTableCell>
+                { filteredColumnNames.map((col, j) => (
+                    <StyledTableCell align="left" key={j}>
+                        {user[col]}
+                    </StyledTableCell>
+                )) }
+                <StyledTableCell align="center">
+                    {user.verified.toString()}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                    {(new Date(user.createdAt)).toLocaleTimeString()} {(new Date(user.createdAt)).toLocaleDateString()}
+                </StyledTableCell>
+                <StyledTableCell align="center" size="small" className={classes.moreCol}>
+                    <IconButton
+                        onClick={(e) => {
+                            console.log('Update user')
+                        }}
+                    >
+                        <SaveIcon/>
+                    </IconButton>
+                </StyledTableCell>
+            </TableRow>
+        )
+    }
+
     createBody() {
         const { classes, users, schema } = this.props;
-        const { userIdsSelected, userMoreSelected, userViewSelected } = this.state;
+        const { userIdsSelected, userMoreSelected, userViewSelected, editingUser } = this.state;
 
         const columnNames = schema.map(col => col.name);
         const emailColumn = schema.find(col => col.attributes.includes('Email') && col.attributes.includes('Username'));
@@ -121,7 +174,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
         const passwordColumn = schema.find(col => col.attributes.includes('Password'));
         const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name);
         
-        return users.map((user, i) => (<TableRow key={i}>
+        return users.map((user, i) => (user.id !== editingUser.id) ? (<TableRow key={i}>
                 <StyledTableCell size="small" className={classes.checkboxCol}>
                     <Checkbox
                         checked={(userIdsSelected as number[]).includes(user.id) || userIdsSelected[0] === 'all'}
@@ -193,7 +246,9 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                                                 </ListItemText>
                                             </MenuItem>
                                             <MenuItem onClick={(e) => {
-                                                console.log('Profile')
+                                                this.setState({
+                                                    editingUser: user
+                                                })
                                             }}>
                                                 <ListItemIcon>
                                                     <CreateOutlinedIcon color="secondary"/>
@@ -220,7 +275,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                     </Popper>
                 </StyledTableCell>
             </TableRow>
-        ))
+        ) : this.createEditingUserRow(user))
     }
 
     render() {

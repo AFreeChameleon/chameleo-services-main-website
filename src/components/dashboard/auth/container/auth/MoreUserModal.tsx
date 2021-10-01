@@ -44,6 +44,8 @@ type MoreUserModalState = {
 class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalState> {
     constructor(props) {
         super(props);
+
+        this.createStatsBody = this.createStatsBody.bind(this);
     }
 
     createHeaders() {
@@ -57,17 +59,14 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
         
         return (
             <TableRow>
+                <StyledTableCell align="left">
+                    id
+                </StyledTableCell>
                 { filteredColumnNames.map((col, i) => (
                     <StyledTableCell align="left" key={i}>
                         {col}
                     </StyledTableCell>
                 )) }
-                <StyledTableCell align="center">
-                    verified
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                    account created
-                </StyledTableCell>
             </TableRow>
         )
     }
@@ -82,16 +81,73 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
         const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name);
         
         return (<TableRow>
+                <StyledTableCell align="left">
+                    {user.id.toString()}
+                </StyledTableCell>
                 { filteredColumnNames.map((col, j) => (
                     <StyledTableCell align="left" key={j}>
                         {user[col]}
                     </StyledTableCell>
                 )) }
-                <StyledTableCell align="center">
+            </TableRow>
+        )
+    }
+
+    createStatsHeaders() {
+        const { classes, user, schema } = this.props;
+
+        return (
+            <TableRow>
+                <StyledTableCell align="left">
+                    Verified
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    Status
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    Last device used
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    Last logged in
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    Last browser used
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    Last platform used
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    Last OS used
+                </StyledTableCell>
+            </TableRow>
+        )
+    }
+
+    createStatsBody() {
+        const { classes, user, schema } = this.props;
+
+        return (
+            <TableRow>
+                <StyledTableCell align="left">
                     {user.verified.toString()}
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                    {(new Date(user.createdAt)).toLocaleTimeString()} {(new Date(user.createdAt)).toLocaleDateString()}
+                <StyledTableCell align="left">
+                    {user.status}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    {user.device}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    {(new Date(user.loggedInDate)).toLocaleTimeString()} {(new Date(user.loggedInDate)).toLocaleDateString()}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    {user.browser}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    {user.platform}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                    {user.os}
                 </StyledTableCell>
             </TableRow>
         )
@@ -113,7 +169,7 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
                         component="div"
                         className={classes.header}
                     >
-                        See information for
+                        More information
                     </Typography>
                     <div className={classes.body}>
                         <Typography
@@ -123,7 +179,7 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
                         >
                             User Model
                         </Typography>
-                        <TableContainer>
+                        <TableContainer className={classes.tableContainer}>
                             <Table>
                                 <TableHead>
                                     {this.createHeaders()}
@@ -140,6 +196,16 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
                         >
                             User Statistics
                         </Typography>
+                        <TableContainer className={classes.tableContainer}>
+                            <Table>
+                                <TableHead>
+                                    {this.createStatsHeaders()}
+                                </TableHead>
+                                <TableBody>
+                                    {this.createStatsBody()}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
                 </div>
             </Modal>
@@ -170,11 +236,14 @@ export default compose<any>(
             backgroundColor: theme.palette.background.paper
         },
         header: {
-            padding: '20px 10px',
+            padding: '20px 30px',
             borderBottom: `1px solid ${theme.palette.grey['50']}`
         },
         body: {
-            padding: '20px 10px'
+            padding: '20px 30px'
+        },
+        tableContainer: {
+            padding: '10px 0 30px 0'
         }
     }))
 )(MoreUserModal);
