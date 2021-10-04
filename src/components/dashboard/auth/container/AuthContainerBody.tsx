@@ -203,7 +203,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                             Users
                         </Typography>
                     </div>
-                    { (container && container.config.model) && <UserTable schema={container.config.model}/> }
+                    { (container && container.config.model) && <UserTable schema={container.config.model} containerId={containerId} /> }
                 </div>
             </div>
         )

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -21,7 +22,11 @@ import {
     ClickAwayListener,
     Grow,
     ListItemIcon,
-    ListItemText
+    ListItemText,
+    TextField,
+    FormControl,
+    InputLabel,
+    Select,
 } from '@material-ui/core';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -32,6 +37,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 import MoreUserModal from './MoreUserModal';
+import { NumberInputNoTicks } from '../../../../Inputs';
+import GetInputFromType from '../../../GetInputFromType';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -41,7 +48,8 @@ const StyledTableCell = withStyles((theme) => ({
         color: theme.palette.primary.contrastText
     },
     body: {
-        fontSize: theme.typography.body2.fontSize
+        fontSize: theme.typography.body2.fontSize,
+        height: '61px'
     }
 }))(TableCell);
 
@@ -49,6 +57,7 @@ type UserTableProps = {
     classes: any;
     users: any[];
     schema: any[];
+    containerId: string;
 }
 
 type UserTableState = {
@@ -66,6 +75,8 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
 
         this.openUserRef = React.createRef();
         this.createHeaders = this.createHeaders.bind(this);
+        this.getInputFromType = this.getInputFromType.bind(this);
+        this.saveEditedUser = this.saveEditedUser.bind(this);
 
         this.state = {
             userIdsSelected: [],
@@ -76,6 +87,30 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
 
             editingUser: {}
         }
+    }
+
+    saveEditedUser() {
+        const { containerId } = this.props;
+        const { editingUser } = this.state;
+
+        axios.patch(`/api/container/auth/${containerId}/user/edit`, {
+            user_id: editingUser.id,
+            edit: {
+                ...editingUser
+            }
+        }, { withCredentials: true })
+        .then((res) => {
+            console.log(res.data)
+            this.setState({
+                editingUser: {}
+            });
+        })
+        .catch((err) => {
+            console.error(err)
+            this.setState({
+                editingUser: {}
+            });
+        })
     }
 
     createHeaders() {
@@ -90,7 +125,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
         
         return (
             <TableRow>
-                <StyledTableCell size="small" className={classes.checkboxCol}>
+                <StyledTableCell size="small" className={classes.checkboxCol} colSpan={1}>
                     <Checkbox
                         checked={userIdsSelected[0] === 'all' || userIdsSelected.length === users.length}
                         indeterminate={userIdsSelected[0] !== 'all' && (userIdsSelected.length > 0 && userIdsSelected.length !== users.length)}
@@ -111,10 +146,154 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                 <StyledTableCell align="center">
                     account created
                 </StyledTableCell>
-                <StyledTableCell align="center" size="small" className={classes.moreCol}>
+                <StyledTableCell align="center" size="small" className={classes.moreCol} colSpan={1}>
                 </StyledTableCell>
             </TableRow>
         )
+    }
+
+    getInputFromType(type: string, col: string) {
+        const { classes } = this.props;
+        const { editingUser } = this.state;
+
+        switch (type) {
+            case 'String': 
+                return (
+                    <TextField
+                        fullWidth
+                        key={col}
+                        value={editingUser[col]}
+                        className={classes.smallTextField}
+                        onChange={(e) => {
+                            this.setState({
+                                editingUser: {
+                                    ...editingUser,
+                                    [col]: e.target.value
+                                }
+                            })
+                        }}
+                    />
+                );
+            case 'Int':
+                return (
+                    <NumberInputNoTicks
+                        fullWidth
+                        key={col}
+                        value={editingUser[col]}
+                        type="number"
+                        className={classes.smallTextField}
+                        onChange={(e) => {
+                            this.setState({
+                                editingUser: {
+                                    ...editingUser,
+                                    [col]: parseInt(e.target.value)
+                                }
+                            })
+                        }}
+                    /> 
+                );
+            case 'Float':
+                return (
+                    <NumberInputNoTicks
+                        fullWidth
+                        key={col}
+                        value={editingUser[col]}
+                        type="number"
+                        className={classes.smallTextField}
+                        onChange={(e) => {
+                            this.setState({
+                                editingUser: {
+                                    ...editingUser,
+                                    [col]: parseFloat(e.target.value)
+                                }
+                            })
+                        }}
+                    /> 
+                );
+            case 'JSON': 
+                return (
+                    <TextField
+                        fullWidth
+                        multiline
+                        key={col}
+                        value={editingUser[col]}
+                        className={classes.smallTextField}
+                        onChange={(e) => {
+                            this.setState({
+                                editingUser: {
+                                    ...editingUser,
+                                    [col]: e.target.value
+                                }
+                            })
+                        }}
+                    />
+                );
+            case 'Boolean':
+                return (
+                    <FormControl>
+                        <Select
+                            key={col}
+                            value={editingUser[col].toString()}
+                            className={classes.smallTextField}
+                            onChange={(e) => {
+                                this.setState({
+                                    editingUser: {
+                                        ...editingUser,
+                                        [col]: Boolean(e.target.value)
+                                    }
+                                })
+                            }}
+                        >
+                            <MenuItem value={'true'}>true</MenuItem>
+                            <MenuItem value={'false'}>false</MenuItem>
+                        </Select>
+                    </FormControl>
+                );
+            case 'Date':
+                return (
+                    <TextField
+                        fullWidth
+                        key={col}
+                        value={editingUser[col]}
+                        label={col}
+                        type="date"
+                        className={classes.smallTextField}
+                        onChange={(e) => {
+                            this.setState({
+                                editingUser: {
+                                    ...editingUser,
+                                    [col]: new Date(e.target.value)
+                                }
+                            })
+                        }}
+                    />
+                );
+            case 'DateTime':
+                return (
+                    <TextField
+                        fullWidth
+                        key={col}
+                        value={editingUser[col]}
+                        label={col}
+                        type="datetime-local"
+                        className={classes.smallTextField}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(e) => {
+                            this.setState({
+                                editingUser: {
+                                    ...editingUser,
+                                    [col]: new Date(e.target.value)
+                                }
+                            })
+                        }}
+                    />
+                );
+            default:
+                console.error('Unrecognised type.');
+                break;
+        }
     }
 
     createEditingUserRow(user: any) {
@@ -129,8 +308,9 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
 
         return (
             <TableRow>
-                <StyledTableCell size="small" className={classes.checkboxCol}>
+                <StyledTableCell size="small" className={classes.checkboxCol} colSpan={1}>
                     <IconButton
+                        className={classes.smallIconButton}
                         onClick={(e) => {
                             this.setState({
                                 editingUser: {}
@@ -141,20 +321,29 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                     </IconButton>
                 </StyledTableCell>
                 { filteredColumnNames.map((col, j) => (
-                    <StyledTableCell align="left" key={j}>
-                        {user[col]}
+                    <StyledTableCell align="left" size="small" key={j}>
+                        <GetInputFromType 
+                            type={schema.find(r => r.name === col).type} 
+                            colName={col} value={editingUser[col]} 
+                            onChange={(newValue) => this.setState({
+                                editingUser: {
+                                    ...editingUser,
+                                    [col]: newValue
+                                }
+                            })} />
                     </StyledTableCell>
                 )) }
                 <StyledTableCell align="center">
                     {user.verified.toString()}
                 </StyledTableCell>
-                <StyledTableCell align="center">
+                <StyledTableCell align="center" className={classes.noWrap}>
                     {(new Date(user.createdAt)).toLocaleTimeString()} {(new Date(user.createdAt)).toLocaleDateString()}
                 </StyledTableCell>
-                <StyledTableCell align="center" size="small" className={classes.moreCol}>
+                <StyledTableCell align="center" size="small" className={classes.moreCol} colSpan={1}>
                     <IconButton
+                        className={classes.smallIconButton}
                         onClick={(e) => {
-                            console.log('Update user')
+                            this.saveEditedUser()
                         }}
                     >
                         <SaveIcon/>
@@ -174,8 +363,9 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
         const passwordColumn = schema.find(col => col.attributes.includes('Password'));
         const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name);
         
-        return users.map((user, i) => (user.id !== editingUser.id) ? (<TableRow key={i}>
-                <StyledTableCell size="small" className={classes.checkboxCol}>
+        return users.map((user, i) => (user.id !== editingUser.id) ? (
+            <TableRow key={i}>
+                <StyledTableCell size="small" className={classes.checkboxCol} colSpan={1}>
                     <Checkbox
                         checked={(userIdsSelected as number[]).includes(user.id) || userIdsSelected[0] === 'all'}
                         onChange={(e) => this.setState({
@@ -196,7 +386,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                 <StyledTableCell align="center">
                     {(new Date(user.createdAt)).toLocaleTimeString()} {(new Date(user.createdAt)).toLocaleDateString()}
                 </StyledTableCell>
-                <StyledTableCell align="center" size="small" className={classes.moreCol}>
+                <StyledTableCell align="center" size="small" className={classes.moreCol} colSpan={1}>
                     <IconButton
                         ref={this.openUserRef}
                         onClick={(e) => {
@@ -247,7 +437,8 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                                             </MenuItem>
                                             <MenuItem onClick={(e) => {
                                                 this.setState({
-                                                    editingUser: user
+                                                    editingUser: user,
+                                                    userMoreSelected: -1
                                                 })
                                             }}>
                                                 <ListItemIcon>
@@ -358,6 +549,17 @@ export default compose<any>(
         checkboxCol: {
             paddingRight: '16px',
             width: '50px'
+        },
+        smallIconButton: {
+            padding: '9px'
+        },
+        smallTextField: {
+            '& input': {
+                fontSize: '14px'
+            }
+        },
+        noWrap: {
+            whiteSpace: 'nowrap'
         }
     }))
 )(UserTable);

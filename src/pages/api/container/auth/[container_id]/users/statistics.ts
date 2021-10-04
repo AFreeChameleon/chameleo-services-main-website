@@ -30,7 +30,6 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
 
 const getUsersStatistics = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     try {
-        // const { container_id } = schema.validateSync(req.body);
         const { container_id } = schema.validateSync(req.query);
         const container = await prismaMain.container.findFirst({
             where: {
@@ -55,7 +54,6 @@ const getUsersStatistics = async (req: NextApiRequestWithSession, res: NextApiRe
             emailSentPromise, 
             emailCountPromise
         ]) => {
-            console.log(emailCountPromise)
             return res.json({
                 users: users.rows,
                 userCount: parseInt(userCountPromise.rowCount),
