@@ -40,6 +40,7 @@ import {
     Tab,
     Input,
 } from '@material-ui/core';
+import GetInputFromType from '../../../dashboard/GetInputFromType';
 import { Alert } from '@material-ui/lab'
 import { withStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -307,6 +308,17 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                 </Select>
                                             </div>
                                             <div className={classes.tableColumn}>
+                                                {/* <TextField
+                                                    disabled
+                                                    className={classes.invisibleInput}
+                                                /> */}
+                                                {/* <TextField
+                                                    value={row.default}
+                                                    className={classes.invisibleInput}
+                                                    onChange={(e) => {
+                                                        dispatchChangeConfigModel(row.name, 'default', e.target.value)
+                                                    }}
+                                                /> */}
                                                 { row.attributes.includes('Required') ? (
                                                     <Tooltip title={"Can't be edited if the row is required."}>
                                                         <TextField
@@ -315,13 +327,14 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                         />
                                                     </Tooltip>
                                                 ) : (
-                                                    <TextField
-                                                        value={row.default}
+                                                    <GetInputFromType
+                                                        type={row.type} 
+                                                        colName={'Default'}
+                                                        value={row.default} 
                                                         className={classes.invisibleInput}
-                                                        onChange={(e) => {
-                                                            dispatchChangeConfigModel(row.name, 'default', e.target.value)
-                                                        }}
+                                                        onChange={(newValue) => dispatchChangeConfigModel(row.name, 'default', newValue)} 
                                                     />
+
                                                 ) }
                                             </div>
                                             <div className={`${classes.tableColumn} ${classes.tableColumnPaddingBottom}`}>

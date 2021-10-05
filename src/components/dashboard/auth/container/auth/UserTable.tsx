@@ -178,6 +178,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                 { filteredColumnNames.map((col, j) => (
                     <StyledTableCell align="left" size="small" key={j}>
                         <GetInputFromType 
+                            size="small"
                             type={schema.find(r => r.name === col).type} 
                             colName={col} value={editingUser[col]} 
                             onChange={(newValue) => this.setState({

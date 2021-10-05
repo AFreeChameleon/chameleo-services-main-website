@@ -17,9 +17,11 @@ import {
 
 type GetInputFromTypeProps = {
     classes: any;
+    className?: string;
     type: string;
     colName: string;
-    value: string;
+    value: any;
+    size?: 'small';
     onChange: (value: any) => void;
 }
 
@@ -29,7 +31,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
     }
 
     render() {
-        const { classes, type, value, colName, onChange } = this.props;
+        const { classes, type, value, colName, size, onChange, className } = this.props;
 
         switch (type) {
             case 'String': 
@@ -38,7 +40,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         fullWidth
                         key={colName}
                         value={value}
-                        className={classes.smallTextField}
+                        className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
                     />
                 );
@@ -49,7 +51,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         key={colName}
                         value={value}
                         type="number"
-                        className={classes.smallTextField}
+                        className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(parseInt(e.target.value))}
                     /> 
                 );
@@ -60,7 +62,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         key={colName}
                         value={value}
                         type="number"
-                        className={classes.smallTextField}
+                        className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(parseFloat(e.target.value))}
                     /> 
                 );
@@ -71,7 +73,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         multiline
                         key={colName}
                         value={value}
-                        className={classes.smallTextField}
+                        className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
                     />
                 );
@@ -81,7 +83,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         <Select
                             key={colName}
                             value={value.toString()}
-                            className={classes.smallTextField}
+                            className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                             onChange={(e) => onChange(Boolean(e.target.value))}
                         >
                             <MenuItem value={1}>true</MenuItem>
@@ -94,10 +96,10 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                     <TextField
                         fullWidth
                         key={colName}
-                        value={value.toString()}
+                        value={value}
                         type="date"
-                        className={classes.smallTextField}
-                        onChange={(e) => onChange(new Date(e.target.value))}
+                        className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
+                        onChange={(e) => onChange(new Date(e.target.value).toISOString().split('T')[0])}
                     />
                 );
             case 'DateTime':
@@ -105,13 +107,13 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                     <TextField
                         fullWidth
                         key={colName}
-                        value={value.toString()}
+                        value={value}
                         type="datetime-local"
-                        className={classes.smallTextField}
+                        className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        onChange={(e) => onChange(new Date(e.target.value))}
+                        onChange={(e) => onChange(new Date(e.target.value).toISOString().replace('Z', ''))}
                     />
                 );
             default:

@@ -49,6 +49,7 @@ function Login(props) {
                     <form onSubmit={submitLogin} className={classes.form}>
                         <div className={classes.innerCardInput}>
                             <TextField
+                                autoFocus
                                 value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value);
