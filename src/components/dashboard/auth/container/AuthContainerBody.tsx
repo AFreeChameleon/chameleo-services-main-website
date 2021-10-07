@@ -13,8 +13,23 @@ import PeopleIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import FireIcon from '@material-ui/icons/WhatshotOutlined';
 import SendIcon from '@material-ui/icons/Send';
 import { Doughnut } from 'react-chartjs-2';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, MenuItem, Select } from '@material-ui/core';
 import UserTable from './auth/UserTable';
+import UserStatisticsTable from './auth/UserStatisticsTable';
+
+import {
+    StyledSelect,
+    NumberInputNoTicks,
+    GreenButton,
+} from '../../../Inputs';
+
+const SmallSelect = withStyles((theme) => ({
+    root: {
+        fontSize: '14px',
+        paddingLeft: '5px',
+        paddingRight: '5px',
+    }
+}))(Select);
 
 type AuthContainerBodyProps = {
     classes: any;
@@ -25,9 +40,11 @@ type AuthContainerBodyProps = {
 }
 
 type AuthContainerBodyState = {
+    statisticsMode: any;
 }
 
 class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthContainerBodyState> {
+    private statsModeRef: React.RefObject<any>
     constructor(props) {
         super(props);
         const { 
@@ -37,6 +54,11 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
         } = this.props;
         console.log(containerId)
         dispatchFetchAllUsers(containerId);
+        this.statsModeRef = React.createRef();
+
+        this.state = {
+            statisticsMode: 'browser',
+        }
     }
 
     getUserLimitFromTier(tier: string) {
@@ -50,6 +72,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
 
     render() {
         const { classes, stats, containerId, containers } = this.props;
+        const { statisticsMode } = this.state;
         const container = containers.find(c => c.id === containerId);
         console.log(stats, container, containers)
         return (
@@ -205,6 +228,38 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                     </div>
                     { (container && container.config.model) && <UserTable schema={container.config.model} containerId={containerId} /> }
                 </div>
+                <div className={classes.userStatisticsContainer}>
+                    <div className={classes.userStatisticsTitle}>
+                        <Typography
+                            variant="h6"
+                        >
+                            User Statistics
+                        </Typography>
+                        <SmallSelect
+                            MenuProps={{
+                                anchorOrigin: {
+                                    vertical: "bottom",
+                                    horizontal: "left"
+                                },
+                                transformOrigin: {
+                                    vertical: "top",
+                                    horizontal: "left"
+                                },
+                                getContentAnchorEl: null
+                            }}
+                            input={<StyledSelect/>}
+                            value={statisticsMode}
+                            onChange={(e) => this.setState({
+                                statisticsMode: e.target.value
+                            })}
+                        >
+                            <MenuItem value="location">Location</MenuItem>
+                            <MenuItem value="devices">Devices</MenuItem>
+                            <MenuItem value="browser">Browser</MenuItem>
+                        </SmallSelect>
+                    </div>
+                    { (container) && <UserStatisticsTable containerId={containerId} type={statisticsMode} /> }
+                </div>
             </div>
         )
     }
@@ -232,6 +287,17 @@ export default compose<any>(
             boxShadow: theme.shadows['2'],
             padding: '15px 20px',
             marginTop: '20px'
+        },
+        userStatisticsContainer: {
+            width: '365px',
+            boxShadow: theme.shadows['2'],
+            padding: '15px 20px',
+            marginTop: '20px'
+        },
+        userStatisticsTitle: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
         },
         gridOne: {
             display: 'grid',

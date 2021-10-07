@@ -79,8 +79,8 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                 );
             case 'Boolean':
                 return (
-                    <FormControl>
                         <Select
+                            fullWidth
                             key={colName}
                             value={value.toString()}
                             className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
@@ -89,7 +89,6 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                             <MenuItem value={1}>true</MenuItem>
                             <MenuItem value={0}>false</MenuItem>
                         </Select>
-                    </FormControl>
                 );
             case 'Date':
                 return (
@@ -99,7 +98,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         value={value}
                         type="date"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
-                        onChange={(e) => onChange(new Date(e.target.value).toISOString().split('T')[0])}
+                        onChange={(e) => onChange(e.target.value)}
                     />
                 );
             case 'DateTime':
@@ -113,7 +112,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        onChange={(e) => onChange(new Date(e.target.value).toISOString().replace('Z', ''))}
+                        onChange={(e) => onChange(e.target.value)}
                     />
                 );
             default:
@@ -124,5 +123,9 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
 }
 
 export default withStyles((theme) => ({
-
+    smallTextField: {
+        '& input': {
+            fontSize: '14px'
+        }
+    },
 }))(GetInputFromType);

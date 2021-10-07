@@ -11,7 +11,6 @@ const querySchema = yup.object({
 
 const bodySchema = yup.object({
     user_id: yup.number().required("Missing user id"),
-    edit: yup.object().required("Missing edit columns")
 }).noUnknown(true);
 
 export default withSession(async (req: NextApiRequestWithSession, res: NextApiResponse) => {
@@ -20,7 +19,7 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
             isUserLoggedIn(
                 req,
                 res,
-                patchEditUser
+                deleteDestroyUser
             );
             break;
         default:
@@ -31,10 +30,10 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
     }
 });
 
-const patchEditUser = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
+const deleteDestroyUser = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     try {
         const { container_id } = querySchema.validateSync(req.query);
-        const { user_id, edit } = bodySchema.validateSync(req.body);
+        const { user_id } = bodySchema.validateSync(req.body);
         const container = await prismaMain.container.findFirst({
             where: {
                 id: container_id,
@@ -46,32 +45,25 @@ const patchEditUser = async (req: NextApiRequestWithSession, res: NextApiRespons
                 errors: ['Cannot find container']
             })
         }
-        const userColumnNames = (container.config as any).model.map((r) => r.name);
         const client: any = await getConnection(container.location);
-        const keys = Object.keys(edit).filter(k => userColumnNames.includes(k));
-        const values = keys.map(k => edit[k]);
-        const updateStrings = keys.map((k, i) => `"${k}" = $${i + 1}`);
         client.query(`
-            UPDATE ${req.user.db_schema}.users
-                SET
-                    ${updateStrings.join(', ')}
-                WHERE
-                    id = $${keys.length + 1};
-        `, [ ...values, user_id ], (err, dbRes) => {
+            DELETE FROM ${req.user.db_schema}.users
+                WHERE id = $1
+        `, [user_id], (err, dbRes) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
-                    errors: ['An error occurred while editing the user, please try again.']
+                    errors: ['An error occurred while deleting the user, please try again.']
                 });
             }
             return res.json({
                 message: 'Success!'
-            })
-        })
+            });
+        });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            errors: ['An error occurred while editing the user, please try again.']
+            errors: ['An error occurred while deleting the user, please try again.']
         });
     }
 }

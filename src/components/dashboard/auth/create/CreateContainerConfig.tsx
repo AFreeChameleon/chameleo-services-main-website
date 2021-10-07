@@ -344,7 +344,8 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     fullWidth
                                                     input={<StyledSelect/>}
                                                     onChange={(e) => {
-                                                        dispatchChangeConfigModel(row.name, 'type', e.target.value)
+                                                        dispatchChangeConfigModel(row.name, 'type', e.target.value);
+                                                        dispatchChangeConfigModel(row.name, 'default', '');
                                                     }}
                                                 >
                                                     <MenuItem value="String" className={classes.menuItem}>String</MenuItem>

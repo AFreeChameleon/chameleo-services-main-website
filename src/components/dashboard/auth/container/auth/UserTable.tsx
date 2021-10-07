@@ -39,6 +39,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import MoreUserModal from './MoreUserModal';
 import { NumberInputNoTicks } from '../../../../Inputs';
 import GetInputFromType from '../../../GetInputFromType';
+import { fetchAllUsers } from '../../../../../redux/container/auth/stats/actions';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -58,6 +59,7 @@ type UserTableProps = {
     users: any[];
     schema: any[];
     containerId: string;
+    dispatchFetchAllUsers: (containerId: string) => void;
 }
 
 type UserTableState = {
@@ -74,6 +76,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
         super(props);
 
         this.openUserRef = React.createRef();
+        this.deleteUser = this.deleteUser.bind(this);
         this.createHeaders = this.createHeaders.bind(this);
         this.saveEditedUser = this.saveEditedUser.bind(this);
 
@@ -86,6 +89,20 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
 
             editingUser: {}
         }
+    }
+
+    deleteUser(user) {
+        const { containerId, dispatchFetchAllUsers } = this.props;
+        axios.post(`/api/container/auth/${containerId}/user/destroy`, {
+            user_id: user.id,
+        }, { withCredentials: true })
+        .then((res) => {
+            console.log(res.data)
+            dispatchFetchAllUsers(containerId);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
     }
 
     saveEditedUser() {
@@ -305,7 +322,10 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
                                                 </ListItemText>
                                             </MenuItem>
                                             <MenuItem onClick={(e) => {
-                                                console.log('Logout')
+                                                this.deleteUser(user);
+                                                this.setState({
+                                                    userMoreSelected: -1
+                                                });
                                             }}>
                                                 <ListItemIcon>
                                                     <DeleteOutlinedIcon color="secondary"/>
@@ -357,7 +377,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-
+    dispatchFetchAllUsers: (containerId) => dispatch(fetchAllUsers(containerId))
 })
 
 export default compose<any>(
