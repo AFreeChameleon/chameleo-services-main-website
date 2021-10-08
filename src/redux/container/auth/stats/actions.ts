@@ -13,7 +13,6 @@ export const fetchAllUsers = (container_id: string) => {
         });
         return axios.get(`${MAIN_URL}/api/container/auth/${container_id}/users/statistics`, { withCredentials: true })
         .then((res) => {
-            console.log(res.data)
             if (res.data.users) {
                 dispatch({
                     type: FETCH_ALL_USERS_SUCCESS,

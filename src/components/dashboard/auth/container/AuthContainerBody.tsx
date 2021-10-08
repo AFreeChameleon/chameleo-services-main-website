@@ -291,7 +291,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    dispatchFetchAllUsers: (containerId: string) => dispatch(fetchAllUsers(containerId))
+    dispatchFetchAllUsers: (containerId: string) => dispatch(fetchAllUsers(containerId)),
+    dispatchFetchInvoices: (containerId: string) => dispatch()
 });
 
 export default compose<any>(
