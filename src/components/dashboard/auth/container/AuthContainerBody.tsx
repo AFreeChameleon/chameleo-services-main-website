@@ -228,37 +228,57 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                     </div>
                     { (container && container.config.model) && <UserTable schema={container.config.model} containerId={containerId} /> }
                 </div>
-                <div className={classes.userStatisticsContainer}>
-                    <div className={classes.userStatisticsTitle}>
+                <div className={classes.gridTwo}>
+                    <div className={classes.userStatisticsContainer}>
+                        <div className={classes.userStatisticsTitle}>
+                            <Typography
+                                variant="h6"
+                            >
+                                User Statistics
+                            </Typography>
+                            <SmallSelect
+                                MenuProps={{
+                                    anchorOrigin: {
+                                        vertical: "bottom",
+                                        horizontal: "left"
+                                    },
+                                    transformOrigin: {
+                                        vertical: "top",
+                                        horizontal: "left"
+                                    },
+                                    getContentAnchorEl: null
+                                }}
+                                input={<StyledSelect/>}
+                                value={statisticsMode}
+                                onChange={(e) => this.setState({
+                                    statisticsMode: e.target.value
+                                })}
+                            >
+                                <MenuItem value="location">Location</MenuItem>
+                                <MenuItem value="devices">Devices</MenuItem>
+                                <MenuItem value="browser">Browser</MenuItem>
+                            </SmallSelect>
+                        </div>
+                        { (container) && <UserStatisticsTable containerId={containerId} type={statisticsMode} /> }
+                    </div>
+                    <div className={classes.requestsChartContainer}>
                         <Typography
+                            gutterBottom
                             variant="h6"
                         >
-                            User Statistics
+                            CPU Usage
                         </Typography>
-                        <SmallSelect
-                            MenuProps={{
-                                anchorOrigin: {
-                                    vertical: "bottom",
-                                    horizontal: "left"
-                                },
-                                transformOrigin: {
-                                    vertical: "top",
-                                    horizontal: "left"
-                                },
-                                getContentAnchorEl: null
-                            }}
-                            input={<StyledSelect/>}
-                            value={statisticsMode}
-                            onChange={(e) => this.setState({
-                                statisticsMode: e.target.value
-                            })}
-                        >
-                            <MenuItem value="location">Location</MenuItem>
-                            <MenuItem value="devices">Devices</MenuItem>
-                            <MenuItem value="browser">Browser</MenuItem>
-                        </SmallSelect>
+
                     </div>
-                    { (container) && <UserStatisticsTable containerId={containerId} type={statisticsMode} /> }
+                </div>
+                <div className={classes.gridOne}>
+                    <div className={classes.activeUsersContainer}>
+                        <Typography
+                            gutterBottom
+                        >
+                            Recent invoices
+                        </Typography>
+                    </div>
                 </div>
             </div>
         )
@@ -292,7 +312,6 @@ export default compose<any>(
             width: '365px',
             boxShadow: theme.shadows['2'],
             padding: '15px 20px',
-            marginTop: '20px'
         },
         userStatisticsTitle: {
             display: 'flex',
@@ -304,6 +323,12 @@ export default compose<any>(
             gridTemplateColumns: 'auto 300px',
             columnGap: '20px',
             marginTop: '20px'
+        },
+        gridTwo: {
+            display: 'grid',
+            gridTemplateColumns: '365px auto',
+            columnGap: '20px',
+            marginTop: '20px',
         },
         requestsChartContainer: {
             width: '100%',
