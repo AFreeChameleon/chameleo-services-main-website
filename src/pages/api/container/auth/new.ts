@@ -60,6 +60,9 @@ const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiR
                 errors: ['Container with that name already exists.']
             });
         } else {
+            const product = await prismaMain.product.findUnique({
+                where: { name: tier }
+            });
             const newContainer = await prismaMain.container.create({
                 data: {
                     type: 'auth',
@@ -70,7 +73,11 @@ const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiR
                             server_url: getDBFromLocation(location)
                         }
                     },
-                    tier: tier,
+                    product: {
+                        connect: {
+                            id: product.id
+                        }
+                    },
                     location: location,
                     user: {
                         connect: {
