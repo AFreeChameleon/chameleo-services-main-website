@@ -31,7 +31,7 @@ const getAllContainers = async (req: NextApiRequestWithSession, res: NextApiResp
             containers: containers
         });
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
             errors: ['An error occurred while getting all of your containers.']
         })

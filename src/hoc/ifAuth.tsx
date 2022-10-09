@@ -12,7 +12,7 @@ const ifAuth = <T extends object>(C: NextPage<T>) => {
                 if (ctx.req) {
                     const res = await axios.post(`${process.env.HOST}/api/user/logged-in`, {}, 
                     { withCredentials: true, headers: { Cookie: ctx.req.headers.cookie } });
-                    console.log(res.data);
+                    // console.log(res.data);
                     if (res.status !== 200) {
                         redirect(ctx, "/login");
                     }
@@ -23,7 +23,7 @@ const ifAuth = <T extends object>(C: NextPage<T>) => {
                 } else {
                     const res = await axios.post('/api/user/logged-in', {}, 
                     { withCredentials: true })
-                    console.log(res.data);
+                    // console.log(res.data);
                     if (res.status !== 200) {
                         redirect(ctx, "/login");
                     }

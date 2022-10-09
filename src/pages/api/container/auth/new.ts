@@ -41,7 +41,7 @@ export default withSession(async (req: NextApiRequestWithSession, res: NextApiRe
 const postCreateContainer = async (req: NextApiRequestWithSession, res: NextApiResponse) => {
     try {
         const { config, name, location, tier } = schema.validateSync(req.body);
-        console.log(config)
+        console.log(config, req.body)
         const configValidate = checkConfig(config);
         if (configValidate.error) {
             return res.status(400).json({

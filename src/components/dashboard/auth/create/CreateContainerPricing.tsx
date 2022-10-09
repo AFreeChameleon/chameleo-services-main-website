@@ -42,7 +42,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                     </Button>
                 </div>
                 <div className={classes.cards}>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('hobby')}>
+                    <div className={classes.card} onClick={(e) => this.selectPlan('Hobby')}>
                         <Typography
                             component="div"
                             variant="h3"
@@ -92,7 +92,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                             <strong>1</strong> vCPU
                         </Typography>
                     </div>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('entrepreneur')}>
+                    <div className={classes.card} onClick={(e) => this.selectPlan('Entrepreneur')}>
                         <Typography
                             component="div"
                             variant="h3"
@@ -142,7 +142,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                             <strong>1</strong> vCPUs
                         </Typography>
                     </div>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('professional')}>
+                    <div className={classes.card} onClick={(e) => this.selectPlan('Professional')}>
                         <Typography
                             component="div"
                             variant="h3"
@@ -194,7 +194,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                     </div>
                 </div>
                 <div className={`${classes.cards}`}>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('enterprise')}>
+                    <div className={classes.card} onClick={(e) => this.selectPlan('Enterprise')}>
                         <Typography
                             component="div"
                             variant="h3"

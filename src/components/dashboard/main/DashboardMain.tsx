@@ -1,5 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
+import axios from 'axios';
+import { Container } from '../../../../prisma/generated/maindb'; 
 import { withStyles } from '@material-ui/core/styles';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'; 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
@@ -10,13 +12,33 @@ import Flags from 'country-flag-icons/react/3x2';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon } from '../../Icons';
 import CloudGraphic from '../../../img/cloud.svg';
 
-class DashboardMain extends React.Component {
+// type Container = {
+
+// }
+
+type DashboardProps = {
+    containers: Container[];
+}
+
+class DashboardMain extends React.Component<DashboardProps> {
     constructor(props) {
         super(props);
     }
 
+    formatContainerType(type: string) {
+        switch (type) {
+            case 'auth':
+                return 'Authentication';
+            default:
+                return 'Wrong container type';
+        }
+    }
+
     render() {
-        const { classes }: any = this.props;
+        const { classes, containers }: any = this.props;
+        console.log(containers);
+        
+
         return (
             <div className={classes.root}>
                 <Typography 
@@ -89,7 +111,7 @@ class DashboardMain extends React.Component {
                                     Containers
                                 </Typography>
                                 <table className={classes.containersTable}>
-                                    <tr>
+                                    <tr className={classes.containersHeaders}>
                                         <th className={classes.containersHeader}>
                                             <Checkbox 
                                                 color="primary"
@@ -100,21 +122,23 @@ class DashboardMain extends React.Component {
                                         <th className={classes.containersHeader}>Runtime</th>
                                         <th className={classes.containersHeader}>Status</th>
                                     </tr>
-                                    <tr>
-                                        <td className={classes.containersCell}>
-                                            <Checkbox 
-                                                color="secondary"
-                                            />    
-                                        </td>
-                                        <td className={classes.containersCell}>
-                                            New Container
-                                        </td>
-                                        <td className={classes.containersCell}>Authentication</td>
-                                        <td className={classes.containersCell}>1d 23h</td>
-                                        <td className={classes.containersCell}>
-                                            Running
-                                        </td>
-                                    </tr>
+                                    { containers.map((container) => (
+                                        <tr>
+                                            <td className={classes.containersCell}>
+                                                <Checkbox 
+                                                    color="secondary"
+                                                />    
+                                            </td>
+                                            <td className={classes.containersCell}>
+                                               {container.name}
+                                            </td>
+                                            <td className={classes.containersCell}>{this.formatContainerType(container.type)}</td>
+                                            <td className={classes.containersCell}>1d 23h</td>
+                                            <td className={classes.containersCell}>
+                                                Running
+                                            </td>
+                                        </tr>
+                                    )) }
                                 </table>
                             </div>
                         </div>
@@ -215,6 +239,17 @@ export default withStyles((theme) => ({
     },
     containersTitle: {
         fontWeight: 600,
-        fontSize: '18px'
+        fontSize: '18px',
+        marginBottom: '10px'
     },
+    containersTable: {
+        width: '100%',
+        borderCollapse: 'collapse'
+    },
+    containersHeader: {
+        textAlign: 'left',
+    },
+    containersHeaders: {
+        borderBottom: '1px solid ' + theme.palette.grey['50']
+    }
 }))(DashboardMain);
