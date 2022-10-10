@@ -1,5 +1,6 @@
 import React from 'react';
 import NextLink from 'next/link';
+import axios from 'axios';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
@@ -8,6 +9,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import PeopleIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import FireIcon from '@material-ui/icons/WhatshotOutlined';
@@ -52,6 +54,9 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
             containerId,
             dispatchFetchAllUsers, 
         } = this.props;
+        
+        this.startContainer = this.startContainer.bind(this);
+
         console.log(containerId)
         dispatchFetchAllUsers(containerId);
         this.statsModeRef = React.createRef();
@@ -59,6 +64,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
         this.state = {
             statisticsMode: 'browser',
         }
+
     }
 
     getUserLimitFromTier(tier: string) {
@@ -68,6 +74,13 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
             default:
                 return 0;
         }
+    }
+
+    async startContainer() {
+        const { containerId, containers } = this.props;
+        console.log(this.props);
+        // const res = await axios.get(`${}`)
+        const selectedContainer = containers.find((c) => c.id === containerId);
     }
 
     render() {
@@ -92,6 +105,31 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                         {containerId}
                     </Typography>
                 </Breadcrumbs>
+                <div className={classes.statusContainer}>
+                    <div className={classes.status}>
+                        <Typography
+                            variant="body1"
+                            className={classes.statusText}
+                        >
+                            Status:&nbsp;
+                        </Typography>
+                        <Typography
+                            color="error"
+                            variant="body1"
+                            className={classes.statusText}
+                        >
+                            Stopped
+                        </Typography>
+                    </div>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={this.startContainer}
+                        className={classes.changeStatusButton}
+                    >
+                        Start
+                    </Button>
+                </div>
                 <div className={classes.colorStatsGrid}>
                     <div className={classes.colorStatsItemRegisteredUsers}>
                         <div>
@@ -302,6 +340,21 @@ export default compose<any>(
             padding: '20px',
             maxWidth: '1300px',
             margin: '0 auto'
+        },
+        statusContainer: {
+            width: '100%',
+            marginTop: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            columnGap: '15px'
+        },
+        status: {
+            display: 'flex',
+        },
+        statusText: {
+            fontWeight: 600,
+        },
+        changeStatusButton: {
         },
         usersTableContainer: {
             width: '100%',
