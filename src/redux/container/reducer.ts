@@ -1,4 +1,8 @@
-import { FETCH_CONTAINERS_FAILURE, FETCH_CONTAINERS_REQUEST, FETCH_CONTAINERS_SUCCESS } from './types';
+import { 
+    FETCH_CONTAINERS_FAILURE, 
+    FETCH_CONTAINERS_REQUEST, 
+    FETCH_CONTAINERS_SUCCESS 
+} from './types';
 
 const defaultState = {
     loading: false,
@@ -26,6 +30,8 @@ const reducer = (state = defaultState, action) => {
                 loading: false,
                 error: action.error
             }
+        case '':
+
         default:
             return state;
     }

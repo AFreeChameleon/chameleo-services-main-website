@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import PeopleIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import FireIcon from '@material-ui/icons/WhatshotOutlined';
@@ -24,6 +25,7 @@ import {
     NumberInputNoTicks,
     GreenButton,
 } from '../../../Inputs';
+import { fetchContainers } from '../../../../redux/container/actions';
 
 const SmallSelect = withStyles((theme) => ({
     root: {
@@ -36,13 +38,16 @@ const SmallSelect = withStyles((theme) => ({
 type AuthContainerBodyProps = {
     classes: any;
     containerId: string;
+    apiUrl: string;
     containers: any[];
     stats: any;
     dispatchFetchAllUsers: (containerId: string) => void;
+    dispatchFetchContainers: () => void;
 }
 
 type AuthContainerBodyState = {
     statisticsMode: any;
+    statusLoading: boolean;
 }
 
 class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthContainerBodyState> {
@@ -56,6 +61,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
         } = this.props;
         
         this.startContainer = this.startContainer.bind(this);
+        this.stopContainer = this.stopContainer.bind(this);
 
         console.log(containerId)
         dispatchFetchAllUsers(containerId);
@@ -63,6 +69,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
 
         this.state = {
             statisticsMode: 'browser',
+            statusLoading: false
         }
 
     }
@@ -77,18 +84,60 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
     }
 
     async startContainer() {
-        const { containerId, containers } = this.props;
-        console.log(this.props);
-        // const res = await axios.get(`${}`)
+        const { 
+            containerId, 
+            containers, 
+            apiUrl, 
+            dispatchFetchContainers 
+        } = this.props;
+        this.setState({statusLoading: true})
+
         const selectedContainer = containers.find((c) => c.id === containerId);
+
+        if (!selectedContainer) {
+            return;
+        }
+
+        axios.post(`${apiUrl}/api/containers/${selectedContainer.id}/start`)
+        .then(async (res) => {
+            await dispatchFetchContainers();
+        })
+        .catch((err) => {
+            console.error(err);
+        }).finally(() => this.setState({statusLoading: false}));
+    }
+
+    async stopContainer() {
+        const { 
+            containerId, 
+            containers, 
+            apiUrl, 
+            dispatchFetchContainers 
+        } = this.props;
+        this.setState({statusLoading: true})
+
+        const selectedContainer = containers.find((c) => c.id === containerId);
+
+        if (!selectedContainer) {
+            return;
+        }
+
+        axios.post(`${apiUrl}/api/containers/${selectedContainer.id}/stop`)
+        .then(async (res) => {
+            await dispatchFetchContainers();
+        })
+        .catch((err) => {
+            console.error(err);
+        }).finally(() => this.setState({statusLoading: false}));
+        
     }
 
     render() {
         const { classes, stats, containerId, containers } = this.props;
-        const { statisticsMode } = this.state;
+        const { statisticsMode, statusLoading } = this.state;
         const container = containers.find(c => c.id === containerId);
         console.log(stats, container, containers)
-        return (
+        return container ? (
             <div className={classes.root}>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
                     <NextLink href="/dashboard">
@@ -113,22 +162,45 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                         >
                             Status:&nbsp;
                         </Typography>
-                        <Typography
-                            color="error"
-                            variant="body1"
-                            className={classes.statusText}
-                        >
-                            Stopped
-                        </Typography>
+                        { container.status === 'Stopped' ? (
+                            <Typography
+                                color="error"
+                                variant="body1"
+                                className={classes.statusText}
+                            >
+                                Stopped
+                            </Typography>
+                        ) : (
+                            <Typography
+                                color="primary"
+                                variant="body1"
+                                className={classes.statusText}
+                            >
+                                Running
+                            </Typography>
+                        ) }
                     </div>
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={this.startContainer}
-                        className={classes.changeStatusButton}
-                    >
-                        Start
-                    </Button>
+                    { container.status === 'Stopped' ? (
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={this.startContainer}
+                            className={classes.changeStatusButton}
+                            disabled={statusLoading}
+                        >
+                            { statusLoading ? 'Starting' : 'Start' }
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="outlined"
+                            onClick={this.stopContainer}
+                            className={`${classes.changeStatusButton} ${classes.errorButton}`}
+                            disabled={statusLoading}
+                        >
+                            { statusLoading ? 'Stopping' : 'Stop' }
+                        </Button>
+                    ) }
+
                 </div>
                 <div className={classes.colorStatsGrid}>
                     <div className={classes.colorStatsItemRegisteredUsers}>
@@ -319,7 +391,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                     </div>
                 </div>
             </div>
-        )
+        ) : null;
     }
 }
 
@@ -330,7 +402,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     dispatchFetchAllUsers: (containerId: string) => dispatch(fetchAllUsers(containerId)),
-    dispatchFetchInvoices: (containerId: string) => dispatch()
+    dispatchFetchContainers: () => dispatch(fetchContainers())
+    // dispatchFetchInvoices: (containerId: string) => dispatch()
 });
 
 export default compose<any>(
@@ -346,7 +419,9 @@ export default compose<any>(
             marginTop: '20px',
             display: 'flex',
             alignItems: 'center',
-            columnGap: '15px'
+            columnGap: '15px',
+            borderTop: '1px solid ' + theme.palette.grey['50'],
+            paddingTop: '20px'
         },
         status: {
             display: 'flex',
@@ -355,6 +430,14 @@ export default compose<any>(
             fontWeight: 600,
         },
         changeStatusButton: {
+            width: '80px'
+        },
+        errorButton: {
+            color: theme.palette.error.main,
+            borderColor: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: theme.palette.error.light
+            }
         },
         usersTableContainer: {
             width: '100%',

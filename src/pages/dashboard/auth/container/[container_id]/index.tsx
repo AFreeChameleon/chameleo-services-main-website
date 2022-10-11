@@ -6,6 +6,7 @@ import store from '../../../../../redux/store';
 import AuthContainerBody from '../../../../../components/dashboard/auth/container/AuthContainerBody';
 import LeftSidebar from '../../../../../components/dashboard/left_sidebar/LeftSidebar';
 import Header from '../../../../../components/dashboard/header/Header';
+import { API_URL } from '../../../../../globals';
 
 const styles = {
     root: {
@@ -23,7 +24,7 @@ function ContainerOne({ container_id }) {
                 <LeftSidebar selectedTab="authentication" containerId={container_id} />
                 <div>
                     <Header/>
-                    <AuthContainerBody containerId={container_id}/>
+                    <AuthContainerBody containerId={container_id} apiUrl={API_URL}/>
                 </div>
             </div>
         </Provider>

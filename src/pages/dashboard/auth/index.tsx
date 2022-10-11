@@ -6,6 +6,7 @@ import ifAuth from '../../../hoc/ifAuth';
 import { withStyles } from '@material-ui/core';
 import LeftSidebar from '../../../components/dashboard/left_sidebar/LeftSidebar';
 import RightSidebar from '../../../components/dashboard/right_sidebar/RightSidebar';
+import { API_URL } from '../../../globals';
 
 class AuthDashboard extends Component<{ classes?: any; }> {
     constructor(props) {
@@ -19,7 +20,7 @@ class AuthDashboard extends Component<{ classes?: any; }> {
             <Provider store={store}>
                 <div className={classes.root}>
                     <LeftSidebar selectedTab="authentication" />
-                    <AuthenticationMain/>
+                    <AuthenticationMain />
                     <RightSidebar/>
                 </div>
             </Provider>
@@ -33,7 +34,7 @@ const styles = (): any => ({
         display: 'grid', 
         gridTemplateColumns: '280px auto 300px'
     }
-})
+});
 
 const AuthenticatedAuthDashboard = ifAuth(AuthDashboard);
 export default withStyles(styles)(AuthenticatedAuthDashboard);

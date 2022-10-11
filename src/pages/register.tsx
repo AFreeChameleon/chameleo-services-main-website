@@ -18,7 +18,7 @@ function Register(props) {
     const [success, setSuccess] = useState('');
 
     const resendEmail = (e) => {
-        axios.post(`${props.mainUrl}/api/resend-email/verify-email`, {
+        axios.post(`/api/user/verify-email/email`, {
             email: email,
             username: username
         })
