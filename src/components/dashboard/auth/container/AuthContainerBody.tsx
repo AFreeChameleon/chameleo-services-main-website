@@ -102,8 +102,9 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
         .then(async (res) => {
             await dispatchFetchContainers();
         })
-        .catch((err) => {
+        .catch(async (err) => {
             console.error(err);
+            await dispatchFetchContainers();
         }).finally(() => this.setState({statusLoading: false}));
     }
 
