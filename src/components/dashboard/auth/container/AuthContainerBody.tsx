@@ -10,13 +10,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import PeopleIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import FireIcon from '@material-ui/icons/WhatshotOutlined';
 import SendIcon from '@material-ui/icons/Send';
 import { Doughnut } from 'react-chartjs-2';
-import { Checkbox, MenuItem, Select } from '@material-ui/core';
 import UserTable from './auth/UserTable';
 import UserStatisticsTable from './auth/UserStatisticsTable';
 
@@ -127,8 +128,9 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
         .then(async (res) => {
             await dispatchFetchContainers();
         })
-        .catch((err) => {
+        .catch(async (err) => {
             console.error(err);
+            await dispatchFetchContainers();
         }).finally(() => this.setState({statusLoading: false}));
         
     }
