@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {
     fetchAllUsers
 } from '../../../../redux/container/auth/stats/actions';
+import { fetchContainers } from '../../../../redux/container/actions';
 import { withStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
@@ -26,7 +27,7 @@ import {
     NumberInputNoTicks,
     GreenButton,
 } from '../../../Inputs';
-import { fetchContainers } from '../../../../redux/container/actions';
+
 
 const SmallSelect = withStyles((theme) => ({
     root: {
@@ -274,6 +275,19 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                         >
                             Requests to {container && container.name}
                         </Typography>
+                        <div className={classes.requestsChart}>
+
+                        </div>
+                        <div className={classes.logsLinkContainer}>
+                            <NextLink href={`/dashboard/auth/container/${container.id}/logs`}>
+                                <Typography
+                                    className={classes.logsLink}
+                                    component="a"
+                                >
+                                    View logs
+                                </Typography>
+                            </NextLink>
+                        </div>
                     </div>
                     <div className={classes.activeUsersContainer}>
                         <Typography 
@@ -417,6 +431,16 @@ export default compose<any>(
             maxWidth: '1300px',
             margin: '0 auto'
         },
+        logsLink: {
+            color: theme.palette.primary.main,
+            fontSize: '14px',
+            textDecoration: 'underline',
+            cursor: 'pointer'
+        },
+        requestsChart: {
+            width: '100%',
+            flexGrow: 1
+        },
         statusContainer: {
             width: '100%',
             marginTop: '20px',
@@ -473,7 +497,9 @@ export default compose<any>(
         requestsChartContainer: {
             width: '100%',
             boxShadow: theme.shadows['2'],
-            padding: '15px 20px'
+            padding: '15px 20px',
+            display: 'flex',
+            flexDirection: 'column'
         },
         activeUsersContainer: {
             boxShadow: theme.shadows['2'],
