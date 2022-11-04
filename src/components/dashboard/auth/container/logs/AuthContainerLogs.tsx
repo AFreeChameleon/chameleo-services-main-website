@@ -15,9 +15,11 @@ import TextField from '@material-ui/core/TextField';
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import MetadataWebsocket from '../../../../../lib/container/auth/ws_client';
 
 type AuthContainerLogsProps = {
     classes: any;
+    logs: { message: string; level: string; }[];
     containerId: string;
     apiUrl: string;
     containers: any[];
@@ -36,7 +38,14 @@ class AuthContainerLogs extends React.Component<AuthContainerLogsProps, AuthCont
     }
 
     render() {
-        const { classes, containerId } = this.props;
+        const { 
+            classes, 
+            containerId, 
+            logs
+        } = this.props;
+
+        console.log(logs);
+        
         return (
             <div className={classes.root}>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
@@ -47,7 +56,7 @@ class AuthContainerLogs extends React.Component<AuthContainerLogsProps, AuthCont
                             Dashboard
                         </Typography>
                     </NextLink>
-                    <NextLink href={`/dashboard/${containerId}`}>
+                    <NextLink href={`/dashboard/auth/container/${containerId}`}>
                         <Typography
                             className={classes.breadcrumb}
                         >
@@ -64,17 +73,11 @@ class AuthContainerLogs extends React.Component<AuthContainerLogsProps, AuthCont
                 <div className={classes.container}>
                     <div className={classes.logsContainer}>
                         <div className={classes.logsOutput}>
-
-                        </div>
-                        <div className={classes.commandContainer}>
-                            <div className={classes.commandIcon}>
-                                <LastPageIcon />
-                            </div>
-                            <TextField
-                                variant="outlined"
-                                size="small"
-                                className={classes.commandInput}
-                            />
+                            {logs.map((log) => (
+                                <div className={classes.log}>
+                                    [{log.level.toUpperCase()}] {log.message}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -132,33 +135,18 @@ export default compose<any>(
             display: 'flex',
             flexDirection: 'column',
         },
+        log: {
+            marginBottom: '10px',
+            fontFamily: '"Lucida Console", "Courier New", monospace',
+            fontSize: '12px'
+        },
         logsOutput: {
             width: '100%',
             height: '500px',
             backgroundColor: theme.palette.grey['50'],
-            border: '1px solid ' + theme.palette.grey['400']
-        },
-        commandContainer: {
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: '25px',
-        },
-        commandInput: {
-            flexGrow: 1
-        },
-        commandIcon: {
-            width: '40px',
-            height: '40px',
             border: '1px solid ' + theme.palette.grey['400'],
-            borderRight: 'none',
-            display: 'grid',
-            placeItems: 'center',
-            cursor: 'pointer',
-            transition: '0.2s',
-            '&:hover': {
-                backgroundColor: theme.palette.grey['100']
-            }
-        }
+            padding: '10px 15px',
+            overflowY: 'auto'
+        },
     }))
 )(AuthContainerLogs);
