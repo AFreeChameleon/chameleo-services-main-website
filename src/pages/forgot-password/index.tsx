@@ -1,18 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
-import {
-    TextField,
-    Button
-} from '@material-ui/core';
-import {
-    Alert
-} from '@material-ui/lab';
+import { TextField, Button, Alert } from '@mui/material';
 
-import { makeStyles } from '@material-ui/core/styles';
-import formStyles from '../../styles/formStyles';
+import classes from '../../styles/Form.module.scss';
 
 function ForgotPassword() {
-    const classes = makeStyles(formStyles)();
     const [email, setEmail] = useState('');
     const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');

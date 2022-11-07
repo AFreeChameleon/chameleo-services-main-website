@@ -18,6 +18,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import PeopleIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import FireIcon from '@material-ui/icons/WhatshotOutlined';
 import SendIcon from '@material-ui/icons/Send';
+import { Chart, ArcElement } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import UserTable from './auth/UserTable';
 import UserStatisticsTable from './auth/UserStatisticsTable';
@@ -28,6 +29,7 @@ import {
     GreenButton,
 } from '../../../Inputs';
 
+Chart.register(ArcElement);
 
 const SmallSelect = withStyles((theme) => ({
     root: {
@@ -144,7 +146,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
         return container ? (
             <div className={classes.root}>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize="small" htmlColor="#6F6F76" />} id="top">
-                    <NextLink href="/dashboard">
+                    <NextLink href="/dashboard" className={classes.link}>
                         <Typography
                             className={classes.breadcrumb}
                         >
@@ -315,9 +317,6 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                                     }],
                                 }}
                                 options={{
-                                    legend: {
-                                        display: false
-                                    },
                                     maintainAspectRatio: false
                                 }}
                             /> }
@@ -431,6 +430,9 @@ export default compose<any>(
             maxWidth: '1300px',
             margin: '0 auto'
         },
+        link: {
+            textDecoration: 'none'
+        },
         logsLink: {
             color: theme.palette.primary.main,
             fontSize: '14px',
@@ -463,7 +465,7 @@ export default compose<any>(
             color: theme.palette.error.main,
             borderColor: theme.palette.error.main,
             '&:hover': {
-                backgroundColor: theme.palette.error.light
+                backgroundColor: theme.palette.error.light + '1A'
             }
         },
         usersTableContainer: {

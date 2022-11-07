@@ -2,16 +2,22 @@
 import { makeStyles } from '@material-ui/core/styles';
 import newProjectStyles from '../../styles/dashboard/components/newProjectStyles';
 import {
+    Box
+} from '@mui/material';
+import {
     TextField,
     Button
 } from '@material-ui/core';
 
+import classes from './NewProjectCard.module.scss';
+
 function NewProjectCard() {
-    const classes = makeStyles(newProjectStyles)();
     return (
         <div className={classes.container}>
             <div className={classes.newProjectContainer}>
-                <div className={classes.newProjectHeader}>New Project</div>
+                <Box className={classes.newProjectHeader} style={{}}>
+                    New Project
+                </Box>
                 <div className={classes.newProjectItem}>
                     <TextField
                         fullWidth

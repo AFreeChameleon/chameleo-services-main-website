@@ -4,21 +4,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ifNotAuth from '../hoc/ifNotAuth';
+import { TextField, Button, SvgIcon, Alert, Typography } from '@mui/material';
 
-import { makeStyles } from '@material-ui/core/styles';
-import formStyles from '../styles/formStyles';
-import { TextField, Button, SvgIcon } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import classes from '../styles/Form.module.scss';
+
 
 function Login(props) {
-    const classes = makeStyles(formStyles)();
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(router.query.error ? router.query.error : '');
 
     const submitLogin = (e) => {
-        console.log(props);
         e.preventDefault();
         axios.post(`/api/user/login`, { email, password }, { withCredentials: true })
         .then((res) => {
@@ -37,7 +34,9 @@ function Login(props) {
                 <div className={classes.innerCardSubTitle}>
                     Don't have an account?&nbsp;
                     <Link href="/register" className={classes.innerCardRedirectLink}>
-                        Register here.
+                        <Typography component="span" variant="body2" sx={{ color: 'secondary.main' }}>
+                            Register here.
+                        </Typography>
                     </Link>
                 </div>
                 <div className={classes.innerCardForm}>
@@ -76,11 +75,12 @@ function Login(props) {
                         </div>
                         <div className={classes.innerCardButton}>
                             <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            type="submit"
-                            disableRipple>
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                type="submit"
+                                disableRipple
+                            >
                                 Login
                             </Button>
                         </div>
@@ -100,9 +100,9 @@ function Login(props) {
                                         </SvgIcon>
                                     }
                                 >
-                                    <div style={{paddingTop: '2px'}}>
+                                    <Typography style={{paddingTop: '2px'}} variant="button" sx={{ color: 'secondary.main' }}>
                                         Sign in with Google
-                                    </div>
+                                    </Typography>
                                 </Button>
                             </Link>
                         </div>

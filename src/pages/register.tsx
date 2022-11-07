@@ -1,20 +1,18 @@
+import { Auth } from '../auth/auth';
 import axios from 'axios';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Auth } from '../auth/auth';
 
-import { makeStyles } from '@material-ui/core/styles';
-import formStyles from '../styles/formStyles';
-import { TextField, Button } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { TextField, Button, Alert, Typography } from '@mui/material';
+
+import classes from '../styles/Form.module.scss';
 
 function Register(props) {
-    const classes = makeStyles(formStyles)();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');
 
     const resendEmail = (e) => {
@@ -26,7 +24,7 @@ function Register(props) {
             setSuccess(data.message);
         })
         .catch(err => {
-            setError(err.response.message);
+            setErrors(err.response.data.errors);
         })
     }
 
@@ -40,31 +38,33 @@ function Register(props) {
                 password: password
             })
             .then(({ data }) => {
-                setError('');
+                setErrors([]);
                 setSuccess(data.message);
             })
             .catch(err => {
-                setError(err.response.data.message);
+                setErrors(err.response.data.errors);
             });
         } else {
-            setError('Passwords do not match.')
+            setErrors([...errors, 'Passwords do not match.'])
         }
     }
 
     return (
         <div className={classes.root}>
             <div className={classes.innerCard}>
-                <div className={classes.innerCardTitle}>Register Page</div>
+                <div className={classes.innerCardTitle}>Register</div>
                 <div className={classes.innerCardSubTitle}>
                     Already have an account?&nbsp;
                     <Link href="/login" className={classes.innerCardRedirectLink}>
-                        Login here.
+                        <Typography component="span" variant="body2" sx={{ color: 'secondary.main' }}>
+                            Login here.
+                        </Typography>
                     </Link>
                 </div>
                 <div className={classes.innerCardForm}>
-                    { error !== '' && (
+                    { errors.length > 0 && errors.map((error) =>
                         <Alert severity="error">
-                            {error}
+                            {error || 'An error occurred'}
                         </Alert>
                     ) }
                     { success !== '' && (
@@ -74,10 +74,13 @@ function Register(props) {
                             </Alert>
                             <div className={classes.resendEmailContainer}>
                                 <div className={classes.resendEmailTitle}>Didn't recieve the email?</div>
-                                <a
+                                <Typography
+                                    sx={{ color: 'secondary.main' }}
                                     className={classes.resendEmailLink}
                                     onClick={resendEmail}
-                                >Resend email</a>
+                                >
+                                    Resend email
+                                </Typography>
                             </div>
                         </>
                     ) }

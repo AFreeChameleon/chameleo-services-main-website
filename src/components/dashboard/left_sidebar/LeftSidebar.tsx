@@ -57,7 +57,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                             />
                         </Link>
                     </div>
-                    <Link href="/dashboard">
+                    <Link href="/dashboard" className={classes.link}>
                         <div 
                             className={`${classes.sidebarItem} ${selectedTab === 'dashboard' ? classes.sidebarItemSelected : ''}`}
                         >
@@ -86,7 +86,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                     </div>
                     <Collapse in={authDropdownOpen}>
                         { containers.filter(c => c.type === 'auth').map((c: any, i) => {console.log(c); return (
-                            <Link href={`/dashboard/auth/container/${encodeURI(c.id)}`} key={i}>
+                            <Link href={`/dashboard/auth/container/${encodeURI(c.id)}`} key={i} className={classes.link}>
                                 <div className={`${classes.sidebarItem} ${(c.id == containerId) && classes.sidebarListItemSelected}`}>
                                     <div className={classes.smallIcon}>&#8226;</div>
                                     <Typography className={`${(c.id == containerId) && classes.sidebarListItemTextSelected}`}>
@@ -95,7 +95,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                                 </div>
                             </Link>
                         )}) }
-                        <Link href="/dashboard/auth/new">
+                        <Link href="/dashboard/auth/new" className={classes.link}>
                             <div className={classes.sidebarItem}>
                                 <AddIcon className={classes.smallIcon} />
                                 <Typography>
@@ -120,7 +120,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                     </div>
                     <Collapse in={dbDropdownOpen}>
                         { containers.filter(c => c.type === 'database').map((c: any, i) => {console.log(c); return (
-                            <Link href={`/dashboard/database/${encodeURI(c.name)}`} key={i}>
+                            <Link href={`/dashboard/database/${encodeURI(c.name)}`} key={i} className={classes.link}>
                                 <div className={classes.sidebarItem}>
                                     <div className={classes.smallIcon}>&#8226;</div>
                                     <Typography>
@@ -129,7 +129,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                                 </div>
                             </Link>
                         )}) }
-                        <Link href="/dashboard/database/new">
+                        <Link href="/dashboard/database/new" className={classes.link}>
                             <div className={classes.sidebarItem}>
                                 <AddIcon className={classes.smallIcon} />
                                 <Typography>
@@ -158,6 +158,9 @@ const styles = withStyles((theme: any) => ({
         display: 'grid',
         alignItems: 'center',
         paddingLeft: '20px'
+    },
+    link: {
+        textDecoration: 'none'
     },
     chameleoLogo: {
         cursor: 'pointer',
