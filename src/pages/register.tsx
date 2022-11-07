@@ -57,8 +57,8 @@ function Register(props) {
                 <div className={classes.innerCardTitle}>Register Page</div>
                 <div className={classes.innerCardSubTitle}>
                     Already have an account?&nbsp;
-                    <Link href="/login">
-                        <a className={classes.innerCardRedirectLink}>Login here.</a>
+                    <Link href="/login" className={classes.innerCardRedirectLink}>
+                        Login here.
                     </Link>
                 </div>
                 <div className={classes.innerCardForm}>

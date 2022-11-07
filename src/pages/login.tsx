@@ -36,8 +36,8 @@ function Login(props) {
                 <div className={classes.innerCardTitle}>Login</div>
                 <div className={classes.innerCardSubTitle}>
                     Don't have an account?&nbsp;
-                    <Link href="/register">
-                        <a className={classes.innerCardRedirectLink}>Register here.</a>
+                    <Link href="/register" className={classes.innerCardRedirectLink}>
+                        Register here.
                     </Link>
                 </div>
                 <div className={classes.innerCardForm}>
@@ -85,7 +85,7 @@ function Login(props) {
                             </Button>
                         </div>
                         <div className={classes.innerCardButton}>
-                            <Link href={`/api/user/oauth/google`}>
+                            <Link href={`/api/user/oauth/google`} className={classes.linkButton}>
                                 <Button
                                     variant="outlined"
                                     fullWidth
@@ -108,12 +108,12 @@ function Login(props) {
                         </div>
                     </form>
                     <div className={classes.innerCardRedirectLinkContainer}>
-                        <Link href="/forgot-password">
-                            <a className={classes.innerCardRedirectLinkHalf}>Forgot password?</a>
+                        <Link href="/forgot-password" className={classes.innerCardRedirectLinkHalf}>
+                            Forgot Password?
                         </Link>
                         &nbsp;·&nbsp; 
-                        <Link href="/reset-email">
-                            <a className={classes.innerCardRedirectLinkHalf}>Forgot your email?</a>
+                        <Link href="/reset-email" className={classes.innerCardRedirectLinkHalf}>
+                            Forgot your email?
                         </Link>
                     </div>
                 </div>

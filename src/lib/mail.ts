@@ -1,11 +1,15 @@
 import path from 'path';
-import mailgun from 'mailgun-js';
+import Mailgun from 'mailgun.js';
+import formData from 'form-data';
 import { readFileSync } from 'fs';
 import { prismaMain } from './prisma';
 
-const mailer = mailgun({
-    apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMAIN
+const mailgun = new Mailgun(formData);
+
+const mailer = mailgun.client({
+    key: process.env.MAILGUN_API_KEY,
+    username: process.env.MAILGUN_USERNAME,
+    url: process.env.MAILGUN_HOST
 });
 
 const verifyEmailHTML = readFileSync(path.join(__dirname, '../../../../../html/verification-email.html'));
@@ -21,18 +25,18 @@ export const sendVerifyEmail = (userEmail: string, token: string) => {
             subject: 'Verify your email!',
             html: newVerifyEmailHTML
         }
-        mailer.messages().send(data, (err, body) => {
-            if (err) {
-                reject({
-                    error: true,
-                    message: err
-                })
-            } else {
-                resolve({
-                    error: false,
-                    message: body
-                });
-            }
+        mailer.messages.create(process.env.MAILGUN_DOMAIN, data)
+        .then((body) => {
+            resolve({
+                error: false,
+                message: body
+            });
+        })
+        .catch((err) => {
+            reject({
+                error: true,
+                message: err
+            })
         })
     })
 }
@@ -47,18 +51,18 @@ export const sendResetPassEmail = (userEmail: string, token: string) => {
             subject: 'Reset your password!',
             html: newResetPassHTML
         }
-        mailer.messages().send(data, (err, body) => {
-            if (err) {
-                reject({
-                    error: true,
-                    message: err
-                })
-            } else {
-                resolve({
-                    error: false,
-                    message: body
-                });
-            }
+        mailer.messages.create(process.env.MAILGUN_DOMAIN, data)
+        .then((body) => {
+            resolve({
+                error: false,
+                message: body
+            });
+        })
+        .catch((err) => {
+            reject({
+                error: true,
+                message: err
+            })
         })
     })
 }

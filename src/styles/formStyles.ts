@@ -51,6 +51,9 @@ const formStyles: any = {
             textAlign: 'left',
         }
     },
+    linkButton: {
+        textDecoration: 'none'
+    },
     innerCardRedirectLink: {
         fontSize: '14px',
         color: Theme.palette.secondary.main,

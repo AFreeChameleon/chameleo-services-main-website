@@ -24,7 +24,7 @@ export const setupUserAccount = async (email: string) => {
 }
 
 const createUserAndSchema = async (username: string, password: string, schema: string) => {
-    await prismaAuth.$queryRaw(`CREATE ROLE ${username} WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION PASSWORD '${password}';`);
-    await prismaAuth.$queryRaw(`CREATE SCHEMA ${schema} AUTHORIZATION ${username};`);
+    await prismaAuth.$queryRaw`CREATE ROLE ${username} WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION PASSWORD '${password}'`;
+    await prismaAuth.$queryRaw`CREATE SCHEMA ${schema} AUTHORIZATION ${username};`;
     return;
 }
