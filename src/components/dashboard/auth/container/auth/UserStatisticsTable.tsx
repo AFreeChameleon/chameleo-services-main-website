@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 
 import Flags from 'country-flag-icons/react/3x2';
 
-import {
-    withStyles
-} from '@material-ui/core/styles';
+import { Box } from '@mui/material';
+
+import classes from './UserStatisticsTable.module.scss';
 
 type UserStatisticsTableProps = {
     classes: any;
@@ -72,25 +72,27 @@ class UserStatisticsTable extends React.Component<UserStatisticsTableProps, User
     }
 
     createTable() {
-        const { classes, type } = this.props;
+        const { type } = this.props;
 
         const locationPercentages = this.createPercentages(type);
-        console.log(locationPercentages)
         return Object.keys(locationPercentages).map((p, i) => (
-            <div className={classes.tableRow} key={i}>
+            <Box 
+                key={i}
+                component="div" 
+                className={classes.tableRow}
+                sx={{ borderBottom: '1px solid grey.300' }}
+            > 
                 <div className={classes.tableTitle}>
                     { capitalizeFirstLetter(p) }
                 </div>
                 <div className={classes.tablePercentage}>
                     { locationPercentages[p] }
                 </div>
-            </div>
+            </Box>
         ));
     }
 
     render() {
-        const { classes } = this.props;
-
         return (
             <div className={classes.root}>
                 <div className={classes.tableContainer}>
@@ -110,23 +112,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default compose<any>(
-    withStyles((theme) => ({
-        root: {
-            marginTop: '20px'
-        },
-        tableRow: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: '40px',
-            borderBottom: `1px solid ${theme.palette.grey['300']}`,
-            padding: '0 10px'
-        },
-        tableTitle: {
-            display: 'flex',
-            alignItems: 'center',
-            columnGap: '20px',
-        }
-    })),
     connect(mapStateToProps, mapDispatchToProps)
 )(UserStatisticsTable)

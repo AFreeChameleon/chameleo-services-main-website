@@ -1,0 +1,26 @@
+.root {
+    display: grid;
+    place-items: center;
+}
+
+.paper {
+    background-color: #212121;
+    width: 500px;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.renameButton {
+    margin-top: 20px;
+}
+
+.renameTextField {
+
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #ffffff;
+}

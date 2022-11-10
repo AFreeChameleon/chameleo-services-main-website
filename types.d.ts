@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Client } from "pg";
+import { Theme } from '@mui/material/styles';
 
 declare global {
     namespace NodeJS {
@@ -9,6 +10,10 @@ declare global {
             londonPGClient: Client;
         }
     }
+}
+
+declare module '@mui/system' {
+  interface DefaultTheme extends Theme {}
 }
 
 declare module '*.scss';

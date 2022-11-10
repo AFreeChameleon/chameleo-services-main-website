@@ -1,0 +1,27 @@
+.root {
+    max-width: fit-content;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.breadcrumb {
+    // color: theme.palette.grey.A200,
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.breadcrumbMain {
+    // color: theme.palette.text.secondary,
+    font-size: 16px;
+    font-weight: 600
+}
+
+.stepperContainer {
+    width: 820px;
+    margin: 0 auto;
+    padding-top: 40px;
+}

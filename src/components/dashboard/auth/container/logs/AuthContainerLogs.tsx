@@ -8,17 +8,20 @@ import {
 } from '../../../../../redux/container/auth/stats/actions';
 import { fetchContainers } from '../../../../../redux/container/actions';
 
-import { withStyles } from '@material-ui/core/styles';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
+import {
+    Breadcrumbs,
+    Typography,
+    TextField,
+    Box
+} from '@mui/material';
 
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import LastPageIcon from '@material-ui/icons/LastPage';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import LastPageIcon from '@mui/icons-material/LastPage';
 import MetadataWebsocket from '../../../../../lib/container/auth/ws_client';
 
+import classes from './AuthContainerLogs.module.scss';
+
 type AuthContainerLogsProps = {
-    classes: any;
     logs: { message: string; level: string; }[];
     containerId: string;
     apiUrl: string;
@@ -38,8 +41,7 @@ class AuthContainerLogs extends React.Component<AuthContainerLogsProps, AuthCont
     }
 
     render() {
-        const { 
-            classes, 
+        const {
             containerId, 
             logs
         } = this.props;
@@ -59,6 +61,7 @@ class AuthContainerLogs extends React.Component<AuthContainerLogsProps, AuthCont
                     <NextLink href={`/dashboard/auth/container/${containerId}`}>
                         <Typography
                             className={classes.breadcrumb}
+                            sx={{ color: 'grey.A200' }}
                         >
                             {containerId}
                         </Typography>
@@ -66,21 +69,37 @@ class AuthContainerLogs extends React.Component<AuthContainerLogsProps, AuthCont
                     <Typography
                         color="secondary"
                         className={classes.breadcrumbMain}
+                        sx={{ color: 'text.secondary' }}
                     >
                         Logs
                     </Typography>
                 </Breadcrumbs>
-                <div className={classes.container}>
-                    <div className={classes.logsContainer}>
-                        <div className={classes.logsOutput}>
+                <Box 
+                    component="div"
+                    className={classes.container}
+                    sx={{ borderTop: '1px solid grey.50' }}
+                >
+                    <Box 
+                        component="div"
+                        className={classes.logsContainer}
+                        sx={{ boxShadow: 2 }}
+                    >
+                        <Box 
+                            component="div"
+                            className={classes.logsOutput} 
+                            sx={{ 
+                                border: '1px solid grey.400', 
+                                backgroundColor: 'grey.50' 
+                            }}
+                        >
                             {logs.map((log) => (
                                 <div className={classes.log}>
                                     [{log.level.toUpperCase()}] {log.message}
                                 </div>
                             ))}
-                        </div>
-                    </div>
-                </div>
+                        </Box>
+                    </Box>
+                </Box>
             </div>
         )
     }
@@ -98,55 +117,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default compose<any>(
-    connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme: any) => ({
-        root: {
-            padding: '20px',
-            maxWidth: '1300px',
-            margin: '0 auto'
-        },
-        breadcrumb: {
-            color: theme.palette.grey.A200,
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 600,
-            '&:hover': {
-                textDecoration: 'underline'
-            }
-        },
-        breadcrumbMain: {
-            color: theme.palette.text.secondary,
-            fontSize: '16px',
-            fontWeight: 600
-        },
-        container: {
-            width: '100%',
-            marginTop: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            columnGap: '15px',
-            borderTop: '1px solid ' + theme.palette.grey['50'],
-            paddingTop: '20px'
-        },
-        logsContainer: {
-            width: '100%',
-            boxShadow: theme.shadows['2'],
-            padding: '15px 20px',
-            display: 'flex',
-            flexDirection: 'column',
-        },
-        log: {
-            marginBottom: '10px',
-            fontFamily: '"Lucida Console", "Courier New", monospace',
-            fontSize: '12px'
-        },
-        logsOutput: {
-            width: '100%',
-            height: '500px',
-            backgroundColor: theme.palette.grey['50'],
-            border: '1px solid ' + theme.palette.grey['400'],
-            padding: '10px 15px',
-            overflowY: 'auto'
-        },
-    }))
+    connect(mapStateToProps, mapDispatchToProps)
 )(AuthContainerLogs);

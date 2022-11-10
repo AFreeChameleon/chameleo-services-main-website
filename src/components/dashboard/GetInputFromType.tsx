@@ -1,28 +1,27 @@
 import React from 'react';
 
-import {
-    withStyles
-} from '@material-ui/core/styles';
 
 import {
     TextField,
     FormControl,
     MenuItem,
     Select
-} from '@material-ui/core';
+} from '@mui/material';
+
+import classes from './GetInputFromType.module.scss';
 
 import {
     NumberInputNoTicks
 } from '../Inputs';
 
 type GetInputFromTypeProps = {
-    classes: any;
     className?: string;
     type: string;
     colName: string;
     value: any;
     size?: 'small';
     onChange: (value: any) => void;
+    sx?: any;
 }
 
 class GetInputFromType extends React.Component<GetInputFromTypeProps> {
@@ -31,7 +30,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
     }
 
     render() {
-        const { classes, type, value, colName, size, onChange, className } = this.props;
+        const { type, value, colName, size, onChange, className, sx } = this.props;
 
         switch (type) {
             case 'String': 
@@ -42,6 +41,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         value={value}
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
+                        sx={sx}
                     />
                 );
             case 'Int':
@@ -53,6 +53,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         type="number"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(parseInt(e.target.value))}
+                        sx={sx}
                     /> 
                 );
             case 'Float':
@@ -64,6 +65,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         type="number"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(parseFloat(e.target.value))}
+                        sx={sx}
                     /> 
                 );
             case 'JSON': 
@@ -75,6 +77,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         value={value}
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
+                        sx={sx}
                     />
                 );
             case 'Boolean':
@@ -85,6 +88,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                             value={value.toString()}
                             className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                             onChange={(e) => onChange(Boolean(e.target.value))}
+                            sx={sx}
                         >
                             <MenuItem value={1}>true</MenuItem>
                             <MenuItem value={0}>false</MenuItem>
@@ -99,6 +103,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         type="date"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
+                        sx={sx}
                     />
                 );
             case 'DateTime':
@@ -113,6 +118,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                             shrink: true,
                         }}
                         onChange={(e) => onChange(e.target.value)}
+                        sx={sx}
                     />
                 );
             default:
@@ -122,10 +128,4 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
     }
 }
 
-export default withStyles((theme) => ({
-    smallTextField: {
-        '& input': {
-            fontSize: '14px'
-        }
-    },
-}))(GetInputFromType);
+export default GetInputFromType;

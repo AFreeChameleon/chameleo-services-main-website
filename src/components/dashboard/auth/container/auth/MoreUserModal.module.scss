@@ -1,0 +1,25 @@
+.modal {
+    display: grid;
+    place-items: center;
+}
+
+.root {
+    min-width: 500px;
+    min-height: 300px;
+    max-width: 1366px;
+    max-height: 980px;
+    // backgroundColor: theme.palette.background.paper
+}
+
+.header {
+    padding: 20px 30px;
+    // borderBottom: `1px solid ${theme.palette.grey['50']}`
+}
+
+.body {
+    padding: 20px 30px;
+}
+
+.tableContainer {
+    padding: 10px 0 30px 0;
+}

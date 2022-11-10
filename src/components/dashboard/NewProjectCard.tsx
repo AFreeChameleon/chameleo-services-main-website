@@ -1,13 +1,8 @@
-
-import { makeStyles } from '@material-ui/core/styles';
-import newProjectStyles from '../../styles/dashboard/components/newProjectStyles';
 import {
-    Box
-} from '@mui/material';
-import {
+    Box,
     TextField,
     Button
-} from '@material-ui/core';
+} from '@mui/material';
 
 import classes from './NewProjectCard.module.scss';
 

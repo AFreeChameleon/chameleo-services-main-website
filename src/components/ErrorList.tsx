@@ -1,17 +1,20 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+
+import { 
+    Snackbar, 
+    Alert 
+} from '@mui/material';
+
 import {
     removeErrorMessage,
     setErrorMessages,
     setErrorOpen
 } from '../redux/errors/actions';
-import { withStyles } from '@material-ui/core/styles';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import classes from './ErrorList.module.scss';
 
 type ErrorListProps = {
-    classes: any;
     errors: any;
     dispatchSetErrorMessages: (val: string[] | []) => void;
     dispatchRemoveErrorMessage: (val: string) => void;
@@ -24,8 +27,7 @@ class ErrorList extends React.Component<ErrorListProps> {
     }
 
     render() {
-        const { 
-            classes, 
+        const {
             errors, 
             dispatchSetErrorMessages,
             dispatchRemoveErrorMessage,
@@ -70,10 +72,5 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default compose<any>(
-    connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme) => ({
-        errorItem: {
-            marginTop: '20px'
-        }
-    }))
+    connect(mapStateToProps, mapDispatchToProps)
 )(ErrorList);

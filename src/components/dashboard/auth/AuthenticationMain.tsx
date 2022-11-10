@@ -5,17 +5,26 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { fetchContainers } from '../../../redux/container/actions';
 import { setContainer } from '../../../redux/container/auth/edit/actions';
-import { withStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
-import PlayIcon from '@material-ui/icons/PlayArrow';
-import StopIcon from '@material-ui/icons/Stop';
-import AddIcon from '@material-ui/icons/Add';
-import LabelIcon from '@material-ui/icons/Label';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+
+import {
+    Checkbox, 
+    Breadcrumbs, 
+    Menu, 
+    MenuItem, 
+    Typography, 
+    ListItemIcon
+} from '@mui/material';
+
+import EditIcon from '@mui/icons-material/Edit';
+import PlayIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import AddIcon from '@mui/icons-material/Add';
+import LabelIcon from '@mui/icons-material/Label';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon, SettingsIcon } from '../../Icons';
-import { Checkbox, Breadcrumbs, Menu, MenuItem, Typography, ListItemIcon } from '@material-ui/core';
+
 import RenameContainerModal from './modals/RenameContainer';
 import DeleteContainerModal from './modals/DeleteContainer';
 import {
@@ -23,8 +32,9 @@ import {
     StyledListItemIcon
 } from '../../Inputs';
 
+import classes from './AuthenticationMain.module.scss';
+
 type AuthenticationMainPropTypes = {
-    classes: any;
     containers: any[];
     router: NextRouter;
     dispatchFetchContainers: () => null;
@@ -87,7 +97,7 @@ class AuthenticationMain extends React.Component<AuthenticationMainPropTypes, Au
     }
 
     render() {
-        const { classes, containers, dispatchFetchContainers } = this.props;
+        const { containers, dispatchFetchContainers } = this.props;
         const { settingsAnchorEl, renameModalOpen, deleteModalOpen, selectedContainer } = this.state;
         console.log(containers);
         
@@ -280,265 +290,6 @@ class AuthenticationMain extends React.Component<AuthenticationMainPropTypes, Au
     }
 }
 
-const styles: () => any = () => ({
-    root: {
-        backgroundColor: '#212121',
-        padding: '15px',
-        color: '#ffffff',
-        overflowY: 'auto',
-        '&::-webkit-scrollbar': {
-            width: '8px',
-            marginRight: '5px'
-        },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: '#6F6F76',
-            borderRadius: '5px'
-        }
-    },
-    breadcrumb: {
-        color: '#6F6F76',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline'
-        }
-    },
-    breadcrumbMain: {
-        color: '#ffffff',
-    },
-    flexGrow: {
-        flexGrow: 1
-    },
-    timespanContainer: {
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        marginTop: '10px'
-    },
-    timespan: {
-        border: '1px solid #51C85D',
-        borderRadius: '20px',
-        display: 'flex',
-        // padding: '10px 0',
-        height: '40px',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    calendarIcon: {
-        marginLeft: '10px',
-        height: '20px',
-    },
-    arrowIcon: {
-        margin: '0 10px',
-        cursor: 'pointer',
-        '&:hover path': {
-            fill: '#ffffff',
-        }
-    },
-    timespanContent: {
-        // paddingTop: '2px'
-    },
-    timespanMeasure: {
-        marginLeft: '20px',
-        padding: '0 15px',
-        height: '40px',
-        border: '1px solid #6F6F76',
-        borderRadius: '50px',
-        cursor: 'pointer',
-        transition: '0.2s',
-        display: 'grid',
-        placeItems: 'center',
-        '&:hover': {
-            backgroundColor: '#51C85D',
-            border: '1px solid #51C85D',
-            color: '#ffffff'
-        }
-    },
-    chartRow: {
-        display: 'flex',
-        columnGap: '15px'
-    },
-    registeredUsersContainer: {
-        marginTop: '15px',
-        backgroundColor: '#2C2C2C',
-        width: '100%',
-        padding: '10px',
-        borderRadius: '10px',
-        height: '370px'
-    },
-    title: {
-        fontSize: '16px',
-        fontWeight: 600,
-        paddingLeft: '10px'
-    },
-    activeUsersContainer: {
-        marginTop: '15px',
-        backgroundColor: '#2C2C2C',
-        padding: '10px',
-        borderRadius: '10px',
-        height: '370px',
-        width: '500px'
-    },
-    usersTableContainer: {
-        marginTop: '15px',
-        backgroundColor: '#2C2C2C',
-        width: '100%',
-        padding: '10px',
-        borderRadius: '10px',
-        // height: '370px'
-    },
-    usersTable: {
-        marginTop: '10px'
-    },
-    usersTableHeaders: {
-        display: 'grid',
-        gridTemplateColumns: '50px 40% 20% 20% auto',
-        background: '#212121',
-        padding: '10px 5px',
-        borderTopRightRadius: '10px',
-        borderTopLeftRadius: '10px'
-    },
-    usersTableHeader: {
-        flexGrow: 1,
-        fontWeight: 600
-    },
-    usersTableRow: {
-        borderBottom: '1px solid #6F6F76',
-        display: 'grid',
-        gridTemplateColumns: '50px 40% 20% 20% auto',
-        alignItems: 'center',
-        padding: '5px'
-    },
-    containersContainer: {
-        marginTop: '15px',
-        backgroundColor: '#2C2C2C',
-        width: '100%',
-        padding: '10px',
-        borderRadius: '10px',
-        // height: '370px'
-    },
-    containerList: {
-        padding: '5px 10px',
-        color: '#ffffff',
-        marginTop: '10px',
-        display: 'flex',
-        columnGap: '10px'
-    },
-    containerItem: {
-        borderRadius: '10px',
-        backgroundColor: '#212121',
-        padding: '10px',
-        borderBottom: '1px solid #2C2C2C',
-        width: '250px'
-    },
-    containerItemHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        fontWeight: 600
-    },
-    miniIcon: {
-        display: 'grid',
-        placeItems: 'center',
-        cursor: 'pointer',
-        '& svg': {
-            height: '20px',
-            width: '20px',
-        },
-        '&:hover svg path': {
-            fill: '#ffffff'
-        }
-    },
-    containerItemStatus: {
-        paddingTop: '5px',
-        // fontSize: '12px',
-        paddingBottom: '15px'
-    },
-    stopped: {
-        color: '#ff1744'
-    },
-    running: {
-        color: '#51C85D'
-    },
-    containerItemID: {
-        fontSize: '16px',
-        cursor: 'pointer',
-        userSelect: 'none',
-        '&:hover': {
-            textDecoration: 'underline'
-        }
-    },
-    containerItemEditButton: {
-        display: 'flex',
-        border: '1px solid #6F6F76',
-        borderRadius: '10px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        columnGap: '5px',
-        height: '30px',
-        cursor: 'pointer',
-        transition: '0.1s',
-        '&:hover': {
-            backgroundColor: '#6F6F7622'
-        }
-    },
-    containerItemStartButton: {
-        marginTop: '10px',
-        display: 'flex',
-        backgroundColor: '#51C85D88',
-        border: '1px solid #51C85D88',
-        borderRadius: '10px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        columnGap: '5px',
-        height: '30px',
-        cursor: 'pointer',
-        transition: '0.1s',
-        '&:hover': {
-            backgroundColor: '#51C85D',
-            border: '1px solid #51C85D',
-        }
-    },
-    containerItemStopButton: {
-        marginTop: '10px',
-        display: 'flex',
-        backgroundColor: '#6F6F76',
-        border: '1px solid #6F6F76',
-        borderRadius: '10px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        columnGap: '5px',
-        height: '30px',
-        cursor: 'pointer' 
-    },
-    containerItemStartButtonText: {
-        paddingTop: '2px'
-    },
-    makeNewContainerButton: {
-        border: '1px solid #51C85D',
-        width: '250px',
-        height: '150px',
-        borderRadius: '10px',
-        backgroundColor: '#212121',
-        padding: '15px 10px 10px 10px',
-        cursor: 'pointer',
-        transition: '0.2s',
-        '&:hover': {
-            backgroundColor: '#182b19'
-        }
-    },
-    makeNewContainerButtonTitle: {
-        fontSize: '16px',
-        textAlign: 'center',
-        fontWeight: 600
-    },
-    makeNewContainerButtonIcon: {
-        width: '100%',
-        height: '100px',
-        display: 'grid',
-        placeItems: 'center',
-    }
-});
-
 const mapStateToProps = (state) => {
     return {
         containers: state.containers.containers
@@ -554,5 +305,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withStyles(styles)
 )(withRouter(AuthenticationMain)) as React.ComponentType;

@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+// import crypto from 'crypto';
 
 export const createNewProjectStateDefaults: any = {
     attributeTable: [
@@ -41,7 +41,8 @@ export const createNewProjectStateDefaults: any = {
     ],
     authenticationSettings: {
         userSignUp: 0,
-        appSecret: crypto.randomBytes(16).toString('hex'),
+        // appSecret: crypto.randomBytes(16).toString('hex'),
+        appSecret: 'scooooooop',
         sessionExpiresIn: {
             forever: false,
             days: 30,

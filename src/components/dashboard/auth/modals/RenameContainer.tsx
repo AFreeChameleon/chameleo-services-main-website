@@ -1,18 +1,21 @@
 import React from 'react';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { withStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import {
+    Modal,
+    Backdrop,
+    Fade,
+    Typography,
+    TextField,
+    Snackbar,
+    Alert,
+    Button
+} from '@mui/material';
 import { StyledTextField } from '../../../Inputs';
 import { MAIN_URL } from '../../../../globals';
 
+import classes from './RenameContainer.module.scss';
+
 type RenameContainerPropTypes = {
-    classes: any;
     open: boolean;
     container: any;
     onClose: (e) => void;
@@ -53,11 +56,11 @@ class RenameContainer extends React.Component<RenameContainerPropTypes, RenameCo
                 fetchContainers();
                 onClose(e);
             }).catch((err: AxiosError) => {
-                this.setState({ errorMessage: err.response.data.message });
+                this.setState({ errorMessage: (err.response && err.response.data) ? (err.response.data as any).message : 'An error occurred while renaming container.' });
             });
         } catch (err) {
             console.log(err.message)
-            this.setState({ errorMessage: 'An error occurred while deleting container.' });
+            this.setState({ errorMessage: 'An error occurred while renaming container.' });
         }
     }
 
@@ -69,7 +72,7 @@ class RenameContainer extends React.Component<RenameContainerPropTypes, RenameCo
     }
 
     render() {
-        const { classes, open, onClose, container } = this.props;
+        const { open, onClose, container } = this.props;
         const { containerName, errorMessage } = this.state;
 
         return (
@@ -121,29 +124,4 @@ class RenameContainer extends React.Component<RenameContainerPropTypes, RenameCo
     }
 }
 
-const styles = (theme): any => ({
-    root: {
-        display: 'grid',
-        placeItems: 'center'
-    },
-    paper: {
-        backgroundColor: '#212121',
-        width: '500px',
-        borderRadius: '5px',
-        padding: '10px 20px'
-    },
-    renameButton: {
-        marginTop: '20px'
-    },
-    renameTextField: {
-
-    },
-    title: {
-        fontSize: '18px',
-        fontWeight: 500,
-        marginBottom: '15px',
-        color: '#ffffff'
-    }
-});
-
-export default withStyles(styles)(RenameContainer);
+export default RenameContainer;

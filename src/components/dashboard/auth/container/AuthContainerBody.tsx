@@ -7,17 +7,22 @@ import {
     fetchAllUsers
 } from '../../../../redux/container/auth/stats/actions';
 import { fetchContainers } from '../../../../redux/container/actions';
-import { withStyles } from '@material-ui/core/styles';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import PeopleIcon from '@material-ui/icons/PeopleOutlineOutlined';
-import FireIcon from '@material-ui/icons/WhatshotOutlined';
-import SendIcon from '@material-ui/icons/Send';
+import {
+    Breadcrumbs,
+    Typography,
+    Button,
+    MenuItem,
+    Select,
+    CircularProgress,
+    Box
+} from '@mui/material';
+import { styled } from '@mui/styles';
+
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import PeopleIcon from '@mui/icons-material/PeopleOutlineOutlined';
+import FireIcon from '@mui/icons-material/WhatshotOutlined';
+import SendIcon from '@mui/icons-material/Send';
+
 import { Chart, ArcElement } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import UserTable from './auth/UserTable';
@@ -29,18 +34,19 @@ import {
     GreenButton,
 } from '../../../Inputs';
 
+import classes from './AuthContainerBody.module.scss';
+
 Chart.register(ArcElement);
 
-const SmallSelect = withStyles((theme) => ({
+const SmallSelect = styled(Select)(({
     root: {
         fontSize: '14px',
         paddingLeft: '5px',
         paddingRight: '5px',
     }
-}))(Select);
+}));
 
 type AuthContainerBodyProps = {
-    classes: any;
     containerId: string;
     apiUrl: string;
     containers: any[];
@@ -139,7 +145,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
     }
 
     render() {
-        const { classes, stats, containerId, containers } = this.props;
+        const { stats, containerId, containers } = this.props;
         const { statisticsMode, statusLoading } = this.state;
         const container = containers.find(c => c.id === containerId);
         console.log(stats, container, containers)
@@ -160,7 +166,11 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                         {containerId}
                     </Typography>
                 </Breadcrumbs>
-                <div className={classes.statusContainer}>
+                <Box 
+                    component="div" 
+                    sx={{ borderTop: '1px solid grey.50' }}
+                    className={classes.statusContainer} 
+                >
                     <div className={classes.status}>
                         <Typography
                             variant="body1"
@@ -206,13 +216,12 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                             { statusLoading ? 'Stopping' : 'Stop' }
                         </Button>
                     ) }
-
-                </div>
+                </Box>
                 <div className={classes.colorStatsGrid}>
                     <div className={classes.colorStatsItemRegisteredUsers}>
                         <div>
                             <div className={`${classes.colorStatsItemLogoLarge} ${classes.blueBg}`}>
-                                <PeopleIcon fontSize="large" className={classes.blue}/>
+                                <PeopleIcon fontSize="large" className={classes.blue} sx={{ color: 'background.blue' }}/>
                             </div>
                             <div className={classes.colorStatsItemText}>
                                 <Typography
@@ -235,7 +244,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                     <div className={classes.colorStatsItemEmailSent}>
                         <div>
                             <div className={`${classes.colorStatsItemLogoLarge} ${classes.greenBg}`}>
-                                <SendIcon fontSize="large" className={classes.green} style={{paddingLeft: '5px'}}/>
+                                <SendIcon fontSize="large" className={classes.green} style={{paddingLeft: '5px'}} sx={{ color: 'background.main' }}/>
                             </div>
                             <div className={classes.colorStatsItemText}>
                                 <Typography
@@ -253,7 +262,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                     <div className={classes.colorStatsItemActiveUsers}>
                         <div>
                             <div className={`${classes.colorStatsItemLogoLarge} ${classes.redBg}`}>
-                                <FireIcon fontSize="large" className={classes.red}/>
+                                <FireIcon fontSize="large" className={classes.red} sx={{ color: 'background.red' }}/>
                             </div>
                             <div className={classes.colorStatsItemText}>
                                 <Typography
@@ -285,6 +294,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                                 <Typography
                                     className={classes.logsLink}
                                     component="a"
+                                    sx={{ color: 'primary.main' }}
                                 >
                                     View logs
                                 </Typography>
@@ -372,7 +382,7 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                                         vertical: "top",
                                         horizontal: "left"
                                     },
-                                    getContentAnchorEl: null
+                                    anchorEl: null
                                 }}
                                 input={<StyledSelect/>}
                                 value={statisticsMode}
@@ -424,239 +434,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose<any>(
     connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme: any) => ({
-        root: {
-            padding: '20px',
-            maxWidth: '1300px',
-            margin: '0 auto'
-        },
-        link: {
-            textDecoration: 'none'
-        },
-        logsLink: {
-            color: theme.palette.primary.main,
-            fontSize: '14px',
-            textDecoration: 'underline',
-            cursor: 'pointer'
-        },
-        requestsChart: {
-            width: '100%',
-            flexGrow: 1
-        },
-        statusContainer: {
-            width: '100%',
-            marginTop: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            columnGap: '15px',
-            borderTop: '1px solid ' + theme.palette.grey['50'],
-            paddingTop: '20px'
-        },
-        status: {
-            display: 'flex',
-        },
-        statusText: {
-            fontWeight: 600,
-        },
-        changeStatusButton: {
-            width: '80px'
-        },
-        errorButton: {
-            color: theme.palette.error.main,
-            borderColor: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: theme.palette.error.light + '1A'
-            }
-        },
-        usersTableContainer: {
-            width: '100%',
-            boxShadow: theme.shadows['2'],
-            padding: '15px 20px',
-            marginTop: '20px'
-        },
-        userStatisticsContainer: {
-            width: '365px',
-            boxShadow: theme.shadows['2'],
-            padding: '15px 20px',
-        },
-        userStatisticsTitle: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        },
-        gridOne: {
-            display: 'grid',
-            gridTemplateColumns: 'auto 300px',
-            columnGap: '20px',
-            marginTop: '20px'
-        },
-        gridTwo: {
-            display: 'grid',
-            gridTemplateColumns: '365px auto',
-            columnGap: '20px',
-            marginTop: '20px',
-        },
-        requestsChartContainer: {
-            width: '100%',
-            boxShadow: theme.shadows['2'],
-            padding: '15px 20px',
-            display: 'flex',
-            flexDirection: 'column'
-        },
-        activeUsersContainer: {
-            boxShadow: theme.shadows['2'],
-            padding: '15px 20px'
-        },
-        activeUsersLegend: {
-            display: 'flex',
-            marginTop: '20px',
-            columnGap: '20px'
-        },
-        activeUsersLegendItem: {
-            display: 'flex',
-            alignItems: 'center',
-            columnGap: '5px'
-        },
-        activeUsersLegendOnline: {
-            backgroundColor: 'rgba(0, 175, 85)',
-            height: '10px',
-            width: '10px',
-            borderRadius: '10px',
-            marginBottom: '3px'
-        },
-        activeUsersLegendAway: {
-            backgroundColor: 'rgba(249, 168, 37)',
-            height: '10px',
-            width: '10px',
-            borderRadius: '10px',
-            marginBottom: '3px'
-        },
-        activeUsersLegendOffline: {
-            backgroundColor: 'rgba(111, 111, 118)',
-            height: '10px',
-            width: '10px',
-            borderRadius: '10px',
-            marginBottom: '3px'
-        },
-        activeUsersLegendText: {
-            fontWeight: 600
-        },
-        activeUsersChart: {
-            width: '250px',
-            height: '250px',
-            margin: '20px auto 0 auto'
-        },
-        breadcrumb: {
-            color: theme.palette.grey.A200,
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 600,
-            '&:hover': {
-                textDecoration: 'underline'
-            }
-        },
-        breadcrumbMain: {
-            color: theme.palette.text.secondary,
-            fontSize: '16px',
-            fontWeight: 600
-        },
-        colorStatsGrid: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '20px',
-            columnGap: '20px'
-        },
-        colorStatsItemRegisteredUsers: {
-            backgroundColor: theme.palette.background.blue + '40',
-            boxShadow: theme.shadows['2'],
-            height: '215px',
-            display: 'grid',
-            placeItems: 'center',
-            width: '100%'
-        },
-        colorStatsItemEmailSent: {
-            backgroundColor: theme.palette.background.green + '40',
-            boxShadow: theme.shadows['2'],
-            height: '215px',
-            display: 'grid',
-            placeItems: 'center',
-            width: '100%'
-        },
-        colorStatsItemActiveUsers: {
-            backgroundColor: theme.palette.background.red + '40',
-            boxShadow: theme.shadows['2'],
-            height: '215px',
-            display: 'grid',
-            placeItems: 'center',
-            width: '100%'
-        },
-        blueBg: {
-            backgroundColor: theme.palette.background.blue + '4D',
-        },
-        redBg: {
-            backgroundColor: theme.palette.background.red + '4D',
-        },
-        greenBg: {
-            backgroundColor: theme.palette.background.green + '4D',
-        },
-        colorStatsItemLogo: {
-            height: '60px',
-            width: '60px',
-            borderRadius: '50%',
-            display: 'grid',
-            placeItems: 'center',
-            margin: 'auto',
-        },
-        colorStatsItemLogoLarge: {
-            height: '60px',
-            width: '60px',
-            borderRadius: '50%',
-            display: 'grid',
-            placeItems: 'center',
-            margin: 'auto',
-            '& > svg': {
-                fontSize: '45px'
-            }
-        },
-        colorStatsItemText: {
-            display: 'flex',
-            alignItems: 'baseline',
-            justifyContent: 'center',
-            columnGap: '5px',
-            paddingTop: '15px'
-        },
-        colorStatsItemTitle: {
-            paddingTop: '10px'
-        },
-        blue: {
-            color: theme.palette.background.blue
-        },
-        green: {
-            color: theme.palette.primary.main
-        },
-        red: {
-            color: theme.palette.background.red
-        },
-        semiDarkBlue: {
-            color: '#224588'
-        },
-        semiDarkGreen: {
-            color: '#008440'
-        },
-        semiDarkRed: {
-            color: '#AB2034'
-        },
-        darkBlue: {
-            color: '#233760'
-        },
-        darkGreen: {
-            color: '#007539'
-        },
-        darkRed: {
-            color: '#A61D30'
-        },
-        bold: {
-            fontWeight: 700
-        }
-    }))
 )(AuthContainerBody);

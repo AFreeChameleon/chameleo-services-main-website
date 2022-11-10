@@ -1,8 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
-import navbarStyles from '../styles/dashboard/components/navbarStyles';
+import classes from './Navbar.module.scss';
 
 function Navbar({ category, username }) {
-    const classes = makeStyles(navbarStyles)();
     return (
         <div className={classes.root} id="top">
             <div className={classes.list}>

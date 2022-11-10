@@ -4,7 +4,6 @@ import axios from 'axios';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
-import { withStyles } from '@material-ui/core/styles';
 import { 
     Checkbox,
     Typography,
@@ -27,21 +26,25 @@ import {
     FormControl,
     InputLabel,
     Select,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Cancel';
+import { styled } from '@mui/styles';
+
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import MoreUserModal from './MoreUserModal';
 import { NumberInputNoTicks } from '../../../../Inputs';
 import GetInputFromType from '../../../GetInputFromType';
 import { fetchAllUsers } from '../../../../../redux/container/auth/stats/actions';
 
-const StyledTableCell = withStyles((theme) => ({
+import classes from './UserTable.module.scss';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
     head: {
         backgroundColor: theme.palette.primary.main,
         fontSize: theme.typography.subtitle1.fontSize,
@@ -52,10 +55,9 @@ const StyledTableCell = withStyles((theme) => ({
         fontSize: theme.typography.body2.fontSize,
         height: '61px'
     }
-}))(TableCell);
+}));
 
 type UserTableProps = {
-    classes: any;
     users: any[];
     schema: any[];
     containerId: string;
@@ -130,7 +132,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
     }
 
     createHeaders() {
-        const { classes, users, schema } = this.props;
+        const { users, schema } = this.props;
         const { userIdsSelected } = this.state;
         
         const columnNames = schema.map(col => col.name);
@@ -169,7 +171,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
     }
 
     createEditingUserRow(user: any) {
-        const { classes, users, schema } = this.props;
+        const { users, schema } = this.props;
         const { userIdsSelected, userMoreSelected, userViewSelected, editingUser } = this.state;
 
         const columnNames = schema.map(col => col.name);
@@ -227,7 +229,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
     }
 
     createBody() {
-        const { classes, users, schema } = this.props;
+        const { users, schema } = this.props;
         const { userIdsSelected, userMoreSelected, userViewSelected, editingUser } = this.state;
 
         const columnNames = schema.map(col => col.name);
@@ -346,7 +348,7 @@ class UserTable extends React.Component<UserTableProps, UserTableState> {
     }
 
     render() {
-        const { classes, users, schema } = this.props;
+        const { users, schema } = this.props;
         const { userViewModalOpen, userMoreSelected, userViewSelected } = this.state;
 
         return (
@@ -381,61 +383,5 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default compose<any>(
-    connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme) => ({
-        root: {
-
-        },
-        headers: {
-            background: theme.palette.primary.main,
-            height: '60px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 25px 0 10px',
-            columnGap: '10px',
-            overflowX: 'auto'
-        },
-        header: {
-            color: theme.palette.primary.contrastText,
-            minWidth: '120px'
-        },
-        cell: {
-            minWidth: '120px'
-        },
-        moreCol: {
-            width: '0px'
-        },
-        row: {
-            height: '60px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 25px 0 10px',
-            columnGap: '10px',
-            overflowX: 'auto',
-            borderBottom: `1px solid ${theme.palette.grey['50']}`
-        },
-        flexGrow: {
-            flexGrow: 1
-        },
-        whiteCheckbox: {
-            color: '#ffffff !important'
-        },
-        checkboxCol: {
-            paddingRight: '16px',
-            width: '50px'
-        },
-        smallIconButton: {
-            padding: '9px'
-        },
-        smallTextField: {
-            '& input': {
-                fontSize: '14px'
-            }
-        },
-        noWrap: {
-            whiteSpace: 'nowrap'
-        }
-    }))
+    connect(mapStateToProps, mapDispatchToProps)
 )(UserTable);

@@ -30,12 +30,13 @@ import {
     RadioGroup, 
     Collapse,
     Snackbar,
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab'
-import { withStyles } from '@material-ui/core/styles';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+    Alert,
+    Typography
+} from '@mui/material';
+
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {
     StyledFormControlLabel,
     StyledCheckbox,
@@ -47,8 +48,9 @@ import {
     RedButton
 } from '../../Inputs';
 import theme from '../../../styles/Theme';
+import classes from './EditAuthContainerBody.module.scss';
 
-type NewAuthContainerBodyProps = {
+type EditAuthContainerBodyProps = {
     classes?: any;
     container: any;
     container_errors: string[];
@@ -68,12 +70,12 @@ type NewAuthContainerBodyProps = {
     dispatchSetConfigErrors: (errors: string[]) => null;
 }
 
-type NewAuthContainerBodyState = {
+type EditAuthContainerBodyState = {
     selectedOAuthCompany: 'Google';
     containerName: string;
 }
 
-class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, NewAuthContainerBodyState> {
+class EditAuthContainerBody extends React.Component<EditAuthContainerBodyProps, EditAuthContainerBodyState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -83,7 +85,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
         this.submitCreateContainer = this.submitCreateContainer.bind(this);
     }
 
-    // ! CHANGE
+    // ! CHANGE (WHY DID I PUT THIS HERE)
     checkErrorsExist(config: any) {
         const { model, mail } = config;
         const errors = [];
@@ -119,19 +121,16 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     }
 
 
-    // ! CHANGE
+    // ! CHANGE (WHYYYYY PAST ME)
     submitCreateContainer(e) {
         const { container, router, dispatchSetConfigErrors } = this.props;
         const { containerName } = this.state;
         const { config } = container;
         const errors = this.checkErrorsExist(config);
-        console.log(`${MAIN_URL}/api/containers/auth/new`)
         if (errors.length > 0) {
             dispatchSetConfigErrors(errors);
             document.getElementById('top').scrollIntoView({ behavior: 'smooth' })
         } else {
-            // Do stuff
-            console.log('No errors', config);
             axios.post(`${MAIN_URL}/api/containers/auth/edit`, {
                 config: config,
                 name: containerName
@@ -142,7 +141,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                 router.push(`/dashboard`);
             })
             .catch((err: AxiosError) => {
-                dispatchSetConfigErrors([err.response.data.message]);
+                dispatchSetConfigErrors([(err.response && err.response.data) ? (err.response.data as any).message : 'Error occured while editing.']);
             })
         }
     }
@@ -150,7 +149,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     // ! CHANGE
     render() {
         const { 
-            classes, 
             container, 
             container_errors,
             dispatchSetContainerName,
@@ -552,7 +550,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             <StyledTextField
                                 fullWidth
                                 multiline
-                                rowsMax={4}
+                                maxRows={4}
                                 label="Email HTML"
                                 color="secondary"
                                 disabled={!container.config.mail.enabled}
@@ -583,7 +581,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                             <StyledTextField
                                 fullWidth
                                 multiline
-                                rowsMax={4}
+                                maxRows={4}
                                 label="Email HTML"
                                 color="secondary"
                                 disabled={!container.config.mail.enabled}
@@ -615,9 +613,16 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                     <Collapse in={container.config.auth.oauth.enabled}>
                         <div className={classes.oauthGrid}>
                             <div className={classes.oauthList}>
-                                <div className={`${classes.oauthItem} ${selectedOAuthCompany === 'Google' && classes.oauthItemSelected}`}>
+                                <Typography 
+                                    component="div"
+                                    sx={selectedOAuthCompany === 'Google' ? 
+                                        ({ backgroundColor: 'secondary.main' }) : 
+                                        ({ '&:hover': { backgroundColor: 'secondary.main' } })
+                                    }
+                                    className={`${classes.oauthItem} ${selectedOAuthCompany === 'Google' && classes.oauthItemSelected}`}
+                                >
                                     Google
-                                </div>
+                                </Typography>
                             </div>
                             <div className={classes.oauthForm}>
                                 <div className={classes.subtitle}>Google Setup</div>
@@ -673,203 +678,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     }
 }
 
-const styles = (): any => ({
-    root: {
-        backgroundColor: '#212121',
-        overflowY: 'auto',
-        padding: '10px 15px',
-        color: '#ffffff',
-        '&::-webkit-scrollbar': {
-            width: '8px',
-            marginRight: '5px'
-        },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: '#6F6F76',
-            borderRadius: '5px'
-        }
-    },
-    errorAlert: {
-        marginTop: '10px',
-        width: '100%'
-    },
-    breadcrumb: {
-        color: '#6F6F76',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline'
-        }
-    },
-    breadcrumbMain: {
-        color: '#ffffff'
-    },
-    container: {
-        maxWidth: '1100px',
-        backgroundColor: '#2C2C2C',
-        marginTop: '10px',
-        borderRadius: '10px',
-        padding: '10px'
-    },
-    title: {
-        fontSize: '16px',
-        fontWeight: 500
-    },
-
-    tableContainer: {
-        marginTop: '10px'
-    },
-    tableHeaders: {
-        display: 'grid',
-        gridTemplateColumns: '26% 6% 8% 15% 15% 11% 11% 8%',
-        width: '100%',
-        height: '40px',
-        backgroundColor: '#51C85D',
-        alignItems: 'center',
-        borderRadius: '5px',
-        padding: '0 5px'
-    },
-    tableHeader: {
-        padding: '0 5px',
-    },
-    tableBody: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: '5px',
-        paddingTop: '5px'
-    },
-    tableRow: {
-        display: 'grid',
-        gridTemplateColumns: '26% 6% 8% 15% 15% 11% 11% 8%',
-        width: '100%',
-        height: '40px',
-        alignItems: 'center',
-        borderRadius: '5px',
-        
-    },
-    tableColumn: {
-        padding: '0 5px',
-    },
-    center: {
-        textAlign: 'center'
-    },
-    tableTooltip: {
-        fontSize: '12px',
-        color: '#6F6F76',
-        paddingBottom: '5px'
-    },
-    invisibleInput: {
-        border: 'none',
-        outline: 'none',
-        height: '40px',
-        paddingLeft: '8px',
-        width: '100%',
-        fontSize: '14px',
-        backgroundColor: 'transparent',
-        color: '#ffffff',
-        '&:disabled': {
-            backgroundColor: 'rgb(0, 0, 0, 0.1)'
-        }
-    },
-    menuItem: {
-    },
-    addModelRowButton: {
-        padding: '10px 0 0 10px'
-    },
-    passwordCheckboxContainer: {
-        paddingTop: '5px'
-    },
-    passwordCheckbox: {
-        paddingLeft: '10px',
-        paddingTop: '2px'
-    },
-    sessionExpiresInContainer: {
-        paddingTop: '10px'
-    },
-    sessionRadioButtons: {
-        paddingTop: '5px'
-    },
-    sessionExpiresInTime: {
-        display: 'flex',
-        columnGap: '10px',
-        paddingLeft: '5px',
-        paddingTop: '5px',
-        paddingBottom: '5px'
-    },
-    sessionExpiresInColumn: {
-        width: '200px'
-    },
-    enableEmailing: {
-        paddingTop: '5px'
-    },
-    fromAddress: {
-        width: '415px',
-        paddingLeft: '5px',
-        paddingBottom: '20px'
-    },
-    verificationRadioButtons: {
-        paddingBottom: '10px'
-    },
-    emailSubject: {
-        width: '415px',
-        paddingLeft: '5px',
-        paddingBottom: '20px',
-        paddingTop: '10px'
-    },
-    emailHTML: {
-        paddingLeft: '5px',
-        paddingBottom: '20px'
-    },
-    subtitle: {
-        // paddingBottom: '10px'
-        fontWeight: 500
-    },
-    oauthGrid: {
-        display: 'flex',
-        paddingTop: '10px',
-        columnGap: '10px'
-    },
-    oauthList: {
-        width: '250px',
-        backgroundColor: '#212121',
-        borderRadius: '5px',
-        padding: '5px'
-    },
-    oauthItem: {
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        height: '40px',
-        paddingLeft: '10px',
-        // borderBottom: '1px solid #6F6F76',
-        // borderTopRightRadius: '5px',
-        // borderTopLeftRadius: '5px',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: theme.palette.secondary.main
-        }
-    },
-    oauthForm: {
-        width: '500px',
-        padding: '5px 0'
-    },
-    oauthInput: {
-        paddingTop: '10px'
-    },
-    oauthItemSelected: {
-        backgroundColor: theme.palette.secondary.main,
-        fontWeight: 500
-    },
-    submitButton: {
-        maxWidth: '1100px',
-        marginTop: '10px',
-        borderRadius: '10px',
-    },
-    containerName: {
-        width: '415px',
-        padding: '10px 0px 0px 10px'
-    }
-});
-
 const mapStateToProps = (state) => ({
     container: state.container.auth.edit,
     container_errors: state.container.auth.edit.errors
@@ -893,5 +701,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose<any>(
     connect(mapStateToProps, mapDispatchToProps),
-    withStyles(styles), 
-)(withRouter(NewAuthContainerBody));
+)(withRouter(EditAuthContainerBody));

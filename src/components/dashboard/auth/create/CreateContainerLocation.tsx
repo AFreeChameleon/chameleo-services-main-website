@@ -6,21 +6,29 @@ import ping from 'web-pingjs';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { setContainerLocation, setContainerName } from '../../../../redux/container/auth/config/actions';
-import { Typography, withStyles, Button, Modal, TextField, Snackbar } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import WorldMap from '../../../../../public/img/worldmap.png'
-import AddIcon from '@material-ui/icons/Add';
+import { 
+    Typography, 
+    Button, 
+    Modal, 
+    TextField, 
+    Snackbar,
+    Alert,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Box
+} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AddIcon from '@mui/icons-material/Add';
+import WorldMap from '../../../../../public/img/worldmap.png';
+
+import classes from './CreateContainerLocation.module.scss';
 
 type CreateContainerLocationProps = {
-    classes: any;
     container: any;
     router: NextRouter;
     changeSelectedPage: (val: number) => void;
@@ -113,11 +121,11 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
     }
 
     render() {
-        const { classes, changeSelectedPage, container, dispatchSetContainerLocation, dispatchSetContainerName } = this.props;
+        const { changeSelectedPage, container, dispatchSetContainerLocation, dispatchSetContainerName } = this.props;
         const { containerNameOpen, latencyTestOpen, averageLatency, errorText } = this.state;
         return (
             <div className={classes.root}>
-                <div className={classes.backButtonContainer}>
+                <Box component="div" className={classes.backButtonContainer}>
                     <Button
                         variant="outlined"
                         color="primary"
@@ -126,13 +134,13 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                     >
                         GO BACK TO PRICING
                     </Button>
-                </div>
+                </Box>
                 <Snackbar open={Boolean(errorText)} autoHideDuration={6000} onClose={() => this.setState({ errorText: '' })}>
                     <Alert onClose={() => this.setState({ errorText: '' })} severity="error" variant="filled">
                         {errorText}
                     </Alert>
                 </Snackbar>
-                <div className={classes.container}>
+                <Box component="div" className={classes.container} sx={{ boxShadow: 2 }}>
                     <Typography
                         variant="h5"
                     >
@@ -150,8 +158,8 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                                         dispatchSetContainerLocation('london');
                                     }}
                                 >
-                                    <div className={classes.markerText}>London</div>
-                                    <div className={classes.marker}></div>
+                                    <Box className={classes.markerText} sx={{ backgroundColor: 'background.paper', boxShadow: 2 }}>London</Box>
+                                    <Box component="div" className={classes.marker} sx={{ backgroundColor: 'secondary.main', boxShadow: 4 }}></Box>
                                 </div>
                             </div>
                         </div>
@@ -159,17 +167,22 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                     <div className={classes.latencyTest}>
                         <Typography
                             color="primary"
+                            component="a"
+                            className={classes.latencyTestText}
+                            onClick={this.runLatencyTest}
+                            href="#"
+                            sx={{ color: 'primary.main' }}
                         >
-                            <a className={classes.latencyTestText} href="#" onClick={this.runLatencyTest}>Run latency test</a>
+                            Run latency test
                         </Typography>
                     </div>
-                </div>
+                </Box>
                 <Modal
                     open={containerNameOpen}
                     onClose={(e) => this.setState({ containerNameOpen: false })}
                     className={classes.center}
                 >
-                    <div className={classes.nameModal}>
+                    <Box component="div" className={classes.nameModal} sx={{ backgroundColor: 'background.paper' }}>
                         <Typography
                             variant="h5"
                             className={classes.modalTitle}
@@ -196,14 +209,14 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                                 Create Container
                             </Button>
                         </div>
-                    </div>
+                    </Box>
                 </Modal>
                 <Modal
                     open={latencyTestOpen}
                     onClose={(e) => this.setState({ latencyTestOpen: false })}
                     className={classes.center}
                 >
-                    <div className={classes.latencyModal}>
+                    <Box component="div" className={classes.latencyModal} sx={{ backgroundColor: 'background.paper' }}>
                         <Typography
                             variant="h5"
                             className={classes.modalTitle}
@@ -267,7 +280,7 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                                 </Button>
                             </div>
                         </>) }
-                    </div>
+                    </Box>
                 </Modal>
             </div>
         )
@@ -286,112 +299,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose<any>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme) => ({
-        root: {
-            // marginTop: '40px'
-            width: '960px'
-        },
-        container: {
-            boxShadow: theme.shadows['2'],
-            width: '100%',
-            padding: '20px',
-            marginTop: '20px'
-        },
-        map: {
-            paddingTop: '20px',
-        },
-        mapImage: {
-            width: '100%',
-            height: '400px',
-            backgroundImage: `url('/img/worldmap.png')`,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center'
-        },
-        pins: {
-            position: 'absolute'
-        },
-        pin: {
-            position: 'absolute',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            rowGap: '10px'
-        },
-        ukPin: {
-            top: '30px',
-            left: '350px'
-        },
-        marker: {
-            width: '10px',
-            height: '10px',
-            backgroundColor: theme.palette.secondary.main,
-            boxShadow: theme.shadows['4'],
-            borderRadius: '50%',
-            cursor: 'pointer',
-            transition: '0.2s',
-            '&:hover': {
-                width: '15px',
-                height: '15px',
-                marginTop: '-2px'
-            }
-        },
-        markerText: {
-            padding: '5px 10px',
-            boxShadow: theme.shadows['2'],
-            backgroundColor: theme.palette.background.paper,
-            cursor: 'pointer',
-            '&:hover + div': {
-                width: '15px',
-                height: '15px',
-                marginTop: '-2px'
-            }
-        },
-        latencyTest: {
-            textAlign: 'center'
-        },
-        latencyTestText: {
-            color: theme.palette.primary.main
-        },
-        backButtonContainer: {
-            // paddingTop: '40px'
-        },
-        center: {
-            display: 'grid',
-            placeItems: 'center'
-        },
-        nameModal: {
-            width: '400px',
-            backgroundColor: theme.palette.background.paper,
-            padding: '20px'
-        },
-        latencyModal: {
-            width: '500px',
-            backgroundColor: theme.palette.background.paper,
-            padding: '20px'
-        },
-        modalTextFieldContainer: {
-            paddingTop: '30px'
-        },
-        modalCreateContainerButton: {
-            paddingTop: '20px'
-        },
-        latencyTestRow: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            height: '60px',
-            alignItems: 'center'
-        },
-        latencyTestHeaders: {
-            fontWeight: 600
-        },
-        latencySummary: {
-            paddingTop: '20px'
-        },
-        selectButtons: {
-            paddingTop: '20px',
-            display: 'flex',
-            columnGap: '10px'
-        }
-    }))
 )(CreateContainerLocation);

@@ -1,0 +1,65 @@
+.root {
+
+}
+
+.headers {
+    // background: theme.palette.primary.main,
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px 0 10px;
+    column-gap: 10px;
+    overflow-x: auto;
+}
+
+.header {
+    // color: theme.palette.primary.contrastText,
+    min-width: 120px
+}
+
+.cell {
+    min-width: 120px
+}
+
+.moreCol {
+    width: 0px;
+}
+
+.row {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px 0 10px;
+    column-gap: 10px;
+    overflow-x: auto;
+    // borderBottom: `1px solid ${theme.palette.grey['50']}`
+}
+
+.flexGrow {
+    flex-grow: 1
+}
+
+.whiteCheckbox {
+    color: #ffffff !important;
+}
+
+.checkboxCol {
+    padding-right: 16px;
+    width: 50px;
+}
+
+.smallIconButton {
+    padding: 9px
+}
+
+.smallTextField {
+    & input {
+        font-size: 14px;
+    }
+}
+
+.noWrap {
+    white-space: nowrap;
+}

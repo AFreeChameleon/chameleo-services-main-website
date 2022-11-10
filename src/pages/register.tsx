@@ -75,6 +75,7 @@ function Register(props) {
                             <div className={classes.resendEmailContainer}>
                                 <div className={classes.resendEmailTitle}>Didn't recieve the email?</div>
                                 <Typography
+                                    variant="body2"
                                     sx={{ color: 'secondary.main' }}
                                     className={classes.resendEmailLink}
                                     onClick={resendEmail}

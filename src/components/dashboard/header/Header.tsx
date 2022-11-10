@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Flags from 'country-flag-icons/react/3x2';
-import { withStyles } from '@material-ui/core/styles';
 
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Popover from '@material-ui/core/Popover';
+import {
+    IconButton,
+    Menu,
+    MenuItem,
+    Popover,
+    Box,
+    Input
+} from '@mui/material';
 
-import SearchIcon from '@material-ui/icons/Search';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import ProfilePicDefault from '../../../img/profile-pic-default.png';
 
+import classes from './Header.module.scss';
+
 type HeaderProps = {
-    classes: any;
 }
 
 type HeaderState = {
@@ -44,15 +48,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     }
 
     render() {
-        const { classes } = this.props;
         const { langAnchorEl } = this.state;
         return (
-            <div className={classes.root}>
+            <Box component="div" className={classes.root} sx={{ backgroundColor: (theme) => `${theme.palette.background.default}DD` }}>
                 <div className={classes.rootGrid}>
                     <SearchIcon/>
-                    <input
+                    <Input
                         placeholder="Search..."
                         className={classes.searchInput}
+                        sx={{ color: 'text.primary' }}
                     />
                     <IconButton className={classes.flagButton} onClick={this.openLangDropdown}>
                         <Flags.GB/>
@@ -80,49 +84,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         />
                     </IconButton>
                 </div>
-            </div>
+            </Box>
         )
     }
 }
 
-const styles = withStyles((theme) => ({
-    headerPlaceholder: {
-        height: '90px'
-    },
-    root: {
-        // width: 'calc(100vw - 280px)',
-        height: '90px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'sticky',
-        top: 0,
-        background: `${theme.palette.background.default}DD`,
-        WebkitBackdropFilter: 'blur(10px)',
-        backdropFilter: 'blur(10px)',
-        zIndex: 600
-    },
-    rootGrid: {
-        display: 'grid',
-        gridTemplateColumns: '20px auto 50px 50px 50px',
-        alignItems: 'center',
-        columnGap: '10px',
-        width: '90%'
-    },
-    searchInput: {
-        fontSize: '16px',
-        fontWeight: 700,
-        border: 'none',
-        outline: 'none',
-        color: theme.palette.text.primary,
-        padding: '10px 0',
-        marginLeft: '10px',
-        background: 'transparent'
-    },
-    flagButton: {
-        height: '50px',
-        width: '100%'
-    }
-}));
-
-export default styles(Header);
+export default Header;

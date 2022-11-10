@@ -1,0 +1,66 @@
+.root {
+
+}
+
+.cards {
+    display: flex;
+    column-gap: 30px;
+    padding-top: 30px;
+    justify-content: center;
+}
+
+.card {
+    width: 300px;
+    min-height: 350px;
+    // box-shadow: theme.shadows[;2;];
+    padding: 40px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.25s;
+    cursor: pointer;
+    &:hover {
+        // boxShadow: theme.shadows[;4;];
+        background-color: #C8FACD44;
+    }
+}
+
+.cardTitle {
+    // color: theme.palette.text.secondary
+}
+
+.cardPrice {
+    padding-top: 5px;
+    // color: theme.palette.primary.main;
+    display: flex;
+    align-items: flex-end;
+}
+
+.cardPriceValue {
+    font-size: 40px;
+    font-weight: 700
+}
+
+.cardPricePeriod {
+    padding-bottom: 12px;
+}
+
+.cardPriceHour {
+    padding-top: 5px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.separator {
+    // border: `1px solid ${theme.palette.primary.main}`;
+    width: 30px;
+    margin: 20px 0;
+}
+
+.letterSpacing {
+    letter-spacing: 1px;
+}
+
+.backButtonContainer {
+    // padding-top: 40px;
+}

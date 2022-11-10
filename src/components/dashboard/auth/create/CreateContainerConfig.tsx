@@ -39,14 +39,15 @@ import {
     Tabs,
     Tab,
     Input,
-} from '@material-ui/core';
+    Alert,
+    Box
+} from '@mui/material';
+import { styled } from '@mui/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import AddIcon from '@mui/icons-material/Add';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import GetInputFromType from '../../../dashboard/GetInputFromType';
-import { Alert } from '@material-ui/lab'
-import { withStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
-import AddIcon from '@material-ui/icons/Add';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import {
     StyledSelect,
     NumberInputNoTicks,
@@ -57,16 +58,17 @@ import {
     checkConfig
 } from '../../../../lib/container/validate';
 
-const NameTextField = withStyles((theme) => ({
+import classes from './CreateContainerConfig.module.scss';
+
+const NameTextField = styled(TextField)(({ theme }) => ({
     root: {
         '& > div::before': {
             borderColor: '#ffffff'
         },
     }
-}))(TextField);
+}));
 
 type NewAuthContainerBodyProps = {
-    classes?: any;
     config: { [key: string]: any };
     config_errors: string[];
     errors: string[];
@@ -121,7 +123,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
 
     render() {
         const { 
-            classes, 
             config, 
             config_errors,
             changeSelectedPage,
@@ -183,7 +184,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                         <Tab label="OAuth" />
                         <Tab label="Review" />
                     </Tabs>
-                    <div className={classes.container}>
+                    <Box component="div" className={classes.container} sx={{ boxShadow: 2 }}>
                         <TabPanel value={configTab} index={0}>
                             <div className={classes.title}>
                                 <Typography
@@ -200,11 +201,12 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 </Typography>
                             </div>
                             <div className={classes.tableContainer}>
-                                <div className={classes.tableHeaders}>
+                                <Box component="div" className={classes.tableHeaders} sx={{ backgroundColor: 'primary.main' }}>
                                     <div className={classes.tableHeader}>
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Name
                                         </Typography>
@@ -213,6 +215,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Attributes
                                         </Typography>
@@ -221,6 +224,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Default
                                         </Typography>
@@ -229,6 +233,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Type
                                         </Typography>
@@ -237,6 +242,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Max. Length
                                         </Typography>
@@ -245,11 +251,12 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Min. Length
                                         </Typography>
                                     </div>
-                                </div>
+                                </Box>
                                 <div className={classes.tableBody}>
                                     { config.model.map((row, i) => (
                                         <div className={classes.tableRow} key={i}>
@@ -257,6 +264,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                 <NameTextField
                                                     placeholder="Column Name"
                                                     className={classes.invisibleInput}
+                                                    sx={{ color: 'text.secondary' }}
                                                     value={row.name}
                                                     onChange={(e) => 
                                                         dispatchChangeConfigModel(row.name, 'name', e.target.value)
@@ -271,7 +279,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     value={row.attributes}
                                                     renderValue={(selected: any) => selected.join(', ')}
                                                     MenuProps={{
-                                                        getContentAnchorEl: () => null
+                                                        anchorEl: () => null
                                                     }}
                                                     onChange={(e) => {
                                                         dispatchChangeConfigModel(row.name, 'attributes', e.target.value)
@@ -324,6 +332,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                         <TextField
                                                             disabled
                                                             className={classes.invisibleInput}
+                                                            sx={{ color: 'text.secondary' }}
                                                         />
                                                     </Tooltip>
                                                 ) : (
@@ -332,6 +341,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                         colName={'Default'}
                                                         value={row.default} 
                                                         className={classes.invisibleInput}
+                                                        sx={{ color: 'text.secondary' }}
                                                         onChange={(newValue) => dispatchChangeConfigModel(row.name, 'default', newValue)} 
                                                     />
 
@@ -370,6 +380,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                                     ''
                                                             )}
                                                             className={`${classes.invisibleInput} ${classes.center}`}
+                                                            sx={{ color: 'text.secondary' }}
                                                             onChange={(e) => {
                                                                 dispatchChangeConfigModelLength(row.name, 'min', parseInt(e.target.value))
                                                             }}
@@ -379,6 +390,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                             <NumberInputNoTicks
                                                                 disabled
                                                                 className={`${classes.invisibleInput} ${classes.center}`}
+                                                                sx={{ color: 'text.secondary' }}
                                                                 value={''}
                                                             />
                                                         </Tooltip>
@@ -396,6 +408,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                                     ''
                                                             )}
                                                             className={`${classes.invisibleInput} ${classes.center}`}
+                                                            sx={{ color: 'text.secondary' }}
                                                             onChange={(e) => {
                                                                 dispatchChangeConfigModelLength(row.name, 'max', parseInt(e.target.value))
                                                             }}
@@ -405,6 +418,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                             <NumberInputNoTicks
                                                                 disabled
                                                                 className={`${classes.invisibleInput} ${classes.center}`}
+                                                                sx={{ color: 'text.secondary' }}
                                                                 value={''}
                                                             />
                                                         </Tooltip>
@@ -855,7 +869,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Tab label="Google"/>
                                         {/* <Tab label="Twitter" /> */}
                                     </Tabs>
-                                    <div className={classes.oauthFormContainer}>
+                                    <Box component="div" className={classes.oauthFormContainer} sx={{ boxShadow: 2 }}>
                                         <TabPanel value={selectedOAuthCompany} index={0}>
                                             <div className={classes.title}>
                                                 <Typography
@@ -898,7 +912,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                 />
                                             </div>
                                         </TabPanel>
-                                    </div>
+                                    </Box>
                                 </div>
                             </div>
                             <div className={classes.submitButton}>
@@ -942,11 +956,12 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 {reviewError}
                             </Alert> }
                             <div className={classes.reviewSection}>
-                                <div className={classes.reviewTableHeaders}>
+                                <Box component="div" className={classes.reviewTableHeaders} sx={{ backgroundColor: 'primary.main' }}>
                                     <div className={classes.tableHeader}>
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Name
                                         </Typography>
@@ -955,6 +970,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Attributes
                                         </Typography>
@@ -963,6 +979,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Default
                                         </Typography>
@@ -971,6 +988,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Type
                                         </Typography>
@@ -979,6 +997,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Max. Length
                                         </Typography>
@@ -987,14 +1006,15 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                         <Typography
                                             variant="body1"
                                             className={classes.tableHeaderText}
+                                            sx={{ color: 'primary.contrastText' }}
                                         >
                                             Min. Length
                                         </Typography>
                                     </div>
-                                </div>
+                                </Box>
                                 <div className={classes.tableBody}>
                                     { config.model.map((row, i) => (
-                                        <div className={classes.reviewTableRow} key={i}>
+                                        <Box component="div" className={classes.reviewTableRow} key={i} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.grey['200']}` }}>
                                             <div className={classes.tableColumn}>
                                                 <Typography className={`${classes.reviewTablePadding} ${classes.reviewTableCell}`}>
                                                     {row.name}
@@ -1025,7 +1045,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     { this.minMaxEnabled(row.type) ? row.length.max : 'n/a' }
                                                 </Typography>
                                             </div>
-                                        </div>
+                                        </Box>
                                     )) }
                                 </div>
                             </div>
@@ -1241,7 +1261,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 </Button>
                             </div>
                         </TabPanel>
-                    </div>
+                    </Box>
                 </div>
             </div>
         )
@@ -1270,271 +1290,5 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default compose<any>(
-    connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme) => ({
-        root: {
-            padding: '10px 15px',
-        },
-        tabsContainer: {
-            width: 'fit-content',
-            margin: '0 auto'
-        },
-        errorAlert: {
-            marginTop: '10px',
-            width: '100%'
-        },
-        breadcrumb: {
-            color: '#6F6F76',
-            cursor: 'pointer',
-            '&:hover': {
-                textDecoration: 'underline'
-            }
-        },
-        breadcrumbMain: {
-            color: '#ffffff'
-        },
-        listItemColumnFull: {
-            '& > div > input': {
-                textAlign: 'left'
-            }
-        },
-        container: {
-            width: '1100px',
-            // marginTop: '40px',
-            padding: '20px',
-            boxShadow: theme.shadows['2']
-        },
-        multilineInput: {
-            '& textarea': {
-                whiteSpace: 'pre'
-            }
-        },
-        smallContainer: {
-            maxWidth: '550px',
-            marginTop: '20px',
-            marginBottom: '20px',
-            padding: '20px',
-            boxShadow: theme.shadows['2']
-        },
-        oauthContainer: {
-            maxWidth: '550px',
-            marginTop: '20px',
-            marginBottom: '20px',
-        },
-        oauthTabs: {
-            display: 'flex'
-        },
-        oauthFormContainer: {
-            // boxShadow: theme.shadows['2'],
-            padding: '10px 20px 20px 20px',
-            flexGrow: 1,
-            borderLeft: `1px solid rgba(0, 0, 0, 0.12)`
-        },
-        title: {
-            fontSize: '16px',
-            fontWeight: 500,
-            // paddingBottom: '20px'
-        },
-        tableContainer: {
-            marginTop: '10px'
-        },
-        tableHeaders: {
-            display: 'grid',
-            gridTemplateColumns: '20% 27% 15% 11% 11% 10% 6%',
-            width: '100%',
-            height: '60px',
-            backgroundColor: theme.palette.primary.main,
-            alignItems: 'center',
-            padding: '0 5px'
-        },
-        tableHeader: {
-            padding: '0 5px',
-        },
-        tableHeaderText: {
-            color: theme.palette.primary.contrastText,
-            fontWeight: 600
-        },
-        tableBody: {
-            display: 'flex',
-            flexDirection: 'column',
-            rowGap: '5px',
-            paddingTop: '5px'
-        },
-        tableRow: {
-            display: 'grid',
-            gridTemplateColumns: '20% 27% 15% 11% 11% 10% 6%',
-            width: '100%',
-            height: '60px',
-            alignItems: 'center',
-            borderRadius: '5px',
-        },
-        reviewTableHeaders: {
-            display: 'grid',
-            gridTemplateColumns: '26% 27% 15% 11% 11% 10%',
-            width: '100%',
-            height: '60px',
-            backgroundColor: theme.palette.primary.main,
-            alignItems: 'center',
-            padding: '0 5px'
-        },
-        reviewTableRow: {
-            display: 'grid',
-            gridTemplateColumns: '26% 27% 15% 11% 11% 10%',
-            width: '100%',
-            height: '60px',
-            alignItems: 'center',
-            borderRadius: '5px',
-            borderBottom: `1px solid ${theme.palette.grey['200']}`
-        },
-        tableColumn: {
-            padding: '0 5px',
-        },
-        tableColumnPaddingBottom: {
-            paddingBottom: '8px'
-        },
-        center: {
-            textAlign: 'center'
-        },
-        tableTooltip: {
-            fontSize: '12px',
-            color: '#6F6F76',
-            paddingBottom: '5px'
-        },
-        invisibleInput: {
-            border: 'none',
-            outline: 'none',
-            height: '40px',
-            paddingLeft: '8px',
-            width: '100%',
-            fontSize: '14px',
-            backgroundColor: 'transparent',
-            color: theme.palette.text.secondary,
-            '&:disabled': {
-                backgroundColor: 'rgb(0, 0, 0, 0.1)'
-            }
-        },
-        menuItem: {
-        },
-        addModelRowButton: {
-            padding: '10px 10px 0 0px',
-            display: 'flex',
-            justifyContent: 'space-between'
-        },
-        passwordCheckboxContainer: {
-            paddingTop: '10px'
-        },
-        passwordCheckbox: {
-            paddingLeft: '10px',
-            paddingTop: '2px'
-        },
-        sessionExpiresInContainer: {
-            paddingTop: '10px'
-        },
-        sessionRadioButtons: {
-            // paddingTop: '5px'
-        },
-        sessionExpiresInTime: {
-            display: 'flex',
-            columnGap: '10px',
-            paddingLeft: '10px',
-            paddingTop: '5px',
-            paddingBottom: '5px'
-        },
-        sessionExpiresInColumn: {
-            width: '200px'
-        },
-        enableEmailing: {
-            paddingTop: '5px'
-        },
-        fromAddress: {
-            width: '415px',
-            paddingTop: '20px'
-        },
-        verificationRadioButtons: {
-            paddingBottom: '10px'
-        },
-        emailSubject: {
-            width: '415px',
-            paddingTop: '30px'
-        },
-        emailHTML: {
-            paddingTop: '20px'
-        },
-        emailRedirection: {
-            width: '415px',
-            paddingTop: '20px',
-        },
-        emailHeader: {
-            marginBottom: '1.5em'
-        },
-        subtitle: {
-            paddingTop: '10px',
-        },
-        oauthGrid: {
-            display: 'flex',
-            paddingTop: '10px',
-            columnGap: '10px'
-        },
-        oauthList: {
-            width: '250px',
-            backgroundColor: '#212121',
-            borderRadius: '5px',
-            padding: '5px'
-        },
-        oauthItem: {
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            height: '40px',
-            paddingLeft: '10px',
-            // borderBottom: '1px solid #6F6F76',
-            // borderTopRightRadius: '5px',
-            // borderTopLeftRadius: '5px',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            '&:hover': {
-                backgroundColor: theme.palette.secondary.main
-            }
-        },
-        oauthForm: {
-            width: '500px',
-            padding: '5px 0'
-        },
-        oauthInput: {
-            paddingTop: '10px'
-        },
-        oauthItemSelected: {
-            backgroundColor: theme.palette.secondary.main,
-            fontWeight: 500
-        },
-        submitButton: {
-            maxWidth: '550px',
-            marginTop: '10px',
-            borderRadius: '10px',
-            display: 'flex',
-            columnGap: '10px'
-        },
-        containerName: {
-            width: '415px',
-            padding: '10px 0px 0px 10px'
-        },
-        nextButton: {
-            paddingTop: '20px'
-        },
-        reviewTablePadding: {
-            padding: '0px 8px 8px 8px'
-        },
-        reviewSection: {
-            marginTop: '20px'
-        },
-        reviewHeader: {
-            marginTop: '40px'
-        },
-        reviewSubHeader: {
-            marginTop: '20px'
-        },
-        skipLink: {
-            color: theme.palette.primary.main
-        },
-    })), 
+    connect(mapStateToProps, mapDispatchToProps)
 )(withRouter(NewAuthContainerBody));

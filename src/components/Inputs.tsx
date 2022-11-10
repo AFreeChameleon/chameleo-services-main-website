@@ -11,25 +11,23 @@ import {
     Radio,
     Menu,
     ListItemIcon
-} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
+} from '@mui/material';
+import { styled } from '@mui/styles';
 
-export const StyledListItemIcon = withStyles({
+export const StyledListItemIcon = styled(ListItemIcon)({
     root: {
         minWidth: '30px'
     }
-})(ListItemIcon)
+})
 
-export const StyledMenu = withStyles({
+export const StyledMenu = styled(Menu)({
     paper: {
         backgroundColor: '#212121',
         color: '#ffffff'
     }
-})(Menu);
+});
 
-export const NumberInputNoTicks = withStyles({
+export const NumberInputNoTicks = styled(TextField)({
     root: {
         '& > div > input': {
             textAlign: 'center',
@@ -43,9 +41,9 @@ export const NumberInputNoTicks = withStyles({
             margin: 0
         },
     }
-})(TextField);
+});
 
-export const StyledTextField = withStyles({
+export const StyledTextField = styled(TextField)({
     root: {
         '& > label': {
             color: '#6F6F76',
@@ -69,15 +67,15 @@ export const StyledTextField = withStyles({
             color: '#6F6F76'
         }
     }
-})(TextField);
+});
 
-export const StyledCheckbox = withStyles({
+export const StyledCheckbox = styled(Checkbox)({
     root: {
         padding: '5px',
     }
-})(Checkbox);
+});
 
-export const StyledSelect = withStyles({
+export const StyledSelect = styled(Select)({
     root: {
         fontSize: '14px',
         backgroundColor: 'transparent',
@@ -85,9 +83,9 @@ export const StyledSelect = withStyles({
             paddingRight: '0px',
         },
     }
-})(Select);
+});
 
-export const StyledRadio = withStyles({
+export const StyledRadio = styled(Radio)({
     root: {
         padding: '5px',
         '& > span > div > svg > path': {
@@ -100,9 +98,9 @@ export const StyledRadio = withStyles({
             fill: '#51C85D'
         }
     },
-})(Radio);
+});
 
-export const RedButton = withStyles({
+export const RedButton = styled(Button)({
     root: {
         '&:hover': {
             backgroundColor: 'rgb(255, 0, 0, 0.05)',
@@ -116,9 +114,9 @@ export const RedButton = withStyles({
             color: 'rgba(0, 0, 0, 0.26)'
         }
     }
-})(Button);
+});
 
-export const GreenButton = withStyles({
+export const GreenButton = styled(Button)({
     root: {
         '& .MuiButton-label': {
             // alignItems: 'flex-start',
@@ -134,16 +132,16 @@ export const GreenButton = withStyles({
         },
         border: 'rgba(0, 0, 0, 0.12)'
     }
-})(Button);
+});
 
-export const StyledFormControlLabel = withStyles({
+export const StyledFormControlLabel = styled(FormControlLabel)({
     root: {
         color: '#ffffff',
         '& > .MuiFormControlLabel-label': {
             fontSize: '14px',
         }
     }
-})(FormControlLabel);
+});
 
 // export const ErrorButton = ({ onClick }) => (
 //     <RedButton onClick={onClick}>

@@ -1,0 +1,277 @@
+.root {
+    padding: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.logsLink {
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.requestsChart {
+    width: 100%;
+    flex-grow: 1;
+}
+
+.statusContainer {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+    // borderTop: 1px solid ' + theme.palette.grey['50'];
+    padding-top: 20px;
+}
+
+.status {
+    display: flex;
+}
+
+.statusText {
+    font-weight: 600;
+}
+
+.changeStatusButton {
+    width: 80px;
+}
+
+.errorButton {
+    // color: theme.palette.error.main;
+    // borderColor: theme.palette.error.main;
+    // &:hover {
+    //     background-color: theme.palette.error.light + '1A'
+    // }
+}
+
+.usersTableContainer {
+    width: 100%;
+    // boxShadow: theme.shadows['2'];
+    padding: 15px 20px;
+    margin-top: 20px;
+}
+
+.userStatisticsContainer {
+    width: 365px;
+    // boxShadow: theme.shadows['2'];
+    padding: 15px 20px;
+}
+
+.userStatisticsTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gridOne {
+    display: grid;
+    grid-template-columns: auto 300px;
+    column-gap: 20px;
+    margin-top: 20px;
+}
+
+.gridTwo {
+    display: grid;
+    grid-template-columns: 365px auto;
+    column-gap: 20px;
+    margin-top: 20px;
+}
+
+.requestsChartContainer {
+    width: 100%;
+    // boxShadow: theme.shadows['2'];
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.activeUsersContainer {
+    // boxShadow: theme.shadows['2'];
+    padding: 15px 20px;
+}
+
+.activeUsersLegend {
+    display: flex;
+    margin-top: 20px;
+    column-gap: 20px;
+}
+
+.activeUsersLegendItem {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
+
+.activeUsersLegendOnline {
+    background-color: rgba(0, 175, 85);
+    height: 10px;
+    width: 10px;
+    border-radius: 10px;
+    margin-bottom: 3px;
+}
+
+.activeUsersLegendAway {
+    background-color: rgba(249, 168, 37);
+    height: 10px;
+    width: 10px;
+    border-radius: 10px;
+    margin-bottom: 3px;
+}
+
+.activeUsersLegendOffline {
+    background-color: rgba(111, 111, 118);
+    height: 10px;
+    width: 10px;
+    border-radius: 10px;
+    margin-bottom: 3px;
+}
+
+.activeUsersLegendText {
+    font-weight: 600
+}
+
+.activeUsersChart {
+    width: 250px;
+    height: 250px;
+    margin: 20px auto 0 auto;
+}
+
+.breadcrumb {
+    // color: theme.palette.grey.A200;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.breadcrumbMain {
+    // color: theme.palette.text.secondary;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.colorStatsGrid {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    column-gap: 20px;
+}
+
+.colorStatsItemRegisteredUsers {
+    // background-color: theme.palette.background.blue + '40;
+    // boxShadow: theme.shadows['2'];
+    height: 215px;
+    display: grid;
+    place-items: center;
+    width: 100%;
+}
+
+.colorStatsItemEmailSent {
+    // background-color: theme.palette.background.green + '40;
+    // boxShadow: theme.shadows['2'];
+    height: 215px;
+    display: grid;
+    place-items: center;
+    width: 100%;
+}
+
+.colorStatsItemActiveUsers {
+    // background-color: theme.palette.background.red + '40;
+    // boxShadow: theme.shadows['2'];
+    height: 215px;
+    display: grid;
+    place-items: center;
+    width: 100%;
+}
+
+.blueBg {
+    // background-color: theme.palette.background.blue + '4D;
+}
+
+.redBg {
+    // background-color: theme.palette.background.red + '4D;
+}
+
+.greenBg {
+    // background-color: theme.palette.background.green + '4D;
+}
+
+.colorStatsItemLogo {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: auto;
+}
+
+.colorStatsItemLogoLarge {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: auto;
+    & > svg {
+        font-size: 45px;
+    }
+}
+
+.colorStatsItemText {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    column-gap: 5px;
+    padding-top: 15px;
+}
+
+.colorStatsItemTitle {
+    padding-top: 10px;
+}
+
+.blue {
+    // color: theme.palette.background.blue
+}
+
+.green {
+    // color: theme.palette.primary.main
+}
+
+.red {
+    // color: theme.palette.background.red
+}
+
+.semiDarkBlue {
+    color: #224588;
+}
+
+.semiDarkGreen {
+    color: #008440;
+}
+
+.semiDarkRed {
+    color: #AB2034;
+}
+
+.darkBlue {
+    color: #233760;
+}
+
+.darkGreen {
+    color: #007539;
+}
+
+.darkRed {
+    color: #A61D30;
+}
+
+.bold {
+    font-weight: 700;
+}

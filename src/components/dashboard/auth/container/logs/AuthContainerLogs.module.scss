@@ -1,0 +1,54 @@
+.root {
+    padding: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.breadcrumb {
+    // color: theme.palette.grey.A200,
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.breadcrumbMain {
+    // color: theme.palette.text.secondary,
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.container {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+    // border-top: 1px solid ' + theme.palette.grey['50'],
+    padding-top: 20px;
+}
+
+.logsContainer {
+    width: 100%;
+    // boxShadow: theme.shadows['2'],
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.log {
+    margin-bottom: 10px;
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 12px;
+}
+
+.logsOutput {
+    width: 100%;
+    height: 500px;
+    // background-color: theme.palette.grey['50'],
+    // border: 1px solid ' + theme.palette.grey['400'],
+    padding: 10px 15px;
+    overflow-y: auto;
+}

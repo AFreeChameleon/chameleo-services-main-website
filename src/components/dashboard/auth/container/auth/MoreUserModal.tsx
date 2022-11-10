@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
-import { withStyles } from '@material-ui/core/styles';
 import {
     Modal,
     Typography,
@@ -13,9 +12,12 @@ import {
     TableContainer,
     TableHead,
     Checkbox
-} from '@material-ui/core';
+} from '@mui/material';
+import { styled } from '@mui/styles';
 
-const StyledTableCell = withStyles((theme) => ({
+import classes from './MoreUserModal.module.scss';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
     head: {
         backgroundColor: theme.palette.primary.main,
         fontSize: theme.typography.subtitle1.fontSize,
@@ -27,10 +29,9 @@ const StyledTableCell = withStyles((theme) => ({
         fontSize: theme.typography.body2.fontSize,
         whiteSpace: 'nowrap'
     }
-}))(TableCell);
+}));
 
 type MoreUserModalProps = {
-    classes: any;
     user: any;
     open: boolean;
     handleClose: () => void;
@@ -49,7 +50,7 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
     }
 
     createHeaders() {
-        const { classes, user, schema } = this.props;
+        const { user, schema } = this.props;
         
         const columnNames = schema.map(col => col.name);
         const emailColumn = schema.find(col => col.attributes.includes('Email') && col.attributes.includes('Username'));
@@ -72,7 +73,7 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
     }
 
     createBody() {
-        const { classes, user, schema } = this.props;
+        const { user, schema } = this.props;
 
         const columnNames = schema.map(col => col.name);
         const emailColumn = schema.find(col => col.attributes.includes('Email') && col.attributes.includes('Username'));
@@ -80,7 +81,8 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
         const passwordColumn = schema.find(col => col.attributes.includes('Password'));
         const filteredColumnNames = columnNames.filter(c => c !== passwordColumn.name);
         
-        return (<TableRow>
+        return (
+            <TableRow>
                 <StyledTableCell align="left">
                     {user.id.toString()}
                 </StyledTableCell>
@@ -94,7 +96,7 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
     }
 
     createStatsHeaders() {
-        const { classes, user, schema } = this.props;
+        const { user, schema } = this.props;
 
         return (
             <TableRow>
@@ -124,7 +126,7 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
     }
 
     createStatsBody() {
-        const { classes, user, schema } = this.props;
+        const { user, schema } = this.props;
 
         return (
             <TableRow>
@@ -154,7 +156,7 @@ class MoreUserModal extends React.Component<MoreUserModalProps, MoreUserModalSta
     }
 
     render() {
-        const { classes, user, open, handleClose } = this.props;
+        const { user, open, handleClose } = this.props;
 
         return user && (
             <Modal
@@ -223,27 +225,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose<any>(
     connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme) => ({
-        modal: {
-            display: 'grid',
-            placeItems: 'center'
-        },
-        root: {
-            minWidth: '500px',
-            minHeight: '300px',
-            maxWidth: '1366px',
-            maxHeight: '980px',
-            backgroundColor: theme.palette.background.paper
-        },
-        header: {
-            padding: '20px 30px',
-            borderBottom: `1px solid ${theme.palette.grey['50']}`
-        },
-        body: {
-            padding: '20px 30px'
-        },
-        tableContainer: {
-            padding: '10px 0 30px 0'
-        }
-    }))
 )(MoreUserModal);

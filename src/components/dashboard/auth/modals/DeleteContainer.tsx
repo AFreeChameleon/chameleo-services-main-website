@@ -1,19 +1,21 @@
 import React from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { withStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button'
+import {
+    Modal,
+    Backdrop,
+    Fade,
+    Typography,
+    TextField,
+    Snackbar,
+    Alert,
+    Button
+} from '@mui/material';
 import { StyledTextField, RedButton } from '../../../Inputs';
 import { MAIN_URL } from '../../../../globals';
 
+import classes from './DeleteContainer.module.scss';
+
 type DeleteContainerPropTypes = {
-    classes: any;
     open: boolean;
     container: any;
     onClose: (e) => void;
@@ -51,7 +53,7 @@ class DeleteContainer extends React.Component<DeleteContainerPropTypes, DeleteCo
                 fetchContainers();
                 onClose(e);
             }).catch((err: AxiosError) => {
-                this.setState({ errorMessage: err.response.data.message });
+                this.setState({ errorMessage: (err.response && err.response.data) ? (err.response.data as any).message : 'An error occurred while deleting container.' });
             });
         } catch (err) {
             console.log(err.message)
@@ -67,7 +69,7 @@ class DeleteContainer extends React.Component<DeleteContainerPropTypes, DeleteCo
     }
 
     render() {
-        const { classes, open, container, onClose } = this.props;
+        const { open, container, onClose } = this.props;
         const { containerName, errorMessage } = this.state;
 
         return (
@@ -110,34 +112,4 @@ class DeleteContainer extends React.Component<DeleteContainerPropTypes, DeleteCo
     }
 }
 
-const styles = (theme): any => ({
-    root: {
-        display: 'grid',
-        placeItems: 'center'
-    },
-    paper: {
-        backgroundColor: '#212121',
-        minWidth: '300px',
-        borderRadius: '5px',
-        padding: '10px 20px 15px 20px'
-    },
-    deleteButton: {
-        marginTop: '10px',
-        backgroundColor: '#ff1744',
-        color: '#ffffff',
-        '&:hover': {
-            backgroundColor: '#ff174488'
-        }
-    },
-    renameTextField: {
-
-    },
-    title: {
-        fontSize: '18px',
-        fontWeight: 500,
-        marginBottom: '5px',
-        color: '#ffffff'
-    }
-});
-
-export default withStyles(styles)(DeleteContainer);
+export default DeleteContainer;

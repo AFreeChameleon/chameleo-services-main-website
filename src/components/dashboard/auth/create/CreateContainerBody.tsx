@@ -3,18 +3,27 @@ import NextLink from 'next/link';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
-import { withStyles } from '@material-ui/core/styles';
-import { Checkbox, Breadcrumbs, Menu, MenuItem, Typography, ListItemIcon } from '@material-ui/core';
-import Stepper from '@material-ui/core/Stepper';
-import MuiStep from '@material-ui/core/Step';
-import MuiStepLabel from '@material-ui/core/StepLabel';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { 
+    Checkbox, 
+    Breadcrumbs, 
+    Menu, 
+    MenuItem, 
+    Typography, 
+    ListItemIcon, 
+    Stepper,
+    Step as MuiStep,
+    StepLabel as MuiStepLabel
+} from '@mui/material';
+import { styled } from '@mui/styles';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon, SettingsIcon } from '../../../Icons';
 import CreateContainerConfig from './CreateContainerConfig';
 import CreateContainerPricing from './CreateContainerPricing';
 import CreateContainerLocation from './CreateContainerLocation';
 
-const Step = withStyles((theme) => ({
+import classes from './CreateContainerBody.module.scss';
+
+const Step = styled(MuiStep)(({theme}) => ({
     root: {
         '& > div': {
             top: '15px',
@@ -22,18 +31,17 @@ const Step = withStyles((theme) => ({
             right: 'calc(50% + 30px)'
         }
     }
-}))(MuiStep)
+}));
 
-const StepLabel = withStyles((theme) => ({
+const StepLabel = styled(MuiStepLabel)(({theme}) => ({
     root: {
         '& > span > svg': {
             fontSize: '30px'
         }
     }
-}))(MuiStepLabel);
+}));
 
 type NewAuthContainerBodyProps = {
-    classes: any;
 }
 
 type NewAuthContainerBodyState = {
@@ -66,7 +74,6 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     }
 
     render() {
-        const { classes } = this.props;
         const { selectedPage } = this.state;
 
         return (
@@ -101,32 +108,4 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
     }
 }
 
-export default compose(
-    connect(),
-    withStyles((theme) => ({
-        root: {
-            maxWidth: 'fit-content',
-            margin: '0 auto',
-            padding: '20px'
-        },
-        breadcrumb: {
-            color: theme.palette.grey.A200,
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 600,
-            '&:hover': {
-                textDecoration: 'underline'
-            }
-        },
-        breadcrumbMain: {
-            color: theme.palette.text.secondary,
-            fontSize: '16px',
-            fontWeight: 600
-        },
-        stepperContainer: {
-            width: '820px',
-            margin: '0 auto',
-            paddingTop: '40px'
-        }
-    }))
-)(NewAuthContainerBody);
+export default NewAuthContainerBody;

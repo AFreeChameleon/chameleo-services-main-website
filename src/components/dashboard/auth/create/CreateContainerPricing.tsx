@@ -2,13 +2,17 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
-import { withStyles } from '@material-ui/core/styles';
-import { Button, Typography } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { 
+    Button, 
+    Typography, 
+    Box 
+} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { setContainerTier } from '../../../../redux/container/auth/config/actions';
 
+import classes from './CreateContainerPricing.module.scss';
+
 type CreateContainerPricingProps = {
-    classes: any;
     changeSelectedPage: (val: number) => void;
     dispatchSetContainerTier: (value: string) => void;
     dispatchSetContainerLocation: (value: string) => void;
@@ -28,7 +32,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
     }
 
     render() {
-        const { classes, changeSelectedPage } = this.props;
+        const { changeSelectedPage } = this.props;
         return (
             <div className={classes.root}>
                 <div className={classes.backButtonContainer}>
@@ -42,16 +46,17 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                     </Button>
                 </div>
                 <div className={classes.cards}>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('Hobby')}>
+                    <Box component="div" sx={{ boxShadow: 2, '&:hover': { boxShadow: 4 } }} className={classes.card} onClick={(e) => this.selectPlan('Hobby')}>
                         <Typography
                             component="div"
                             variant="h3"
                             color="textPrimary"
                             className={`${classes.cardTitle} ${classes.letterSpacing}`}
+                            sx={{ color: 'text.secondary' }}
                         >
                             Hobby
                         </Typography>
-                        <div className={classes.cardPrice}>
+                        <Box component="div" sx={{ color: 'primary.main' }} className={classes.cardPrice}>
                             <Typography
                                 className={`${classes.cardPriceValue} ${classes.letterSpacing}`}
                             >
@@ -63,7 +68,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                             >
                                 /mo
                             </Typography>
-                        </div>
+                        </Box>
                         <Typography
                             className={`${classes.cardPriceHour} ${classes.letterSpacing}`}
                         >
@@ -91,17 +96,18 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         >
                             <strong>1</strong> vCPU
                         </Typography>
-                    </div>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('Entrepreneur')}>
+                    </Box>
+                    <Box component="div" sx={{ boxShadow: 2, '&:hover': { boxShadow: 4 } }} className={classes.card} onClick={(e) => this.selectPlan('Entrepreneur')}>
                         <Typography
                             component="div"
                             variant="h3"
                             color="textPrimary"
                             className={`${classes.cardTitle} ${classes.letterSpacing}`}
+                            sx={{ color: 'text.secondary' }}
                         >
                             Entrepreneur
                         </Typography>
-                        <div className={classes.cardPrice}>
+                        <Box component="div" sx={{ color: 'primary.main' }} className={classes.cardPrice}>
                             <Typography
                                 className={`${classes.cardPriceValue} ${classes.letterSpacing}`}
                             >
@@ -113,7 +119,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                             >
                                 /mo
                             </Typography>
-                        </div>
+                        </Box>
                         <Typography
                             className={`${classes.cardPriceHour} ${classes.letterSpacing}`}
                         >
@@ -141,17 +147,18 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         >
                             <strong>1</strong> vCPUs
                         </Typography>
-                    </div>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('Professional')}>
+                    </Box>
+                    <Box component="div" sx={{ boxShadow: 2, '&:hover': { boxShadow: 4 } }} className={classes.card} onClick={(e) => this.selectPlan('Professional')}>
                         <Typography
                             component="div"
                             variant="h3"
                             color="textPrimary"
                             className={`${classes.cardTitle} ${classes.letterSpacing}`}
+                            sx={{ color: 'text.secondary' }}
                         >
                             Professional
                         </Typography>
-                        <div className={classes.cardPrice}>
+                        <Box component="div" sx={{ color: 'primary.main' }} className={classes.cardPrice}>
                             <Typography
                                 className={`${classes.cardPriceValue} ${classes.letterSpacing}`}
                             >
@@ -163,7 +170,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                             >
                                 /mo
                             </Typography>
-                        </div>
+                        </Box>
                         <Typography
                             className={`${classes.cardPriceHour} ${classes.letterSpacing}`}
                         >
@@ -191,19 +198,20 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         >
                             <strong>2</strong> vCPUs
                         </Typography>
-                    </div>
+                    </Box>
                 </div>
                 <div className={`${classes.cards}`}>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('Enterprise')}>
+                    <Box component="div" sx={{ boxShadow: 2, '&:hover': { boxShadow: 4 } }} className={classes.card} onClick={(e) => this.selectPlan('Enterprise')}>
                         <Typography
                             component="div"
                             variant="h3"
                             color="textPrimary"
                             className={`${classes.cardTitle} ${classes.letterSpacing}`}
+                            sx={{ color: 'text.secondary' }}
                         >
                             Enterprise
                         </Typography>
-                        <div className={classes.cardPrice}>
+                        <Box component="div" sx={{ color: 'primary.main' }} className={classes.cardPrice}>
                             <Typography
                                 className={`${classes.cardPriceValue} ${classes.letterSpacing}`}
                             >
@@ -215,7 +223,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                             >
                                 /mo
                             </Typography>
-                        </div>
+                        </Box>
                         <Typography
                             className={`${classes.cardPriceHour} ${classes.letterSpacing}`}
                         >
@@ -243,17 +251,18 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         >
                             <strong>4</strong> vCPUs
                         </Typography>
-                    </div>
-                    <div className={classes.card} onClick={(e) => this.selectPlan('global')}>
+                    </Box>
+                    <Box component="div" sx={{ boxShadow: 2, '&:hover': { boxShadow: 4 } }} className={classes.card} onClick={(e) => this.selectPlan('global')}>
                         <Typography
                             component="div"
                             variant="h3"
                             color="textPrimary"
                             className={`${classes.cardTitle} ${classes.letterSpacing}`}
+                            sx={{ color: 'text.secondary' }}
                         >
                             Global
                         </Typography>
-                        <div className={classes.cardPrice}>
+                        <Box component="div" sx={{ color: 'primary.main' }} className={classes.cardPrice}>
                             <Typography
                                 className={`${classes.cardPriceValue} ${classes.letterSpacing}`}
                             >
@@ -265,7 +274,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                             >
                                 /mo
                             </Typography>
-                        </div>
+                        </Box>
                         <Typography
                             className={`${classes.cardPriceHour} ${classes.letterSpacing}`}
                         >
@@ -293,7 +302,7 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         >
                             <strong>1</strong> vCPUs
                         </Typography>
-                    </div>
+                    </Box>
                 </div>
             </div>
         )
@@ -309,63 +318,5 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default compose<any>(
-    connect(mapStateToProps, mapDispatchToProps),
-    withStyles((theme) => ({
-        root: {
-
-        },
-        cards: {
-            display: 'flex',
-            columnGap: '30px',
-            paddingTop: '30px',
-            justifyContent: 'center',
-        },
-        card: {
-            width: '300px',
-            minHeight: '350px',
-            boxShadow: theme.shadows['2'],
-            padding: '40px 20px 20px 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            transition: '0.25s',
-            cursor: 'pointer',
-            '&:hover': {
-                boxShadow: theme.shadows['4'],
-                backgroundColor: '#C8FACD44'
-            }
-        },
-        cardTitle: {
-            color: theme.palette.text.secondary
-        },
-        cardPrice: {
-            paddingTop: '5px',
-            color: theme.palette.primary.main,
-            display: 'flex',
-            alignItems: 'flex-end',
-        },
-        cardPriceValue: {
-            fontSize: '40px',
-            fontWeight: 700
-        },
-        cardPricePeriod: {
-            paddingBottom: '12px'
-        },
-        cardPriceHour: {
-            paddingTop: '5px',
-            fontSize: '18px',
-            fontWeight: 300,
-        },
-        separator: {
-            border: `1px solid ${theme.palette.primary.main}`,
-            width: '30px',
-            margin: '20px 0'
-        },
-        letterSpacing: {
-            letterSpacing: '1px'
-        },
-        backButtonContainer: {
-            // paddingTop: '40px'
-        }
-    }))
+    connect(mapStateToProps, mapDispatchToProps)
 )(CreateContainerPricing);
