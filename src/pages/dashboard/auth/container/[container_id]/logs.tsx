@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import { API_URL } from '../../../../../globals';
 import ifAuth from '../../../../../hoc/ifAuth';
 import store from '../../../../../redux/store';
@@ -9,16 +8,9 @@ import Header from '../../../../../components/dashboard/header/Header';
 import AuthContainerLogs from '../../../../../components/dashboard/auth/container/logs/AuthContainerLogs';
 import LoggingWebsocket from '../../../../../lib/container/auth/ws_client';
 
-const styles = {
-    root: {
-        height: '100vh', 
-        display: 'grid', 
-        gridTemplateColumns: '280px auto'
-    }
-}
+import classes from '../../Dashboard.module.scss';
 
 function ContainerLogs({ container_id }) {
-    const classes = makeStyles(styles)();
     const [logs, setLogs] = useState([]);
     const [ws, setWs] = useState(null);
     

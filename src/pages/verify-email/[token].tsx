@@ -3,19 +3,18 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import {
     Button
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import styles from '../../styles/verify-email/verifyEmailStyles';
+} from '@mui/material';
+
+import classes from './VerifyToken.module.scss';
 
 function VerifyToken({ error, message }) {
-    const classes = makeStyles(styles)();
     const router = useRouter();
 
     useEffect(() => {
         if (!error) {
-            router.push('/login')
+            router.push('/login');
         }
-    }, [])
+    }, []);
 
     return !error ? (
         <div className={classes.root}>
@@ -52,7 +51,7 @@ function VerifyToken({ error, message }) {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 VerifyToken.getInitialProps = async ({ query }) => {
@@ -63,7 +62,6 @@ VerifyToken.getInitialProps = async ({ query }) => {
             message: res.data.message
         }
     } catch (err) {
-        console.log(err.response.data)
         return {
             error: true,
             message: err.response.data.message

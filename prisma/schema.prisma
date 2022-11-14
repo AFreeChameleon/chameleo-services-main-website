@@ -9,63 +9,63 @@ datasource db {
 
 model User {
   id          Int         @id @default(autoincrement())
-  email       String      @unique
+  email       String      @unique(map: "User.email_unique")
   username    String
   password    String
   verified    Boolean     @default(false)
   oauth       Json?
-  uuid        String      @unique @default(uuid()) @db.Uuid
   db_username String?
   db_password String?
-  db_schema   String?     @unique
+  db_schema   String?     @unique(map: "User.db_schema_unique")
+  uuid        String      @unique(map: "User.uuid_unique") @default(uuid()) @db.Uuid
   createdAt   DateTime?   @default(now())
   updatedAt   DateTime?   @updatedAt
   containers  Container[]
-  tokens      Token[]
   invoices    Invoice[]
+  tokens      Token[]
 }
 
 model Container {
-  id         String    @unique @default(uuid()) @db.Uuid
+  id         String    @unique(map: "Container.id_unique") @default(uuid()) @db.Uuid
   user_id    Int
-  product_id Int
   type       String
   name       String
   status     String    @default("Stopped")
-  location   String
   config     Json?
-  port Int?
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
-  user       User      @relation(fields: [user_id], references: [id])
-  product    Product   @relation(fields: [product_id], references: [id])
+  location   String
+  product_id Int
+  port       Int?
+  product    Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Token {
   id        Int       @id @default(autoincrement())
-  user      User      @relation(fields: [user_id], references: [id])
   user_id   Int
-  token     String    @unique @default(uuid()) @db.Uuid
   purpose   String
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
+  token     String    @unique(map: "Token.token_unique") @default(uuid()) @db.Uuid
+  user      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Product {
   id         Int         @id @default(autoincrement())
-  name       String      @unique
+  name       String      @unique(map: "Product.name_unique")
   amount     Float
-  invoices   Invoice[]
   containers Container[]
+  invoices   Invoice[]
 }
 
 model Invoice {
   id         Int       @id @default(autoincrement())
-  user       User      @relation(fields: [user_id], references: [id])
   user_id    Int
-  product    Product   @relation(fields: [product_id], references: [id])
   product_id Int
   amount     Float
-  dueDate    DateTime?
   paidDate   DateTime? @default(now())
+  dueDate    DateTime?
+  product    Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

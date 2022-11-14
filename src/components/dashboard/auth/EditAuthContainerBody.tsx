@@ -47,7 +47,6 @@ import {
     GreenButton,
     RedButton
 } from '../../Inputs';
-import theme from '../../../styles/Theme';
 import classes from './EditAuthContainerBody.module.scss';
 
 type EditAuthContainerBodyProps = {

@@ -1,0 +1,122 @@
+.root {
+    // backgroundColor: theme.palette.background.default;
+    // borderRight: `1px solid ${theme.palette.grey.A200}`;
+    display: flex;
+    flex-direction: column;
+    width: 279px;
+    height: 100%;
+}
+
+.profilePicture {
+    height: 140px;
+    display: grid;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.chameleoLogo {
+    cursor: pointer;
+}
+
+.sidebarItem {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    // color: theme.palette.text.primary;
+    column-gap: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    &:hover {
+        // color: theme.palette.primary.main
+    }
+
+    &:hover svg path {
+        // fill: theme.palette.primary.main
+    }
+}
+
+.sidebarItemSelected {
+    // border-bottom: `1px solid ${theme.palette.grey[;50;]}`
+}
+
+.sidebarListItemSelected {
+    // backgroundColor: theme.palette.background.light
+}
+
+.sidebarListItemIconSelected {
+    & > path {
+        fill: #000000;
+    }
+}
+
+.sidebarListItemTextSelected {
+    color: #000000;
+    font-weight: 600
+}
+
+.sidebarIconSelected {
+    & > path {
+        fill: #00AF55
+    }
+}
+
+.smallIcon {
+    width: 20px;
+    text-align: center;
+}
+
+.createContainer {
+    display: flex;
+}
+
+.selectedText {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.icon {
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover svg path {
+        fill: #ffffff;
+    }
+}
+
+.flexGrow {
+    flex-grow: 1
+}
+
+.expandIcon {
+    padding-top: 3px;
+    transition: 0.2s;
+}
+
+.inverted {
+    transform: rotate(180deg);
+}
+
+.selected {
+    // color: theme.palette.primary.main;
+    // backgroundColor: theme.palette.background.light;
+    & svg path {
+        // fill: theme.palette.primary.main
+    }
+}
+
+.container {
+    position: fixed;
+    width: 279px;
+}

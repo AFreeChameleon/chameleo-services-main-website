@@ -1,20 +1,26 @@
 import React from 'react';
 import Image from 'next/image';
 import axios from 'axios';
-import { Container } from '../../../../prisma/generated/maindb'; 
-import { withStyles } from '@material-ui/core/styles';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext'; 
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Checkbox from '@material-ui/core/Checkbox';
+import { Container } from '.prisma/client'; 
+import {
+    Breadcrumbs,
+    Grid,
+    Typography,
+    Checkbox,
+    Box,
+    Button
+} from '@mui/material';
+import { styled } from '@mui/styles';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'; 
 import Flags from 'country-flag-icons/react/3x2';
 import { CalendarIcon, LeftArrowIcon, RightArrowIcon } from '../../Icons';
 import CloudGraphic from '../../../img/cloud.svg';
 
-// type Container = {
+import classes from './DashboardMain.module.scss';
 
-// }
+const Container = styled(Box)(({theme}) => ({
+    boxShadow: theme.shadows['2']
+}));
 
 type DashboardProps = {
     containers: Container[];
@@ -35,12 +41,17 @@ class DashboardMain extends React.Component<DashboardProps> {
     }
 
     render() {
-        const { classes, containers }: any = this.props;
-        console.log(containers);
+        const { containers }: any = this.props;
         
 
         return (
-            <div className={classes.root}>
+            <Box 
+                className={classes.root} 
+                sx={{ 
+                    backgroundColor: (theme) => 
+                        theme.palette.background.default 
+                }}
+            >
                 <Typography 
                     gutterBottom
                     color="secondary"
@@ -48,9 +59,15 @@ class DashboardMain extends React.Component<DashboardProps> {
                 >
                     Dashboard
                 </Typography>
-                <Grid container className={classes.row} justify="space-between">
+                <Grid 
+                    container 
+                    className={classes.row} 
+                    justifyContent="space-between"
+                >
                     <Grid xs={8}>
-                        <div className={classes.welcomeContainer}>
+                        <Container 
+                            className={classes.welcomeContainer}
+                        >
                             <div className={classes.welcomeInner}>
                                 <Typography
                                     className={classes.welcomeTitle}
@@ -65,30 +82,58 @@ class DashboardMain extends React.Component<DashboardProps> {
                                     If this is your first time using Chameleo, take a tour of our features!
                                 </Typography>
                                 <div className={classes.flexGrow}></div>
-                                <button className={classes.getStartedButton}>
+                                <Button 
+                                    sx={{ 
+                                        backgroundColor: (theme) => 
+                                            theme.palette.primary.main,
+                                        color: (theme) => 
+                                            theme.palette.secondary.contrastText,
+                                        '&:hover': {
+                                            backgroundColor: (theme) => 
+                                                theme.palette.background['dark']
+                                        }
+                                    }}
+                                    className={classes.getStartedButton} 
+                                >
                                     Get Started
-                                </button>
+                                </Button>
                             </div>
                             <div className={classes.welcomeInner}>
-                                <Image src={CloudGraphic} />
+                                <Image src={CloudGraphic} alt="Dashboard cloud" />
                             </div>
-                        </div>
+                        </Container>
                     </Grid>
                     <Grid xs={4}>
-                        <div className={classes.whatsNewContainer}>
+                        <Container 
+                            className={classes.whatsNewContainer}
+                            sx={{
+                                backgroundColor: (theme) =>
+                                    theme.palette.secondary.main
+                            }}
+                        >
                             <div className={classes.whatsNewInner}>
                                 <Typography
                                     className={classes.whatsNewText}
+                                    sx={{
+                                        color: (theme) =>
+                                            theme.palette.secondary.contrastText
+                                    }}
                                 >
                                     What's New?
                                 </Typography>
                             </div>
-                        </div>
+                        </Container>
                     </Grid>
                 </Grid>
-                <Grid container className={classes.row} justify="space-between">
+                <Grid 
+                    container 
+                    className={classes.row} 
+                    justifyContent="space-between"
+                >
                     <Grid xs={12}>
-                        <div className={classes.cpuUsageContainer}>
+                        <Container 
+                            className={classes.cpuUsageContainer}
+                        >
                             <div className={classes.cpuUsageInner}>
                                 <Typography
                                     className={classes.cpuUsageTitle}
@@ -97,12 +142,18 @@ class DashboardMain extends React.Component<DashboardProps> {
                                     CPU usage
                                 </Typography>
                             </div>
-                        </div>
+                        </Container>
                     </Grid>
                 </Grid>
-                <Grid container className={classes.row} justify="space-between">
+                <Grid 
+                    container 
+                    className={classes.row} 
+                    justifyContent="space-between"
+                >
                     <Grid xs={12}>
-                        <div className={classes.containersContainer}>
+                        <Container 
+                            className={classes.containersContainer}
+                        >
                             <div className={classes.containersInner}>
                                 <Typography
                                     className={classes.containersTitle}
@@ -111,7 +162,14 @@ class DashboardMain extends React.Component<DashboardProps> {
                                     Containers
                                 </Typography>
                                 <table className={classes.containersTable}>
-                                    <tr className={classes.containersHeaders}>
+                                    <Box 
+                                        component="tr" 
+                                        className={classes.containersHeaders}
+                                        sx={{
+                                            borderBottom: (theme) => 
+                                                '1px solid ' + theme.palette.grey['50']
+                                        }}
+                                    >
                                         <th className={classes.containersHeader}>
                                             <Checkbox 
                                                 color="primary"
@@ -121,7 +179,7 @@ class DashboardMain extends React.Component<DashboardProps> {
                                         <th className={classes.containersHeader}>Type</th>
                                         <th className={classes.containersHeader}>Runtime</th>
                                         <th className={classes.containersHeader}>Status</th>
-                                    </tr>
+                                    </Box>
                                     { containers.map((container) => (
                                         <tr>
                                             <td className={classes.containersCell}>
@@ -141,115 +199,12 @@ class DashboardMain extends React.Component<DashboardProps> {
                                     )) }
                                 </table>
                             </div>
-                        </div>
+                        </Container>
                     </Grid>
                 </Grid>
-            </div>
+            </Box>
         )
     }
 }
 
-export default withStyles((theme) => ({
-    root: {
-        backgroundColor: theme.palette.background.default,
-        padding: '20px',
-        overflowY: 'auto',
-        '&::-webkit-scrollbar': {
-            width: '8px',
-            padding: '5px'
-        },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: '#6F6F76',
-            borderRadius: '5px'
-        }
-    },
-    breadcrumbMain: {
-        fontSize: '18px',
-        fontWeight: 600,
-        marginBottom: '20px'
-    },
-    row: {
-        maxWidth: '100%',
-        flexWrap: 'nowrap',
-        columnGap: '20px',
-        marginBottom: '20px'
-    },
-    welcomeContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: '300px',
-        backgroundColor: '#C8FACD',
-        backgroundImage: 'url("/img/welcome-bg.svg")',
-        padding: '0 40px',
-        boxShadow: theme.shadows['2']
-    },
-    welcomeInner: {
-        height: '200px',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    welcomeTitle: {
-        fontSize: '28px',
-        fontWeight: 'bold',
-        marginBottom: '30px'
-    },
-    welcomeText: {
-        fontSize: '16px'
-    },
-    getStartedButton: {
-        width: '110px',
-        height: '40px',
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.secondary.contrastText,
-        fontWeight: 500,
-        border: 'none',
-        fontSize: '14px',
-        cursor: 'pointer',
-        transition: '0.2s',
-        '&:hover': {
-            backgroundColor: theme.palette.background['dark']
-        }
-    },
-    whatsNewContainer: {
-        padding: '0 0 50px 30px',
-        backgroundColor: theme.palette.secondary.main,
-        height: '100%',
-        boxShadow: theme.shadows['2'],
-        display: 'grid',
-        alignItems: 'end'
-    },
-    whatsNewInner: {
-
-    },
-    whatsNewText: {
-        color: theme.palette.secondary.contrastText,
-        fontSize: '20px',
-        fontWeight: 700
-    },
-    flexGrow: {
-        flexGrow: 1
-    },
-    cpuUsageContainer: {
-        boxShadow: theme.shadows['2']
-    },
-    containersContainer: {
-        boxShadow: theme.shadows['2'],
-        padding: '20px'
-    },
-    containersTitle: {
-        fontWeight: 600,
-        fontSize: '18px',
-        marginBottom: '10px'
-    },
-    containersTable: {
-        width: '100%',
-        borderCollapse: 'collapse'
-    },
-    containersHeader: {
-        textAlign: 'left',
-    },
-    containersHeaders: {
-        borderBottom: '1px solid ' + theme.palette.grey['50']
-    }
-}))(DashboardMain);
+export default DashboardMain;

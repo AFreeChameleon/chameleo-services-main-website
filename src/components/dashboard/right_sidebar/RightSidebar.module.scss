@@ -1,0 +1,127 @@
+.root {
+    background-color: #2C2C2C;
+}
+
+.iconRow {
+    height: 80px;
+    border-bottom: 1px solid #212121;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.icon {
+    padding: 10px;
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover svg path {
+        fill: #ffffff;
+    }
+}
+
+.selectedIcon {
+    background-color: #51C85D;
+    & svg path {
+        fill: #ffffff;
+    }
+}
+
+.containers {
+    padding: 20px;
+    border-bottom: 1px solid #212121;
+}
+
+.containersHeader {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.containerList {
+    background-color: #212121;
+    padding: 5px 10px;
+    color: #ffffff;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.containerItem {
+    padding: 10px;
+    border-bottom: 1px solid #2C2C2C;
+}
+
+.containerItemHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500
+}
+
+.miniIcon {
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    & svg {
+        height: 20px;
+        width: 20px;
+    }
+
+    &:hover svg path {
+        fill: #ffffff;
+    }
+}
+
+.containerItemStatus {
+    padding-top: 15px;
+    font-size: 12px;
+}
+
+.stopped {
+    color: #ff1744;
+}
+
+.containerItemID {
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.containerStats {
+    padding: 20px;
+    border-bottom: 1px solid #212121;
+}
+
+.containerStatsHeader {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.select {
+    color: #ffffff;
+    font-size: 14px;
+    margin-top: 10px;
+    &::before {
+        border-bottom: 2px solid #51C85D !important;
+    }
+
+    &::after {
+        border-bottom: 2px solid #51C85D !important;
+    }
+
+    & > div {
+        padding: 10px !important;
+        background-color: transparent !important;
+    }
+
+    & > svg {
+        color: #6F6F76;
+    }
+}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import ifAuth from '../../../../../hoc/ifAuth';
 import store from '../../../../../redux/store';
 import AuthContainerBody from '../../../../../components/dashboard/auth/container/AuthContainerBody';
@@ -8,16 +7,9 @@ import LeftSidebar from '../../../../../components/dashboard/left_sidebar/LeftSi
 import Header from '../../../../../components/dashboard/header/Header';
 import { API_URL } from '../../../../../globals';
 
-const styles = {
-    root: {
-        height: '100vh', 
-        display: 'grid', 
-        gridTemplateColumns: '280px auto'
-    }
-}
+import classes from '../../Dashboard.module.scss';
 
 function ContainerOne({ container_id }) {
-    const classes = makeStyles(styles)();
     return (
         <Provider store={store}>
             <div className={classes.root}>
