@@ -265,6 +265,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     placeholder="Column Name"
                                                     className={classes.invisibleInput}
                                                     sx={{ color: 'text.secondary' }}
+                                                    variant="standard"
                                                     value={row.name}
                                                     onChange={(e) => 
                                                         dispatchChangeConfigModel(row.name, 'name', e.target.value)
@@ -278,6 +279,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     input={<Input />}
                                                     value={row.attributes}
                                                     renderValue={(selected: any) => selected.join(', ')}
+                                                    variant="standard"
                                                     MenuProps={{
                                                         anchorEl: () => null
                                                     }}
@@ -333,6 +335,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                             disabled
                                                             className={classes.invisibleInput}
                                                             sx={{ color: 'text.secondary' }}
+                                                            variant="standard"
                                                         />
                                                     </Tooltip>
                                                 ) : (
@@ -352,7 +355,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     variant="standard"
                                                     value={row.type}
                                                     fullWidth
-                                                    input={<StyledSelect/>}
+                                                    input={<StyledSelect variant="standard"/>}
                                                     onChange={(e) => {
                                                         dispatchChangeConfigModel(row.name, 'type', e.target.value);
                                                         dispatchChangeConfigModel(row.name, 'default', '');
@@ -379,6 +382,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                                     row.length.min : 
                                                                     ''
                                                             )}
+                                                            variant="standard"
                                                             className={`${classes.invisibleInput} ${classes.center}`}
                                                             sx={{ color: 'text.secondary' }}
                                                             onChange={(e) => {
@@ -390,6 +394,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                             <NumberInputNoTicks
                                                                 disabled
                                                                 className={`${classes.invisibleInput} ${classes.center}`}
+                                                                variant="standard"
                                                                 sx={{ color: 'text.secondary' }}
                                                                 value={''}
                                                             />
@@ -408,6 +413,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                                     ''
                                                             )}
                                                             className={`${classes.invisibleInput} ${classes.center}`}
+                                                            variant="standard"
                                                             sx={{ color: 'text.secondary' }}
                                                             onChange={(e) => {
                                                                 dispatchChangeConfigModelLength(row.name, 'max', parseInt(e.target.value))
@@ -417,6 +423,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                         <Tooltip title={"Can't be edited if the row has a type of Date, DateTime, Boolean or Char."}>
                                                             <NumberInputNoTicks
                                                                 disabled
+                                                                variant="standard"
                                                                 className={`${classes.invisibleInput} ${classes.center}`}
                                                                 sx={{ color: 'text.secondary' }}
                                                                 value={''}

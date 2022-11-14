@@ -88,6 +88,8 @@ class DashboardMain extends React.Component<DashboardProps> {
                                             theme.palette.primary.main,
                                         color: (theme) => 
                                             theme.palette.secondary.contrastText,
+                                        textTransform: 'none',
+                                        fontWeight: 500,
                                         '&:hover': {
                                             backgroundColor: (theme) => 
                                                 theme.palette.background['dark']
@@ -162,41 +164,45 @@ class DashboardMain extends React.Component<DashboardProps> {
                                     Containers
                                 </Typography>
                                 <table className={classes.containersTable}>
-                                    <Box 
-                                        component="tr" 
-                                        className={classes.containersHeaders}
-                                        sx={{
-                                            borderBottom: (theme) => 
-                                                '1px solid ' + theme.palette.grey['50']
-                                        }}
-                                    >
-                                        <th className={classes.containersHeader}>
-                                            <Checkbox 
-                                                color="primary"
-                                            />
-                                        </th>
-                                        <th className={classes.containersHeader}>Name</th>
-                                        <th className={classes.containersHeader}>Type</th>
-                                        <th className={classes.containersHeader}>Runtime</th>
-                                        <th className={classes.containersHeader}>Status</th>
-                                    </Box>
-                                    { containers.map((container) => (
-                                        <tr>
-                                            <td className={classes.containersCell}>
+                                    <thead>
+                                        <Box 
+                                            component="tr" 
+                                            className={classes.containersHeaders}
+                                            sx={{
+                                                borderBottom: (theme) => 
+                                                    '1px solid ' + theme.palette.grey['50']
+                                            }}
+                                        >
+                                            <th className={classes.containersHeader}>
                                                 <Checkbox 
-                                                    color="secondary"
-                                                />    
-                                            </td>
-                                            <td className={classes.containersCell}>
-                                               {container.name}
-                                            </td>
-                                            <td className={classes.containersCell}>{this.formatContainerType(container.type)}</td>
-                                            <td className={classes.containersCell}>1d 23h</td>
-                                            <td className={classes.containersCell}>
-                                                Running
-                                            </td>
-                                        </tr>
-                                    )) }
+                                                    color="primary"
+                                                />
+                                            </th>
+                                            <th className={classes.containersHeader}>Name</th>
+                                            <th className={classes.containersHeader}>Type</th>
+                                            <th className={classes.containersHeader}>Runtime</th>
+                                            <th className={classes.containersHeader}>Status</th>
+                                        </Box>
+                                    </thead>
+                                    <tbody>
+                                        { containers.map((container) => (
+                                            <tr>
+                                                <td className={classes.containersCell}>
+                                                    <Checkbox 
+                                                        color="secondary"
+                                                    />    
+                                                </td>
+                                                <td className={classes.containersCell}>
+                                                {container.name}
+                                                </td>
+                                                <td className={classes.containersCell}>{this.formatContainerType(container.type)}</td>
+                                                <td className={classes.containersCell}>1d 23h</td>
+                                                <td className={classes.containersCell}>
+                                                    Running
+                                                </td>
+                                            </tr>
+                                        )) }
+                                    </tbody>
                                 </table>
                             </div>
                         </Container>

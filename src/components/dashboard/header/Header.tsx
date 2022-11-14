@@ -80,7 +80,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                             width={26}
                             height={26}
                             alt="Profile picture"
-                            layout="fixed"
+                            // layout="fixed"
                         />
                     </IconButton>
                 </div>

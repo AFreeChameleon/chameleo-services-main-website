@@ -39,6 +39,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         fullWidth
                         key={colName}
                         value={value}
+                        variant="standard"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
                         sx={sx}
@@ -51,6 +52,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         key={colName}
                         value={value}
                         type="number"
+                        variant="standard"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(parseInt(e.target.value))}
                         sx={sx}
@@ -63,6 +65,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         key={colName}
                         value={value}
                         type="number"
+                        variant="standard"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(parseFloat(e.target.value))}
                         sx={sx}
@@ -75,6 +78,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         multiline
                         key={colName}
                         value={value}
+                        variant="standard"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
                         sx={sx}
@@ -85,6 +89,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         <Select
                             fullWidth
                             key={colName}
+                            variant="standard"
                             value={value.toString()}
                             className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                             onChange={(e) => onChange(Boolean(e.target.value))}
@@ -101,6 +106,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         key={colName}
                         value={value}
                         type="date"
+                        variant="standard"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         onChange={(e) => onChange(e.target.value)}
                         sx={sx}
@@ -113,6 +119,7 @@ class GetInputFromType extends React.Component<GetInputFromTypeProps> {
                         key={colName}
                         value={value}
                         type="datetime-local"
+                        variant="standard"
                         className={`${size === 'small' ? classes.smallTextField : null} ${className}`}
                         InputLabelProps={{
                             shrink: true,

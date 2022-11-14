@@ -62,7 +62,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                                 width={150}
                                 height={38}
                                 className={classes.chameleoLogo} 
-                                layout="fixed"
+                                // layout="fixed"
                             />
                         </Link>
                     </div>
@@ -86,7 +86,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                                 color: 'primary.main'
                             },
                             '&:hover svg path': {
-                                color: 'primary.main'
+                                fill: (theme) => theme.palette.primary.main
                             },
                             borderBottom: (theme) => authDropdownOpen &&
                                 `1px solid ${theme.palette.grey['50']}` 
@@ -127,7 +127,18 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                             </div>
                         </Link>
                     </Collapse>
-                    <div
+                    <Box
+                        sx={{ 
+                            color: 'text.primary', 
+                            '&:hover': {
+                                color: 'primary.main'
+                            },
+                            '&:hover svg path': {
+                                fill: (theme) => theme.palette.primary.main
+                            },
+                            borderBottom: (theme) => authDropdownOpen &&
+                                `1px solid ${theme.palette.grey['50']}` 
+                        }}
                         className={`${classes.sidebarItem} ${dbDropdownOpen && classes.sidebarItemSelected}`} 
                         onClick={(e) => this.setState({ dbDropdownOpen: !dbDropdownOpen })}
                     >
@@ -140,7 +151,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                         </Typography>
                         <div className={classes.flexGrow}></div>
                         <ExpandMoreIcon className={`${classes.expandIcon} ${dbDropdownOpen && classes.inverted}`} />
-                    </div>
+                    </Box>
                     <Collapse in={dbDropdownOpen}>
                         { containers.filter(c => c.type === 'database').map((c: any, i) => (
                             <Link href={`/dashboard/database/${encodeURI(c.name)}`} key={i} className={classes.link}>
