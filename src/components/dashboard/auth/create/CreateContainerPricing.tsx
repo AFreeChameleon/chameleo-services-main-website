@@ -41,8 +41,11 @@ class CreateContainerPricing extends React.Component<CreateContainerPricingProps
                         color="primary"
                         startIcon={<ArrowBackIcon/>}
                         onClick={(e) => changeSelectedPage(0)}
+                        sx={{
+                            marginTop: '20px'
+                        }}
                     >
-                        GO BACK TO CONFIG
+                        BACK
                     </Button>
                 </div>
                 <div className={classes.cards}>

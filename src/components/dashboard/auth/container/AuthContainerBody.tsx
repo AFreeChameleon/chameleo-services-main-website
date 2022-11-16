@@ -46,6 +46,10 @@ const SmallSelect = styled(Select)(({
     }
 }));
 
+const ShadowBox = styled(Box)(({theme}) => ({
+    boxShadow: theme.shadows['2']
+}))
+
 type AuthContainerBodyProps = {
     containerId: string;
     apiUrl: string;
@@ -218,7 +222,12 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                     ) }
                 </Box>
                 <div className={classes.colorStatsGrid}>
-                    <div className={classes.colorStatsItemRegisteredUsers}>
+                    <ShadowBox 
+                        className={classes.colorStatsItemRegisteredUsers}
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.background.blue + '40'
+                        }}
+                    >
                         <div>
                             <div className={`${classes.colorStatsItemLogoLarge} ${classes.blueBg}`}>
                                 <PeopleIcon fontSize="large" className={classes.blue} sx={{ color: 'background.blue' }}/>
@@ -240,11 +249,16 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                                 Registered Users
                             </div>
                         </div>
-                    </div>
-                    <div className={classes.colorStatsItemEmailSent}>
+                    </ShadowBox>
+                    <ShadowBox 
+                        className={classes.colorStatsItemEmailSent}
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.background.green + '40'
+                        }}
+                    >
                         <div>
                             <div className={`${classes.colorStatsItemLogoLarge} ${classes.greenBg}`}>
-                                <SendIcon fontSize="large" className={classes.green} style={{paddingLeft: '5px'}} sx={{ color: 'background.main' }}/>
+                                <SendIcon fontSize="large" style={{paddingLeft: '5px'}} sx={{ color: 'background.green' }}/>
                             </div>
                             <div className={classes.colorStatsItemText}>
                                 <Typography
@@ -258,11 +272,16 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                                 Emails sent this month
                             </div>
                         </div>
-                    </div>
-                    <div className={classes.colorStatsItemActiveUsers}>
+                    </ShadowBox>
+                    <ShadowBox 
+                        className={classes.colorStatsItemActiveUsers}
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.background.red + '40'
+                        }}
+                    >
                         <div>
                             <div className={`${classes.colorStatsItemLogoLarge} ${classes.redBg}`}>
-                                <FireIcon fontSize="large" className={classes.red} sx={{ color: 'background.red' }}/>
+                                <FireIcon fontSize="large" sx={{ color: 'background.red' }}/>
                             </div>
                             <div className={classes.colorStatsItemText}>
                                 <Typography
@@ -276,10 +295,10 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                                 Active users this month
                             </div>
                         </div>
-                    </div>
+                    </ShadowBox>
                 </div>
                 <div className={classes.gridOne}>
-                    <div className={classes.requestsChartContainer}>
+                    <ShadowBox className={classes.requestsChartContainer}>
                         <Typography 
                             variant="h6"
                             className={classes.activeUsersTitle}
@@ -290,18 +309,17 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
 
                         </div>
                         <div className={classes.logsLinkContainer}>
-                            <NextLink href={`/dashboard/auth/container/${container.id}/logs`}>
-                                <Typography
-                                    className={classes.logsLink}
-                                    component="a"
-                                    sx={{ color: 'primary.main' }}
-                                >
-                                    View logs
-                                </Typography>
-                            </NextLink>
+                            <Typography
+                                className={classes.logsLink}
+                                sx={{ color: 'primary.main', width: 'fit-content' }}
+                            >
+                                <NextLink href={`/dashboard/auth/container/${container.id}/logs`}>
+                                View logs
+                                </NextLink>
+                            </Typography>
                         </div>
-                    </div>
-                    <div className={classes.activeUsersContainer}>
+                    </ShadowBox>
+                    <ShadowBox className={classes.activeUsersContainer}>
                         <Typography 
                             variant="h6"
                             className={classes.activeUsersTitle}
@@ -334,26 +352,26 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                         <div className={classes.activeUsersLegend}>
                             <div className={classes.activeUsersLegendItem}>
                                 <div className={classes.activeUsersLegendOnline}></div>
-                                <div className={classes.activeUsersLegendText}>
+                                <Typography className={classes.activeUsersLegendText} variant="caption">
                                     Online
-                                </div>
+                                </Typography>
                             </div>
                             <div className={classes.activeUsersLegendItem}>
                                 <div className={classes.activeUsersLegendAway}></div>
-                                <div className={classes.activeUsersLegendText}>
+                                <Typography className={classes.activeUsersLegendText} variant="caption">
                                     Away
-                                </div>
+                                </Typography>
                             </div>
                             <div className={classes.activeUsersLegendItem}>
                                 <div className={classes.activeUsersLegendOffline}></div>
-                                <div className={classes.activeUsersLegendText}>
+                                <Typography className={classes.activeUsersLegendText} variant="caption">
                                     Offline
-                                </div>
+                                </Typography>
                             </div>
                         </div>
-                    </div>
+                    </ShadowBox>
                 </div>
-                <div className={classes.usersTableContainer}>
+                <ShadowBox className={classes.usersTableContainer}>
                     <div className={classes.usersTableTitle}>
                         <Typography
                             gutterBottom
@@ -363,9 +381,9 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                         </Typography>
                     </div>
                     { (container && container.config.model) && <UserTable schema={container.config.model} containerId={containerId} /> }
-                </div>
+                </ShadowBox>
                 <div className={classes.gridTwo}>
-                    <div className={classes.userStatisticsContainer}>
+                    <ShadowBox className={classes.userStatisticsContainer}>
                         <div className={classes.userStatisticsTitle}>
                             <Typography
                                 variant="h6"
@@ -396,8 +414,8 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                             </SmallSelect>
                         </div>
                         { (container) && <UserStatisticsTable containerId={containerId} type={statisticsMode} /> }
-                    </div>
-                    <div className={classes.requestsChartContainer}>
+                    </ShadowBox>
+                    <ShadowBox className={classes.requestsChartContainer}>
                         <Typography
                             gutterBottom
                             variant="h6"
@@ -405,16 +423,16 @@ class AuthContainerBody extends React.Component<AuthContainerBodyProps, AuthCont
                             CPU Usage
                         </Typography>
 
-                    </div>
+                    </ShadowBox>
                 </div>
                 <div className={classes.gridOne}>
-                    <div className={classes.activeUsersContainer}>
+                    <ShadowBox className={classes.activeUsersContainer}>
                         <Typography
                             gutterBottom
                         >
                             Recent invoices
                         </Typography>
-                    </div>
+                    </ShadowBox>
                 </div>
             </div>
         ) : null;

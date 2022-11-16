@@ -7,7 +7,7 @@ import LeftSidebar from '../../../../../components/dashboard/left_sidebar/LeftSi
 import Header from '../../../../../components/dashboard/header/Header';
 import { API_URL } from '../../../../../globals';
 
-import classes from '../../Dashboard.module.scss';
+import classes from '../../../Dashboard.module.scss';
 
 function ContainerOne({ container_id }) {
     return (

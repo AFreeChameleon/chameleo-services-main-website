@@ -193,6 +193,7 @@ class CreateContainerLocation extends React.Component<CreateContainerLocationPro
                             <TextField
                                 fullWidth
                                 color="primary"
+                                variant="standard"
                                 placeholder="Container name"
                                 value={container.name}
                                 onChange={(e) => dispatchSetContainerName(e.target.value)}

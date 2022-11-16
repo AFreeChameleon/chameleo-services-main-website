@@ -30,7 +30,10 @@ const statsReducer = (state = statsState, action) => {
             return {
                 ...state,
                 loading: false,
-                errors: action.errors
+                errors: action.errors,
+                users: [],
+                userCount: 0,
+                activeUsers: []
             }
         default:
             return state;

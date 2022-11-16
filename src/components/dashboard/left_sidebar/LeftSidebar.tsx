@@ -31,6 +31,61 @@ type LeftSidebarState = {
     dbDropdownOpen: boolean;
 }
 
+function DropdownBox({ down, setDown, selectedTab, title }) {
+    return (
+        <Box 
+            sx={{ 
+                color: down ? 'primary.main' : 'text.primary', 
+                '& svg path': down && {
+                    fill: (theme) => theme.palette.primary.main
+                },
+                '&:hover': {
+                    color: 'primary.main',
+                    backgroundColor: (theme) => theme.palette.grey['50']
+                },
+                '&:hover svg path': {
+                    fill: (theme) => theme.palette.primary.main
+                },
+                borderBottom: (theme) => down &&
+                    `1px solid ${theme.palette.grey['50']} !important` 
+            }}
+            className={`${classes.sidebarItem}`} 
+            onClick={setDown}
+        >
+            <AuthIcon className={`${classes.smallIcon} ${selectedTab && classes.sidebarIconSelected}`} />
+            <Typography
+                className={classes.selectedText}
+                style={{paddingTop: '3px'}}
+            >
+                {title}
+            </Typography>
+            <div className={classes.flexGrow}></div>
+            <ExpandMoreIcon className={`${classes.expandIcon} ${down && classes.inverted}`} />
+        </Box>
+    )
+}
+
+function CreateNewLink({ href, Icon }) {
+    return (
+        <Link href={href} className={classes.link}>
+            <Box 
+                className={classes.sidebarItem}
+                sx={{ 
+                    borderBottom: (theme) => '1px solid ' + theme.palette.grey['50'] + ' !important',
+                    '&:hover': {
+                        backgroundColor: (theme) => theme.palette.grey['50']
+                    },
+                }}
+            >
+                <Icon className={classes.smallIcon} />
+                <Typography>
+                    Create New Container
+                </Typography>
+            </Box>
+        </Link>
+    )
+}
+
 class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
     constructor(props) {
         super(props);
@@ -49,7 +104,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
             <Box 
                 sx={{ 
                     backgroundColor: 'background.default', 
-                    border: (theme) => `1px solid ${theme.palette.grey.A200}` 
+                    borderRight: (theme) => `1px solid ${theme.palette.grey.A200}` 
                 }}
                 className={classes.root}
             >
@@ -79,36 +134,22 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                             </Typography>
                         </div>
                     </Link>
-                    <Box 
-                        sx={{ 
-                            color: 'text.primary', 
-                            '&:hover': {
-                                color: 'primary.main'
-                            },
-                            '&:hover svg path': {
-                                fill: (theme) => theme.palette.primary.main
-                            },
-                            borderBottom: (theme) => authDropdownOpen &&
-                                `1px solid ${theme.palette.grey['50']}` 
-                        }}
-                        className={`${classes.sidebarItem}`} 
-                        onClick={(e) => this.setState({ authDropdownOpen: !authDropdownOpen })}
-                    >
-                        <AuthIcon className={`${classes.smallIcon} ${selectedTab === 'authentication' && classes.sidebarIconSelected}`} />
-                        <Typography
-                            className={classes.selectedText}
-                            style={{paddingTop: '3px'}}
-                        >
-                            Authentication
-                        </Typography>
-                        <div className={classes.flexGrow}></div>
-                        <ExpandMoreIcon className={`${classes.expandIcon} ${authDropdownOpen && classes.inverted}`} />
-                    </Box>
+                    <DropdownBox 
+                        down={authDropdownOpen} 
+                        setDown={() => this.setState({ authDropdownOpen: !authDropdownOpen })} 
+                        selectedTab={selectedTab === 'authentication'}
+                        title="Authentication"
+                    />
                     <Collapse in={authDropdownOpen}>
                         { containers.filter(c => c.type === 'auth').map((c: any, i) => (
                             <Link href={`/dashboard/auth/container/${encodeURI(c.id)}`} key={i} className={classes.link}>
                                 <Box
-                                    sx={{ backgroundColor: (theme) => (c.id == containerId) && 'background.light' }}
+                                    sx={{ 
+                                        backgroundColor: (theme) => (c.id == containerId) && 'background.light',
+                                        '&:hover': {
+                                            backgroundColor: (theme) => theme.palette.grey['50']
+                                        }
+                                    }}
                                     className={`${classes.sidebarItem}`}
                                 >
                                     <div className={classes.smallIcon}>&#8226;</div>
@@ -118,40 +159,14 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                                 </Box>
                             </Link>
                         )) }
-                        <Link href="/dashboard/auth/new" className={classes.link}>
-                            <div className={classes.sidebarItem}>
-                                <AddIcon className={classes.smallIcon} />
-                                <Typography>
-                                    Create New Container
-                                </Typography>
-                            </div>
-                        </Link>
+                        <CreateNewLink Icon={AddIcon} href="/dashboard/auth/new" />
                     </Collapse>
-                    <Box
-                        sx={{ 
-                            color: 'text.primary', 
-                            '&:hover': {
-                                color: 'primary.main'
-                            },
-                            '&:hover svg path': {
-                                fill: (theme) => theme.palette.primary.main
-                            },
-                            borderBottom: (theme) => authDropdownOpen &&
-                                `1px solid ${theme.palette.grey['50']}` 
-                        }}
-                        className={`${classes.sidebarItem} ${dbDropdownOpen && classes.sidebarItemSelected}`} 
-                        onClick={(e) => this.setState({ dbDropdownOpen: !dbDropdownOpen })}
-                    >
-                        <DatabaseIcon className={`${classes.smallIcon} ${selectedTab === 'database' && classes.sidebarIconSelected}`} />
-                        <Typography
-                            className={classes.selectedText}
-                            style={{paddingTop: '3px'}}
-                        >
-                            Database
-                        </Typography>
-                        <div className={classes.flexGrow}></div>
-                        <ExpandMoreIcon className={`${classes.expandIcon} ${dbDropdownOpen && classes.inverted}`} />
-                    </Box>
+                    <DropdownBox 
+                        down={dbDropdownOpen} 
+                        setDown={() => this.setState({ dbDropdownOpen: !dbDropdownOpen })} 
+                        selectedTab={selectedTab === 'database'}
+                        title="Database"
+                    />
                     <Collapse in={dbDropdownOpen}>
                         { containers.filter(c => c.type === 'database').map((c: any, i) => (
                             <Link href={`/dashboard/database/${encodeURI(c.name)}`} key={i} className={classes.link}>
@@ -163,14 +178,7 @@ class LeftSidebar extends React.Component<LeftSidebarProps, LeftSidebarState> {
                                 </div>
                             </Link>
                         )) }
-                        <Link href="/dashboard/database/new" className={classes.link}>
-                            <div className={classes.sidebarItem}>
-                                <AddIcon className={classes.smallIcon} />
-                                <Typography>
-                                    Create New Container
-                                </Typography>
-                            </div>
-                        </Link>
+                        <CreateNewLink Icon={AddIcon} href="/dashboard/database/new" />
                     </Collapse>
                 </div>
             </Box>

@@ -598,9 +598,10 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             label="Days"
                                             color="primary"
                                             type="number"
+                                            fullWidth
+                                            variant="standard"
                                             value={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.days}
                                             disabled={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.forever}
-                                            fullWidth
                                             onChange={(e) => {
                                                 dispatchChangeConfigAuth('sessionExpiresIn', {
                                                     ...config.auth.sessionExpiresIn,
@@ -615,9 +616,10 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                             label="Hours"
                                             color="primary"
                                             type="number"
+                                            fullWidth
+                                            variant="standard"
                                             value={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.hours}
                                             disabled={config.auth.sessionExpiresIn && config.auth.sessionExpiresIn.forever}
-                                            fullWidth
                                             onChange={(e) => {
                                                 dispatchChangeConfigAuth('sessionExpiresIn', {
                                                     ...config.auth.sessionExpiresIn,
@@ -683,6 +685,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     fullWidth
                                     placeholder="john.doe@company.com"
                                     color="primary"
+                                    variant="standard"
                                     value={config.mail.fromAddress}
                                     onChange={(e) => {
                                         dispatchChangeConfigMail('fromAddress', e.target.value);
@@ -705,6 +708,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     fullWidth
                                     placeholder="Verify your email!"
                                     color="primary"
+                                    variant="standard"
                                     value={config.mail.verifySubject}
                                     onChange={(e) => {
                                         dispatchChangeConfigMail('verifySubject', e.target.value);
@@ -721,6 +725,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     fullWidth
                                     multiline
                                     maxRows={10}
+                                    variant="standard"
                                     placeholder="Accepts HTML or plain text"
                                     color="primary"
                                     value={config.mail.verifyContent}
@@ -739,8 +744,9 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 </Typography>
                                 <TextField
                                     fullWidth
-                                    placeholder="https://website.com/verified"
                                     color="primary"
+                                    variant="standard"
+                                    placeholder="https://website.com/verified"
                                     value={config.mail.verifyRedirectURI}
                                     onChange={(e) => {
                                         dispatchChangeConfigMail('verifyRedirectURI', e.target.value);
@@ -762,6 +768,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 </Typography>
                                 <TextField
                                     fullWidth
+                                    variant="standard"
                                     placeholder="Reset your password!"
                                     color="primary"
                                     value={config.mail.resetSubject}
@@ -780,6 +787,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                     fullWidth
                                     multiline
                                     maxRows={10}
+                                    variant="standard"
                                     placeholder="Accepts HTML or plain text"
                                     color="primary"
                                     value={config.mail.resetContent}
@@ -798,6 +806,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                 </Typography>
                                 <TextField
                                     fullWidth
+                                    variant="standard"
                                     placeholder="https://website.com/verified"
                                     color="primary"
                                     value={config.mail.resetRedirectURI}
@@ -890,6 +899,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     fullWidth
                                                     label="Client ID"
                                                     color="primary"
+                                                    variant="standard"
                                                     value={config.auth.oauth.google.clientID}
                                                     onChange={(e) => {
                                                         dispatchChangeConfigAuthOAuth('google', 'clientID', e.target.value);
@@ -901,6 +911,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     fullWidth
                                                     label="Client Secret"
                                                     color="primary"
+                                                    variant="standard"
                                                     value={config.auth.oauth.google.clientSecret}
                                                     onChange={(e) => {
                                                         dispatchChangeConfigAuthOAuth('google', 'clientSecret', e.target.value);
@@ -912,6 +923,7 @@ class NewAuthContainerBody extends React.Component<NewAuthContainerBodyProps, Ne
                                                     fullWidth
                                                     label="Redirect URI"
                                                     color="primary"
+                                                    variant="standard"
                                                     value={config.auth.oauth.google.redirectURI}
                                                     onChange={(e) => {
                                                         dispatchChangeConfigAuthOAuth('google', 'redirectURI', e.target.value);

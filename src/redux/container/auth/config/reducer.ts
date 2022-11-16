@@ -43,7 +43,7 @@ const configState: any = {
             },
             sessionExpiresIn: {
                 forever: false,
-                days: 0,
+                days: 30,
                 hours: 0
             }
         },

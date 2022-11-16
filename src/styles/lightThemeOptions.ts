@@ -18,6 +18,9 @@ type CustomThemeOptions = ThemeOptions & {
     palette: {
         background: {
             light: string;
+            blue: string;
+            green: string;
+            red: string;
         }
     }
 }

@@ -1,7 +1,7 @@
 import { Container, Prisma, User } from '.prisma/client';
 import { getConnection } from '../db';
 
-export const getAllUsersStatistics = async (user: User, container: Container, done: any) => {
+export const getAllUsersStatistics = async (user: User, container: Container) => {
     const client: any = await getConnection(container.location);
     const config = container.config as any;
     let statsLimitDate = new Date();
@@ -96,7 +96,7 @@ export const getAllUsersStatistics = async (user: User, container: Container, do
         WHERE emails."createdAt" >= '${statsLimitDate.toISOString()}';
     `);
     
-    Promise.all([
+    return Promise.all([
         usersPromise, 
         userCountPromise, 
         activeUsersPromise, 
@@ -104,8 +104,4 @@ export const getAllUsersStatistics = async (user: User, container: Container, do
         emailSentPromise,
         emailCountPromise
     ])
-    .then(done)
-    .catch(err => { 
-        console.log(err); 
-    });
 }

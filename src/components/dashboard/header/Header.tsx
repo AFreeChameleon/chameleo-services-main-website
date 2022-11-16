@@ -54,6 +54,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 <div className={classes.rootGrid}>
                     <SearchIcon/>
                     <Input
+                        disableUnderline
                         placeholder="Search..."
                         className={classes.searchInput}
                         sx={{ color: 'text.primary' }}

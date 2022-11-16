@@ -43,32 +43,29 @@ const getUsersStatistics = async (req: NextApiRequestWithSession, res: NextApiRe
                 errors: ['Cannot find container with that ID']
             });
         }
-        getAllUsersStatistics(
-            req.user, 
-            container, 
-        ([
+        const [
             users, 
             userCountPromise, 
             activeUsers, 
             userStatsPromise, 
             emailSentPromise, 
             emailCountPromise
-        ]) => {
-            return res.json({
-                users: users.rows,
-                userCount: parseInt(userCountPromise.rowCount),
-                activeUsers: {
-                    online: parseInt(activeUsers.rows[0].count),
-                    away: parseInt(activeUsers.rows[1].count),
-                    offline: parseInt(activeUsers.rows[2].count),
-                },
-                userStats: userStatsPromise.rows,
-                emails: emailSentPromise.rows,
-                emailCount: parseInt(emailCountPromise.rows[0].count)
-            });
+        ] = await getAllUsersStatistics(req.user, container);
+        
+        return res.json({
+            users: users.rows,
+            userCount: parseInt(userCountPromise.rowCount),
+            activeUsers: {
+                online: parseInt(activeUsers.rows[0].count),
+                away: parseInt(activeUsers.rows[1].count),
+                offline: parseInt(activeUsers.rows[2].count),
+            },
+            userStats: userStatsPromise.rows,
+            emails: emailSentPromise.rows,
+            emailCount: parseInt(emailCountPromise.rows[0].count)
         });
     } catch (err) {
-        console.log(err);
+        console.log('Error:', err);
         return res.status(500).json({
             errors: ['An error occurred while getting your users\' statistics. Please try again.']
         });
